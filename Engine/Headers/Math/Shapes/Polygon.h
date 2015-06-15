@@ -1,0 +1,19 @@
+/******************************************************************************
+ * Copyright (c) Grzegorz Slazinski. All Rights Reserved.                     *
+ * Esenthel Engine (http://www.esenthel.com) header file.                     *
+/******************************************************************************/
+void CreateConvex2D(Memp<Vec> poly, C Vec *point, Int points); // create convex 'poly' from points ('point'=array of points, 'points'=number of points)
+
+void Triangulate(      C Memp<Vec    >   &poly , MeshBase &mesh,                                      Bool convex=false                         ); // triangulate         'poly' to 'mesh', 'mesh' will be deleted at start                                                                                                                                   , 'convex'=if 'polys' are known to be convex (this will speed up the process)
+void Triangulate(      C Memp<VtxFull>   &poly , MeshBase &mesh, UInt flag_and,                       Bool convex=false                         ); // triangulate         'poly' to 'mesh', 'mesh' will be deleted at start, 'flag_and'=elements to include in 'mesh' creation (MESH_BASE_FLAG)                                                               , 'convex'=if 'polys' are known to be convex (this will speed up the process)
+void Triangulate(C Memp< Memc<Vec    > > &polys, MeshBase &mesh               , Flt weld_pos_eps=EPS, Bool convex=false, C Byte *poly_flags=NULL); // triangulate set of 'polys' to 'mesh', 'mesh' will be deleted at start                                                                    , 'weld_pos_eps'=epsilon used for final vertex position welding, 'convex'=if 'polys' are known to be convex (this will speed up the process), 'poly_flags'=if not NULL then mesh faces will have their flags set according to given pointer (its length must be as long as number of 'polys')
+void Triangulate(C Memp< Memc<VtxFull> > &polys, MeshBase &mesh, UInt flag_and, Flt weld_pos_eps=EPS, Bool convex=false, C Byte *poly_flags=NULL); // triangulate set of 'polys' to 'mesh', 'mesh' will be deleted at start, 'flag_and'=elements to include in 'mesh' creation (MESH_BASE_FLAG), 'weld_pos_eps'=epsilon used for final vertex position welding, 'convex'=if 'polys' are known to be convex (this will speed up the process), 'poly_flags'=if not NULL then mesh faces will have their flags set according to given pointer (its length must be as long as number of 'polys')
+
+void ClipPoly (C Memp<Vec    > &poly, C Plane &plane, Memp<Vec    > output                                        ); // clip  'poly' according to 'plane' and store result  in 'output'  , 'poly' and 'output'   must point to different containers
+void ClipPoly (C Memp<VtxFull> &poly, C Plane &plane, Memp<VtxFull> output                                        ); // clip  'poly' according to 'plane' and store result  in 'output'  , 'poly' and 'output'   must point to different containers
+void SplitPoly(C Memp<Vec    > &poly, C Plane &plane, Memp<Vec    > output_positive, Memp<Vec    > output_negative); // split 'poly' according to 'plane' and store results in 'output_*', 'poly' and 'output_*' must point to different containers
+void SplitPoly(C Memp<VtxFull> &poly, C Plane &plane, Memp<VtxFull> output_positive, Memp<VtxFull> output_negative); // split 'poly' according to 'plane' and store results in 'output_*', 'poly' and 'output_*' must point to different containers
+
+void DrawPoly2D(C Memp<Vec> &poly, C Color &edge_color=WHITE, C Color &vtx_color=TRANSPARENT); // draw 'poly'
+void DrawPoly  (C Memp<Vec> &poly, C Color &edge_color=WHITE, C Color &vtx_color=TRANSPARENT); // draw 'poly', this relies on active object matrix which can be set using 'SetMatrix' function
+/******************************************************************************/
