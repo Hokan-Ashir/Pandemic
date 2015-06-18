@@ -3,8 +3,7 @@
 #include <Headers/ApplicationStates/MainApplicationState.h>
 #include <Headers/ToolClasses/ProxyCall.h>
 #include <Headers/ApplicationStates/StateManager.h>
-
-//DirectParticleSystem systemS(UID(1305126526, 1249254078, 2971936397, 3966274079), Vec(0, 0, 0));
+#include <Headers/DirectParticlesSystem/DirectParticleSystem.h>
 
 MainApplicationState::MainApplicationState() {
 	setId("MainApplicationState");
@@ -34,6 +33,10 @@ Bool MainApplicationState::init() {
 		Game::World.settings().environment->set();
 	}
 
+	std::shared_ptr<DirectParticleSystem> system(new DirectParticleSystem(UID(1305126526, 1249254078, 2971936397, 3966274079), Vec(0, 0, 0)));
+	addDrawableObject(system);
+	addUpdateableObject(system);
+
 	return true;
 }
 
@@ -50,7 +53,9 @@ Bool MainApplicationState::update() {
 	Cam.transformByMouse(0.1f, 100, CAMH_ZOOM | (Ms.b(1) ? CAMH_MOVE : CAMH_ROT));
 	Game::World.update(Cam.at);
 
-	//systemS.update();
+	for (auto updateable : updateableObjects) {
+		updateable->update();
+	}
 
 	return true;
 }
@@ -65,7 +70,9 @@ void MainApplicationState::render() {
 		case RM_BLEND:
 		case RM_PALETTE:
 		{
-			//systemS.draw();
+			for (auto drawable : drawableObjects) {
+				drawable->draw();
+			}	
 		}
 		break;
 	}

@@ -15,6 +15,7 @@
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
     <ClCompile Include="Sources\ToolClasses\ProxyCall.cpp" />
     <ClCompile Include="Sources\ApplicationStates\IntroState.cpp" />
+    <ClCompile Include="Sources\ApplicationStates\AbstractApplicationState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Auto.h" />
@@ -31,6 +32,8 @@
     <ClInclude Include="Headers\ToolClasses\Identifirable.h" />
     <ClInclude Include="Headers\ApplicationStates\StateManager.h" />
     <ClInclude Include="Headers\ApplicationStates\IntroState.h" />
+    <ClInclude Include="Headers\ToolClasses\Drawable.h" />
+    <ClInclude Include="Headers\ToolClasses\Updatable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

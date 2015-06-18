@@ -5,7 +5,7 @@
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
 #include <Headers/ToolClasses/FinalClass.h>
 
-class MainApplicationState : public Singleton <MainApplicationState>, AbstractApplicationState, virtual FinalClass {
+class MainApplicationState : public Singleton <MainApplicationState>, public AbstractApplicationState, virtual FinalClass {
 	SET_SINGLETON(MainApplicationState)
 
 protected:

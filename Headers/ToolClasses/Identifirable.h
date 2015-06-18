@@ -1,8 +1,6 @@
 #ifndef __IDENTIFIRABLE_H__
 #define __IDENTIFIRABLE_H__
 
-#include <string>
-
 class Identifirable {
 public:
 	void setId(std::string id) {

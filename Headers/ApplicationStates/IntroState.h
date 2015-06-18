@@ -1,8 +1,11 @@
+#ifndef __INTROSTATE_H__
+#define __INTROSTATE_H__
+
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
 #include <Headers/ToolClasses/FinalClass.h>
 
-class IntroState : public Singleton<IntroState>, AbstractApplicationState, virtual FinalClass {
+class IntroState : public Singleton<IntroState>, public AbstractApplicationState, virtual FinalClass {
 	SET_SINGLETON(IntroState)	
 protected:
 	IntroState();
@@ -15,3 +18,5 @@ public:
 	virtual void render() override;
 	std::string getId() const;
 };
+
+#endif
