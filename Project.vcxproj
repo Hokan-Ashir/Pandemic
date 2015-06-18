@@ -709,17 +709,31 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\ToolClasses\FinalClass.cpp" />
+    <ClCompile Include="Sources\ApplicationStates\IntroState.cpp" />
+    <ClCompile Include="Sources\ApplicationStates\MainApplicationState.cpp" />
+    <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
+    <ClCompile Include="Sources\DirectParticlesSystem\DirectParticleSystem.cpp" />
+    <ClCompile Include="Sources\DirectParticlesSystem\ParticleHitDetect.cpp" />
+    <ClCompile Include="Sources\Logging\Logger.cpp" />
     <ClCompile Include="Sources\Auto.cpp" />
     <ClCompile Include="Sources\Main.cpp" />
-    <ClCompile Include="Sources\ToolClasses\Singleton.cpp" />
+    <ClCompile Include="Sources\ToolClasses\ProxyCall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\ApplicationStates\IntroState.h" />
+    <ClInclude Include="Headers\ApplicationStates\MainApplicationState.h" />
+    <ClInclude Include="Headers\ApplicationStates\StateManager.h" />
+    <ClInclude Include="Headers\DirectParticlesSystem\DirectParticleSystem.h" />
+    <ClInclude Include="Headers\DirectParticlesSystem\PatricleHitDetect.h" />
+    <ClInclude Include="Headers\ApplicationStates\AbstractApplicationState.h" />
+    <ClInclude Include="Headers\Logging\Logger.h" />
     <ClInclude Include="Headers\ToolClasses\FinalClass.h" />
     <ClInclude Include="Headers\Enums.h" />
     <ClInclude Include="Headers\Auto.h" />
     <ClInclude Include="Headers\stdafx.h" />
+    <ClInclude Include="Headers\ToolClasses\Identifirable.h" />
     <ClInclude Include="Headers\ToolClasses\Singleton.h" />
+    <ClInclude Include="Headers\ToolClasses\ProxyCall.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

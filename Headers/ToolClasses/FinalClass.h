@@ -1,6 +1,5 @@
-
-#ifndef __FINAL_CLASS_H__
-#define __FINAL_CLASS_H__
+#ifndef __FINALCLASS_H__
+#define __FINALCLASS_H__
 
 /*
 Usage:
@@ -12,8 +11,10 @@ class ClassThatWantToBeNonDerivable : private virtual FinalClass {
 
 class FinalClass {
 protected:
-	FinalClass();
-	~FinalClass();
+	FinalClass() {		
+	};
+	~FinalClass() {		
+	};
 };
 
-#endif __FINAL_CLASS_H__
+#endif
