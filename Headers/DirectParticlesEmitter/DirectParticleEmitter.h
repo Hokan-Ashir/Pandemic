@@ -5,11 +5,11 @@
 #include <Headers/ToolClasses/Drawable.h>
 #include <Headers/ToolClasses/Updatable.h>
 
-class DirectParticleSystem : public Drawable, public Updateable
+class DirectParticleEmitter : public Drawable, public Updateable
 {
 public:
-	DirectParticleSystem(UID particleImageUID, Vec particlesSourcePosition);
-	~DirectParticleSystem();	
+	DirectParticleEmitter(UID particleImageUID, Vec particlesSourcePosition);
+	~DirectParticleEmitter();
 	void draw() override;
 	void update() override;
 	Vec getDirection() const;

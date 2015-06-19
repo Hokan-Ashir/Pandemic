@@ -1,6 +1,6 @@
 #include <Engine/Headers/EsenthelEngine.h>
 
-#include <Headers/DirectParticlesSystem/PatricleHitDetect.h>
+#include <Headers/DirectParticlesEmitter/PatricleHitDetect.h>
 
 ParticleHitDetect::ParticleHitDetect(std::vector<ACTOR_GROUP>& actorGroups) :
 collided(false), collidableActorGroups(actorGroups) {

@@ -1,16 +1,16 @@
-#include <Headers/DirectParticlesSystem/DirectParticleSystem.h>
-#include <Headers/DirectParticlesSystem/PatricleHitDetect.h>
+#include <Headers/DirectParticlesEmitter/DirectParticleEmitter.h>
+#include <Headers/DirectParticlesEmitter/PatricleHitDetect.h>
 
-DirectParticleSystem::DirectParticleSystem(UID particleImageUID, Vec particlesSourcePosition) {
+DirectParticleEmitter::DirectParticleEmitter(UID particleImageUID, Vec particlesSourcePosition) {
 	this->particlesSourcePosition = particlesSourcePosition;
 	this->particleImageUID = particleImageUID;
 	create();
 }
 
-DirectParticleSystem::~DirectParticleSystem() {
+DirectParticleEmitter::~DirectParticleEmitter() {
 }
 
-void DirectParticleSystem::create() {
+void DirectParticleEmitter::create() {
 	surroundingBox.set(25, 1, 25);
 	auto image = Images(particleImageUID);
 	auto color = Color(153, 153, 153, 116);
@@ -22,14 +22,14 @@ void DirectParticleSystem::create() {
 	particles.source(surroundingBox);
 	particles.accel.set(0, -25, 0); //All drops move down
 	particles.vel_random = 100.0; //How far away from the formed particle falling drops
-	particles.damping = 0.98;		
+	particles.damping = 0.98;
 }
 
-void DirectParticleSystem::draw() {
+void DirectParticleEmitter::draw() {
 	particles.draw();
 }
 
-void DirectParticleSystem::update() {
+void DirectParticleEmitter::update() {
 	particles.update();
 
 	std::vector<ACTOR_GROUP> actorGroups;
@@ -48,22 +48,22 @@ void DirectParticleSystem::update() {
 			particle.ang_vel = 20;
 		}
 		hited.setIsCollided(false);
-	}	
+	}
 }
 
 
-Vec DirectParticleSystem::getDirection() const {
+Vec DirectParticleEmitter::getDirection() const {
 	return particles.accel;
 }
 
-void DirectParticleSystem::setDirection(Vec direction) {
+void DirectParticleEmitter::setDirection(Vec direction) {
 	particles.accel.set(direction.x, direction.y, direction.z);
 }
 
-Flt DirectParticleSystem::getParticlesLifeTime() const {
+Flt DirectParticleEmitter::getParticlesLifeTime() const {
 	return particles.life;
 }
 
-void DirectParticleSystem::setParticlesLifeTime(Flt lifeTime) {
+void DirectParticleEmitter::setParticlesLifeTime(Flt lifeTime) {
 	particles.life = lifeTime;
 }

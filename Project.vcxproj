@@ -713,8 +713,9 @@
     <ClCompile Include="Sources\ApplicationStates\IntroState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\MainApplicationState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
-    <ClCompile Include="Sources\DirectParticlesSystem\DirectParticleSystem.cpp" />
-    <ClCompile Include="Sources\DirectParticlesSystem\ParticleHitDetect.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\DayNightCircleSystem.cpp" />
+    <ClCompile Include="Sources\DirectParticlesEmitter\DirectParticlesEmitter.cpp" />
+    <ClCompile Include="Sources\DirectParticlesEmitter\ParticleHitDetect.cpp" />
     <ClCompile Include="Sources\Logging\Logger.cpp" />
     <ClCompile Include="Sources\Auto.cpp" />
     <ClCompile Include="Sources\Main.cpp" />
@@ -724,8 +725,9 @@
     <ClInclude Include="Headers\ApplicationStates\IntroState.h" />
     <ClInclude Include="Headers\ApplicationStates\MainApplicationState.h" />
     <ClInclude Include="Headers\ApplicationStates\StateManager.h" />
-    <ClInclude Include="Headers\DirectParticlesSystem\DirectParticleSystem.h" />
-    <ClInclude Include="Headers\DirectParticlesSystem\PatricleHitDetect.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\DayNightCircleSystem.h" />
+    <ClInclude Include="Headers\DirectParticlesEmitter\DirectParticleEmitter.h" />
+    <ClInclude Include="Headers\DirectParticlesEmitter\PatricleHitDetect.h" />
     <ClInclude Include="Headers\ApplicationStates\AbstractApplicationState.h" />
     <ClInclude Include="Headers\Logging\Logger.h" />
     <ClInclude Include="Headers\ToolClasses\Drawable.h" />
