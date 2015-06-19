@@ -3,7 +3,8 @@
 #include <Headers/ApplicationStates/MainApplicationState.h>
 #include <Headers/ToolClasses/ProxyCall.h>
 #include <Headers/ApplicationStates/StateManager.h>
-#include <Headers/DirectParticlesSystem/DirectParticleSystem.h>
+#include <Headers/DirectParticlesEmitter/DirectParticleEmitter.h>
+#include <Headers/DayNightCircleSystem/DayNightCircleSystem.h>
 
 MainApplicationState::MainApplicationState() {
 	setId("MainApplicationState");
@@ -33,8 +34,11 @@ Bool MainApplicationState::init() {
 		Game::World.settings().environment->set();
 	}
 
-	std::shared_ptr<DirectParticleSystem> system(new DirectParticleSystem(UID(1305126526, 1249254078, 2971936397, 3966274079), Vec(0, 0, 0)));
-	addDrawableObject(system);
+	std::shared_ptr<DirectParticleEmitter> emitter(new DirectParticleEmitter(UID(1305126526, 1249254078, 2971936397, 3966274079), Vec(0, 20, 0)));
+	addDrawableObject(emitter);
+	addUpdateableObject(emitter);
+
+	std::shared_ptr<DayNightCircleSystem> system(new DayNightCircleSystem());
 	addUpdateableObject(system);
 
 	return true;
