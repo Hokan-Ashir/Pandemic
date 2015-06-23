@@ -48,20 +48,22 @@ both actions MUST be in AAS constructor
 	- as ProxyCall already binded to Esenthel Engine state via its pointers (see pt.1)
 	it call pointer-to-AAS method that want to be called
 */
-class StateManager : public Singleton<StateManager>, virtual FinalClass {
-	SET_SINGLETON(StateManager)
+namespace pan {
+	class StateManager : public Singleton<StateManager>, virtual FinalClass {
+		SET_SINGLETON(StateManager)
 
-public:
-	void registerState(std::string Id, AbstractApplicationState* state);
-	void setCurrentState(std::string Id);
+	public:
+		void registerState(std::string Id, AbstractApplicationState* state);
+		void setCurrentState(std::string Id);
 
-protected:
-	StateManager();
-	virtual ~StateManager() override;
+	protected:
+		StateManager();
+		virtual ~StateManager() override;
 
-private:
-	std::map<std::string, AbstractApplicationState*> states;
-	State engineState;
-};
+	private:
+		std::map<std::string, AbstractApplicationState*> states;
+		State engineState;
+	};
+}
 
 #endif

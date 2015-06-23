@@ -8,13 +8,14 @@ class ClassThatWantToBeNonDerivable : private virtual FinalClass {
 	....
 }
 */
-
-class FinalClass {
-protected:
-	FinalClass() {		
+namespace pan {
+	class FinalClass {
+	protected:
+		FinalClass() {
+		};
+		~FinalClass() {
+		};
 	};
-	~FinalClass() {		
-	};
-};
+}
 
 #endif

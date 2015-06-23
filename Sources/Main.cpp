@@ -1,6 +1,8 @@
 #include <Engine/Headers/EsenthelEngine.h>
 #include <Headers/ApplicationStates/MainApplicationState.h>
 
+using namespace pan;
+
 void InitPre() {	
 	MainApplicationState::getInstance()->initializeEgine();
 }

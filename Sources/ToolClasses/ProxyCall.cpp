@@ -1,27 +1,29 @@
 #include <Headers/ToolClasses/ProxyCall.h>
 
-AbstractApplicationState* ProxyCall::instance = nullptr;
+namespace pan {
+	AbstractApplicationState* ProxyCall::instance = nullptr;
 
-void ProxyCall::setClass(AbstractApplicationState* state) {
-	instance = state;
-}
+	void ProxyCall::setClass(AbstractApplicationState* state) {
+		instance = state;
+	}
 
-Bool ProxyCall::init() {
-	return instance->init();
-}
+	Bool ProxyCall::init() {
+		return instance->init();
+	}
 
-void ProxyCall::draw() {
-	instance->draw();
-}
+	void ProxyCall::draw() {
+		instance->draw();
+	}
 
-Bool ProxyCall::update() {
-	return instance->update();
-}
+	Bool ProxyCall::update() {
+		return instance->update();
+	}
 
-void ProxyCall::shutdown() {
-	instance->shutdown();
-}
+	void ProxyCall::shutdown() {
+		instance->shutdown();
+	}
 
-void ProxyCall::render() {
-	instance->render();
+	void ProxyCall::render() {
+		instance->render();
+	}
 }

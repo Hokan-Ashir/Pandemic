@@ -20,25 +20,27 @@ i.e "A" with "render" method
 ProxyCall::setClass(this)
 Render(ProxyCall::render)
 */
-class ProxyCall : public Singleton<ProxyCall>, virtual FinalClass {
-	SET_SINGLETON(ProxyCall)
-public:
-	static void setClass(AbstractApplicationState* state);
-	static Bool init();
-	static void draw();
-	static Bool update();
-	static void shutdown();
-	static void render();
+namespace pan {
+	class ProxyCall : public Singleton<ProxyCall>, virtual FinalClass {
+		SET_SINGLETON(ProxyCall)
+	public:
+		static void setClass(AbstractApplicationState* state);
+		static Bool init();
+		static void draw();
+		static Bool update();
+		static void shutdown();
+		static void render();
 
-protected:
-	ProxyCall()	{		
-	}
+	protected:
+		ProxyCall() {
+		}
 
-	virtual ~ProxyCall() override {
-	}
+		virtual ~ProxyCall() override {
+		}
 
-private:
-	static AbstractApplicationState* instance;
-};
+	private:
+		static AbstractApplicationState* instance;
+	};
+}
 
 #endif

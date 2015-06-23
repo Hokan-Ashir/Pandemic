@@ -2,33 +2,35 @@
 
 #include <Headers/DirectParticlesEmitter/PatricleHitDetect.h>
 
-ParticleHitDetect::ParticleHitDetect(std::vector<ACTOR_GROUP>& actorGroups) :
-collided(false), collidableActorGroups(actorGroups) {
-}
-
-ParticleHitDetect::~ParticleHitDetect() {
-}
-
-Bool ParticleHitDetect::hit(ActorInfo &actorInfo) {
-	if (actorInfo.obj) {
-		collided = true;
-		return false;
+namespace pan {
+	ParticleHitDetect::ParticleHitDetect(std::vector<ACTOR_GROUP>& actorGroups) :
+		collided(false), collidableActorGroups(actorGroups) {
 	}
 
-	for (auto actorGroup : collidableActorGroups) {
-		if (actorInfo.group == actorGroup) {
+	ParticleHitDetect::~ParticleHitDetect() {
+	}
+
+	Bool ParticleHitDetect::hit(ActorInfo &actorInfo) {
+		if (actorInfo.obj) {
 			collided = true;
 			return false;
 		}
-	}	
 
-	return true;
-}
+		for (auto actorGroup : collidableActorGroups) {
+			if (actorInfo.group == actorGroup) {
+				collided = true;
+				return false;
+			}
+		}
 
-Bool ParticleHitDetect::isCollided() const {
-	return collided;
-}
+		return true;
+	}
 
-void ParticleHitDetect::setIsCollided(Bool isCollided) {	 
-	this->collided = isCollided;
+	Bool ParticleHitDetect::isCollided() const {
+		return collided;
+	}
+
+	void ParticleHitDetect::setIsCollided(Bool isCollided) {
+		this->collided = isCollided;
+	}
 }

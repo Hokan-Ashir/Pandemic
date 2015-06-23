@@ -17,13 +17,15 @@
     <ClCompile Include="Sources\DirectParticlesEmitter\ParticleHitDetect.cpp" />
     <ClCompile Include="Sources\DayNightCircleSystem\DayNightCircleSystem.cpp" />
     <ClCompile Include="Sources\DirectParticlesEmitter\DirectParticlesEmitter.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\StarsSystem.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\Months.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\DateTime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Auto.h" />
     <ClInclude Include="Headers\stdafx.h" />
     <ClInclude Include="Headers\ToolClasses\Singleton.h" />
     <ClInclude Include="Headers\ToolClasses\FinalClass.h" />
-    <ClInclude Include="Headers\Enums.h" />
     <ClInclude Include="Headers\ApplicationStates\AbstractApplicationState.h" />
     <ClInclude Include="Headers\ApplicationStates\MainApplicationState.h" />
     <ClInclude Include="Headers\Logging\Logger.h" />
@@ -31,11 +33,15 @@
     <ClInclude Include="Headers\ToolClasses\Identifirable.h" />
     <ClInclude Include="Headers\ApplicationStates\StateManager.h" />
     <ClInclude Include="Headers\ApplicationStates\IntroState.h" />
-    <ClInclude Include="Headers\ToolClasses\Drawable.h" />
-    <ClInclude Include="Headers\ToolClasses\Updatable.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\PatricleHitDetect.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\DirectParticleEmitter.h" />
     <ClInclude Include="Headers\DayNightCircleSystem\DayNightCircleSystem.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\StarsSystem.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\DateTime.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\Months.h" />
+    <ClInclude Include="Headers\ApplicationStates\AbstractTimeableApplicationState.h" />
+    <ClInclude Include="Headers\ToolClasses\IDrawable.h" />
+    <ClInclude Include="Headers\ToolClasses\IUpdatable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

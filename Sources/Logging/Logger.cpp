@@ -8,42 +8,44 @@
 
 #include <Headers/Logging/Logger.h>
 
-void Logger::trace(const char* message) {
-	BOOST_LOG_TRIVIAL(trace) << message;
-}
+namespace pan {
+	void Logger::trace(const char* message) {
+		BOOST_LOG_TRIVIAL(trace) << message;
+	}
 
-void Logger::debug(const char* message) {
-	BOOST_LOG_TRIVIAL(debug) << message;
-}
+	void Logger::debug(const char* message) {
+		BOOST_LOG_TRIVIAL(debug) << message;
+	}
 
-void Logger::info(const char* message) {
-	BOOST_LOG_TRIVIAL(info) << message;
-}
+	void Logger::info(const char* message) {
+		BOOST_LOG_TRIVIAL(info) << message;
+	}
 
-void Logger::warning(const char* message) {
-	BOOST_LOG_TRIVIAL(warning) << message;
-}
+	void Logger::warning(const char* message) {
+		BOOST_LOG_TRIVIAL(warning) << message;
+	}
 
-void Logger::error(const char* message) {
-	BOOST_LOG_TRIVIAL(error) << message;
-}
+	void Logger::error(const char* message) {
+		BOOST_LOG_TRIVIAL(error) << message;
+	}
 
-void Logger::fatal(const char* message) {
-	BOOST_LOG_TRIVIAL(fatal) << message;
-}
+	void Logger::fatal(const char* message) {
+		BOOST_LOG_TRIVIAL(fatal) << message;
+	}
 
-Logger::Logger() {
-	initialize();
-}
+	Logger::Logger() {
+		initialize();
+	}
 
-Logger::~Logger() {
-}
+	Logger::~Logger() {
+	}
 
-void Logger::initialize() {
-	boost::log::register_simple_formatter_factory< boost::log::trivial::severity_level, char >("Severity");
-	boost::log::register_simple_filter_factory<boost::log::trivial::severity_level>("Severity");
-	boost::log::core::get()->add_global_attribute("TimeStamp", boost::log::attributes::local_clock());
+	void Logger::initialize() {
+		boost::log::register_simple_formatter_factory< boost::log::trivial::severity_level, char >("Severity");
+		boost::log::register_simple_filter_factory<boost::log::trivial::severity_level>("Severity");
+		boost::log::core::get()->add_global_attribute("TimeStamp", boost::log::attributes::local_clock());
 
-	std::ifstream file("logging.ini");
-	boost::log::init_from_stream(file);
+		std::ifstream file("logging.ini");
+		boost::log::init_from_stream(file);
+	}
 }
