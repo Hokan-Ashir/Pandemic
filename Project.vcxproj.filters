@@ -20,6 +20,8 @@
     <ClCompile Include="Sources\DayNightCircleSystem\StarsSystem.cpp" />
     <ClCompile Include="Sources\DayNightCircleSystem\Months.cpp" />
     <ClCompile Include="Sources\DayNightCircleSystem\DateTime.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\SkySystem.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\SunriseSunsetUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Auto.h" />
@@ -42,6 +44,8 @@
     <ClInclude Include="Headers\ApplicationStates\AbstractTimeableApplicationState.h" />
     <ClInclude Include="Headers\ToolClasses\IDrawable.h" />
     <ClInclude Include="Headers\ToolClasses\IUpdatable.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\SkySystem.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\SunriseSunsetUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

@@ -2,15 +2,30 @@
 #include <Headers/DayNightCircleSystem/DateTime.h>
 
 namespace pan {
-	float DateTime::getTime() const {
+	Flt DateTime::getTime() const {
 		return time;
 	}
 
-	unsigned short DateTime::getDayInYear() const {
+	UShort DateTime::getHours() const {
+		return static_cast<Short> (time / 60 / 60);
+	}
+
+	UShort DateTime::getMinutes() const {
+		auto hours = getHours();
+		return static_cast<UShort>((time - hours * 60 * 60) / 60);
+	}
+
+	UShort DateTime::getSeconds() const {
+		auto hours = getHours();
+		auto minutes = getMinutes();
+		return static_cast<UShort>(time - hours * 60 * 60 - minutes * 60);
+	}
+
+	UShort DateTime::getDayInYear() const {
 		return dayInYear;
 	}
 
-	unsigned short DateTime::getDayInMonth() const {
+	UShort DateTime::getDayInMonth() const {
 		return dayInMonth;
 	}
 
@@ -18,11 +33,11 @@ namespace pan {
 		return month;
 	}
 
-	unsigned short DateTime::getYear() const {
+	UShort DateTime::getYear() const {
 		return year;
 	}
 
-	void DateTime::setTime(float time, unsigned short dayInMonth, unsigned short dayInYear, MonthsEnum month, int year) {
+	void DateTime::setTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year) {
 		this->time = time;
 		this->dayInMonth = dayInMonth;
 		this->dayInYear = dayInYear;
@@ -30,9 +45,8 @@ namespace pan {
 		this->year = year;
 	}
 
-	void DateTime::updateTime()
-	{
-		unsigned short hour = static_cast<unsigned short>(time) / 60 / 60;
+	void DateTime::updateTime()	{
+		auto hour = getHours();
 		if (hour == HOURS_IN_DAY) {
 			time -= HOURS_IN_DAY * 60 * 60;
 			dayInYear++;
@@ -40,8 +54,7 @@ namespace pan {
 		}
 	}
 
-	void DateTime::updateMonth()
-	{
+	void DateTime::updateMonth() {
 		if (dayInMonth == Months::getInstance()->getNumberOfDaysInMonth(month)) {
 			dayInMonth = 0;
 			month++;
@@ -51,8 +64,7 @@ namespace pan {
 		}
 	}
 
-	void DateTime::updateYear()
-	{
+	void DateTime::updateYear()	{
 		if (dayInYear == DAYS_IN_YEAR) {
 			dayInYear = 0;
 			year++;
@@ -60,7 +72,7 @@ namespace pan {
 	}
 
 	void DateTime::update() {
-		time += Time.rd();
+		time += SECOND_TICK;
 		
 		// check new day coming
 		updateTime();
@@ -72,12 +84,12 @@ namespace pan {
 		updateYear();
 	}
 
-	DateTime::DateTime(float time, unsigned short dayInMonth, unsigned short dayInYear, MonthsEnum month, int year) {
+	DateTime::DateTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year) {
 		setTime(time, dayInMonth, dayInYear, month, year);
 	}
 
 	DateTime::DateTime() {
-		setTime(0, 0, 0, WINTER_1, START_YEAR);
+		setTime(0, 0, DAYS_IN_YEAR / 2, WINTER_1, START_YEAR);
 	}
 
 	DateTime::~DateTime() {

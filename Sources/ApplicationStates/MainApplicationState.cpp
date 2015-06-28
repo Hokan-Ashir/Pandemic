@@ -28,36 +28,6 @@ namespace pan {
 		Cam.at.set(16, 4, 2);
 	}
 
-	void createAstroObjects() {
-		AstrosDraw = true;
-		for (float i = 0.5; i < 1; i += 0.1) {
-			for (float j = 0.5; j < 1; j += 0.1) {
-				for (float k = 0.5; k < 1; k += 0.1) {
-					Astro& astro = Astros.New();			
-					/*if (i < 0.3 && i > -0.3
-						|| (j < 0.3 && j > -0.3)
-						|| (k < 0.3 && k > -0.3)) {
-						astro.image = UID(3002038440, 1119925754, 1297635470, 3138736218); // red
-					} else if (i < 0.6 && i > -0.6
-						|| (j < 0.6 && j > -0.6)
-						|| (k < 0.6 && k > -0.6)) {
-						astro.image = UID(1642411942, 1241835978, 685888395, 754744485); // blue
-					} else {*/
-						astro.image = UID(2920929257, 1140060994, 1579244686, 3365792635); // green
-					//}
-					astro.pos = Vec(i, j, k);
-					astro.size *= 0.7;
-					astro.blend = true;
-					//astro.image_color.set(102, 102, 102, 136);
-					//astro.light_color = 0;
-					//astro.glow = 255;
-				}
-			}
-			
-		}
-		
-	}
-
 	Bool MainApplicationState::init() {
 		Physics.create(EE_PHYSX_DLL_PATH);
 
@@ -71,12 +41,10 @@ namespace pan {
 		//addDrawableObject(emitter);
 		//addUpdateableObject(emitter);
 
-		Flt hour = 5;
 		//std::shared_ptr<DayNightCircleSystem> dayNightSystem(new DayNightCircleSystem(hour));
 		//addUpdateableObject(dayNightSystem);
 
-		//createAstroObjects();
-		std::shared_ptr<StarsSystem> starsSystem(new StarsSystem(hour));
+		std::shared_ptr<StarsSystem> starsSystem(new StarsSystem());
 		addUpdateableObject(starsSystem);
 
 		return true;
@@ -85,6 +53,11 @@ namespace pan {
 	void MainApplicationState::draw() {
 		ProxyCall::setClass(this);
 		Renderer(ProxyCall::render);
+
+		auto timeString = std::string("Hour " + std::to_string(DateTime::getInstance()->getHours())
+			+ " Minutes: " + std::to_string(DateTime::getInstance()->getMinutes())
+			+ " Seconds: " + std::to_string(DateTime::getInstance()->getSeconds()));
+		D.text(0, 0.9, timeString.data());
 	}
 
 	Bool MainApplicationState::update() {

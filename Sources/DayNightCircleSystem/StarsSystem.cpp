@@ -2,6 +2,7 @@
 
 #include <Headers/DayNightCircleSystem/StarsSystem.h>
 #include <Headers/DayNightCircleSystem/DateTime.h>
+#include <Headers/DayNightCircleSystem/SunriseSunsetUtils.h>
 
 namespace pan {
 
@@ -31,21 +32,26 @@ namespace pan {
 			);
 	}
 
-	StarsSystem::StarsSystem(Flt hour) : hour(hour) {
-		barycenterPosition = Vec(0.2, 0.2, 0.0);
-		initializeBarycenterSpherialAngles();
-		createVigilantEye();
-		createAllSeeinggEye();	
-		Astros.add(vigilantEye.sun);
-		Astros.add(allSeeingEye.sun);
+	void StarsSystem::setBarycenterPosition(Flt hour) {
+		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
+		auto sagitta = calculateBaryCenterOffset();
+		phi = DegToRad(calculateHourAngle(hour) - calculateHourAngle(sunriseTime)) + Asin(sagitta);
+		theta = DegToRad(90.0f);
+		barycenterPosition.x = Sin(theta) * Cos(phi);
+		barycenterPosition.y = Sin(theta) * Sin(phi);
+		barycenterPosition.z = Cos(theta);				
+		barycenterPosition.y -= sagitta;
 	}
 
-	void StarsSystem::initializeBarycenterSpherialAngles() {
-		auto x = barycenterPosition.x;
-		auto y = barycenterPosition.y;
-		auto z = barycenterPosition.z;
-		phi = Atan(y / x);
-		theta = Atan(Sqrt(Pow(x, 2) + Pow(y, 2)) / z);
+	StarsSystem::StarsSystem() {
+		Flt hour = DateTime::getInstance()->getHours();
+		setBarycenterPosition(hour);
+
+		createVigilantEye();
+		createAllSeeinggEye();	
+		
+		Astros.add(vigilantEye.sun);
+		Astros.add(allSeeingEye.sun);
 	}
 
 	void StarsSystem::setSunRaysAndHeighlight(SunClass* sun) {
@@ -56,6 +62,10 @@ namespace pan {
 
 	void StarsSystem::setStarPosition(Star* star) {	
 		star->angle += star->angleSpeed;
+		if (star->angle >= PI2) {
+			star->angle -= PI2;
+		}
+
 		star->sun.pos.x = barycenterPosition.x + star->radiusToBarycenter * Cos(star->angle);
 		star->sun.pos.y = barycenterPosition.y;
 		star->sun.pos.z = barycenterPosition.z + star->radiusToBarycenter * Sin(star->angle);
@@ -77,13 +87,22 @@ namespace pan {
 		setStarPosition(&allSeeingEye);
 	}
 
-	void StarsSystem::updateBarycenterPosition() {
-		auto angle = 0.001;
+	void StarsSystem::updateBarycenterPosition() {		
+		auto angle = SECOND_TICK * PI2 / (60 * 60 * HOURS_IN_DAY);
 
 		phi += angle;
+		if (phi >= PI2)	{
+			phi -= PI2;
+		}
+
 		barycenterPosition.x = Sin(theta) * Cos(phi);
 		barycenterPosition.y = Sin(theta) * Sin(phi);
 		barycenterPosition.z = Cos(theta);
+		
+		// TODO add inclination movement, based on latitude
+		// TODO OPTIMIZATION calculate sagitta only once, when lattitude changed 
+		// (via observer-pattern or add EventHandler ?)
+		barycenterPosition.y -= calculateBaryCenterOffset();		
 	}
 
 	void StarsSystem::normalizeStartsPositionsAndHeightLight() {
@@ -99,16 +118,34 @@ namespace pan {
 		Astros.pop();
 		Astros.pop();
 
-		hour += 0.00001;
-		if (hour >= HOURS_IN_DAY) {
-			hour -= HOURS_IN_DAY;
-		}
-
 		setStarsPositions();
 		normalizeStartsPositionsAndHeightLight();
-		setStarsRaysAndHeighlight();
+		setStarsRaysAndHeighlight();	
 
 		Astros.add(vigilantEye.sun);
 		Astros.add(allSeeingEye.sun);
+	}
+
+	Flt StarsSystem::calculateDayLength() const	{
+		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
+		auto sunsetTime = util::getSunsetTime(util::WORLD_LATITUDE);
+		return fabs(sunsetTime - sunriseTime);
+	}
+
+	Flt StarsSystem::calculateNightLength() const {
+		auto dayLength = calculateDayLength();
+		return static_cast<Flt>(HOURS_IN_DAY - dayLength);
+	}
+
+	Flt StarsSystem::calculateBaryCenterOffset() const	{
+		auto dayLength = calculateDayLength();	
+		auto radiusAngle = calculateHourAngle(dayLength);
+		// actual formulae r = R * cos(...), but R = 1
+		// see Astro.h in Esenthel Engine / comment to "pos" field
+		return Cos(DegToRad(radiusAngle / 2));		 
+	}
+
+	Flt StarsSystem::calculateHourAngle(Flt hour) const	{
+		return hour / HOURS_IN_DAY * FULL_CIRCLE_ANGLE;
 	}
 }

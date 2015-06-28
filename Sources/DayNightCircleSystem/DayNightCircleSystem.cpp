@@ -34,9 +34,13 @@ namespace pan {
 		skyColors.add(22, createColour(26, 30, 41));
 	}
 
-	DayNightCircleSystem::DayNightCircleSystem(Flt hour) : hour(hour) {
+	DayNightCircleSystem::DayNightCircleSystem() : hour(0) {
 		initializeHorisonColourInterpolator();
 		initializeSkyColourInterpolator();
+	}
+
+	void DayNightCircleSystem::setHour(Flt hour) {
+		this->hour = hour;
 	}
 
 	Vec4 DayNightCircleSystem::createColour(Byte r, Byte g, Byte b, Byte a) {

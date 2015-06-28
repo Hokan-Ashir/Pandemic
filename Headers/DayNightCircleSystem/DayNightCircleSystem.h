@@ -8,7 +8,8 @@
 namespace pan {
 	class DayNightCircleSystem : public IUpdateable {
 	public:
-		explicit DayNightCircleSystem(Flt hour);
+		explicit DayNightCircleSystem();
+		void setHour(Flt hour);
 		void update() override;
 
 	private:

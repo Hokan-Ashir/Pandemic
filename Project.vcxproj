@@ -716,7 +716,9 @@
     <ClCompile Include="Sources\DayNightCircleSystem\DateTime.cpp" />
     <ClCompile Include="Sources\DayNightCircleSystem\DayNightCircleSystem.cpp" />
     <ClCompile Include="Sources\DayNightCircleSystem\Months.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\SkySystem.cpp" />
     <ClCompile Include="Sources\DayNightCircleSystem\StarsSystem.cpp" />
+    <ClCompile Include="Sources\DayNightCircleSystem\SunriseSunsetUtils.cpp" />
     <ClCompile Include="Sources\DirectParticlesEmitter\DirectParticlesEmitter.cpp" />
     <ClCompile Include="Sources\DirectParticlesEmitter\ParticleHitDetect.cpp" />
     <ClCompile Include="Sources\Logging\Logger.cpp" />
@@ -732,7 +734,9 @@
     <ClInclude Include="Headers\DayNightCircleSystem\DateTime.h" />
     <ClInclude Include="Headers\DayNightCircleSystem\DayNightCircleSystem.h" />
     <ClInclude Include="Headers\DayNightCircleSystem\Months.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\SkySystem.h" />
     <ClInclude Include="Headers\DayNightCircleSystem\StarsSystem.h" />
+    <ClInclude Include="Headers\DayNightCircleSystem\SunriseSunsetUtils.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\DirectParticleEmitter.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\PatricleHitDetect.h" />
     <ClInclude Include="Headers\ApplicationStates\AbstractApplicationState.h" />
