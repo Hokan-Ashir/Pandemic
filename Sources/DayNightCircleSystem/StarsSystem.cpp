@@ -140,9 +140,15 @@ namespace pan {
 	Flt StarsSystem::calculateBaryCenterOffset() const	{
 		auto dayLength = calculateDayLength();	
 		auto radiusAngle = calculateHourAngle(dayLength);
-		// actual formulae r = R * cos(...), but R = 1
+		// actual formulae is "r = R * cos(...)", but R = 1
 		// see Astro.h in Esenthel Engine / comment to "pos" field
 		return Cos(DegToRad(radiusAngle / 2));		 
+	}
+
+	Flt StarsSystem::getBarycenterHeightOverHorizont() const {
+		// actual formulae is "h = R * sin(...) - r", but R = 1
+		// see Astro.h in Esenthel Engine / comment to "pos" field
+		return Sin(phi) - calculateBaryCenterOffset();
 	}
 
 	Flt StarsSystem::calculateHourAngle(Flt hour) const	{

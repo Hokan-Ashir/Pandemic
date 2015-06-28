@@ -3,10 +3,8 @@
 #include <Headers/ApplicationStates/MainApplicationState.h>
 #include <Headers/ToolClasses/ProxyCall.h>
 #include <Headers/ApplicationStates/StateManager.h>
-#include <Headers/DirectParticlesEmitter/DirectParticleEmitter.h>
-#include <Headers/DayNightCircleSystem/DayNightCircleSystem.h>
-#include <Headers/DayNightCircleSystem/StarsSystem.h>
 #include <string>
+#include <Headers/DayNightCircleSystem/SkySystem.h>
 
 namespace pan {
 	MainApplicationState::MainApplicationState() {
@@ -37,15 +35,8 @@ namespace pan {
 			Game::World.settings().environment->set();
 		}
 
-		//std::shared_ptr<DirectParticleEmitter> emitter(new DirectParticleEmitter(UID(1305126526, 1249254078, 2971936397, 3966274079), Vec(0, 20, 0)));
-		//addDrawableObject(emitter);
-		//addUpdateableObject(emitter);
-
-		//std::shared_ptr<DayNightCircleSystem> dayNightSystem(new DayNightCircleSystem(hour));
-		//addUpdateableObject(dayNightSystem);
-
-		std::shared_ptr<StarsSystem> starsSystem(new StarsSystem());
-		addUpdateableObject(starsSystem);
+		std::shared_ptr<SkySystem> skySystem(new SkySystem());
+		addUpdateableObject(skySystem);
 
 		return true;
 	}

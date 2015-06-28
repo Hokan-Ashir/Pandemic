@@ -9,7 +9,8 @@ namespace pan {
 	class StarsSystem : public IUpdateable {
 	public:
 		explicit StarsSystem();
-		void update() override;	
+		void update() override;
+		Flt getBarycenterHeightOverHorizont() const;
 
 	private:
 		struct Star {

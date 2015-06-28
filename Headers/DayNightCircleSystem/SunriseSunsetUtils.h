@@ -41,7 +41,7 @@ Thereby we get sunrise/sunset times
 namespace pan {
 	namespace util {
 		// temporary store world latitude here
-		const Flt WORLD_LATITUDE = 50;
+		const Flt WORLD_LATITUDE = 0;
 
 		UShort getSunriseHour(Flt latitudeDegree);
 		UShort getSunriseMinute(Flt latitudeDegree);
