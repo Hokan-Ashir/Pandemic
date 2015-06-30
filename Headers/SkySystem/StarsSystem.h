@@ -70,6 +70,8 @@ namespace pan {
 		 And this method calculate offset of this modified horizont "r`"
 		 So, to get new real position of barycenter on 45N degree latitude,
 		 we sutract "r`" from barycenter Y-position
+		 Calculation formulae taken from http://mathworld.wolfram.com/CircularSector.html
+		 in this link it is refereced as "h"
 		*/
 		Flt calculateBaryCenterOffset() const;
 

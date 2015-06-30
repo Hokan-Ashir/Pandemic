@@ -2,8 +2,8 @@
 #define __SKYSYSTEM_H__
 
 #include <Headers/ToolClasses/IUpdatable.h>
-#include <Headers/DayNightCircleSystem/StarsSystem.h>
-#include <Headers/DayNightCircleSystem/DayNightCircleSystem.h>
+#include <Headers/SkySystem/StarsSystem.h>
+#include <Headers/SkySystem/DayNightCircleSystem.h>
 
 namespace pan {
 	class SkySystem : public IUpdateable {

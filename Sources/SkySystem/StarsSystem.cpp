@@ -1,8 +1,8 @@
 #include <Engine/Headers/EsenthelEngine.h>
 
-#include <Headers/DayNightCircleSystem/StarsSystem.h>
-#include <Headers/DayNightCircleSystem/DateTime.h>
-#include <Headers/DayNightCircleSystem/SunriseSunsetUtils.h>
+#include <Headers/SkySystem/StarsSystem.h>
+#include <Headers/Core/DateTime.h>
+#include <Headers/SkySystem/SunriseSunsetUtils.h>
 
 namespace pan {
 

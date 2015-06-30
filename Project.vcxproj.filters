@@ -15,13 +15,19 @@
     <ClCompile Include="Sources\ApplicationStates\IntroState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\AbstractApplicationState.cpp" />
     <ClCompile Include="Sources\DirectParticlesEmitter\ParticleHitDetect.cpp" />
-    <ClCompile Include="Sources\DayNightCircleSystem\DayNightCircleSystem.cpp" />
     <ClCompile Include="Sources\DirectParticlesEmitter\DirectParticlesEmitter.cpp" />
-    <ClCompile Include="Sources\DayNightCircleSystem\StarsSystem.cpp" />
-    <ClCompile Include="Sources\DayNightCircleSystem\Months.cpp" />
-    <ClCompile Include="Sources\DayNightCircleSystem\DateTime.cpp" />
-    <ClCompile Include="Sources\DayNightCircleSystem\SkySystem.cpp" />
-    <ClCompile Include="Sources\DayNightCircleSystem\SunriseSunsetUtils.cpp" />
+    <ClCompile Include="Sources\SkySystem\DayNightCircleSystem.cpp" />
+    <ClCompile Include="Sources\SkySystem\Months.cpp" />
+    <ClCompile Include="Sources\SkySystem\SkySystem.cpp" />
+    <ClCompile Include="Sources\SkySystem\StarsSystem.cpp" />
+    <ClCompile Include="Sources\SkySystem\SunriseSunsetUtils.cpp" />
+    <ClCompile Include="Sources\SkySystem\DateTime.cpp" />
+    <ClCompile Include="Sources\SkySystem\DayNightCircleSystem.cpp" />
+    <ClCompile Include="Sources\SkySystem\Months.cpp" />
+    <ClCompile Include="Sources\SkySystem\SkySystem.cpp" />
+    <ClCompile Include="Sources\SkySystem\StarsSystem.cpp" />
+    <ClCompile Include="Sources\SkySystem\SunriseSunsetUtils.cpp" />
+    <ClCompile Include="Sources\Core\DateTime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Auto.h" />
@@ -37,15 +43,21 @@
     <ClInclude Include="Headers\ApplicationStates\IntroState.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\PatricleHitDetect.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\DirectParticleEmitter.h" />
-    <ClInclude Include="Headers\DayNightCircleSystem\DayNightCircleSystem.h" />
-    <ClInclude Include="Headers\DayNightCircleSystem\StarsSystem.h" />
-    <ClInclude Include="Headers\DayNightCircleSystem\DateTime.h" />
-    <ClInclude Include="Headers\DayNightCircleSystem\Months.h" />
     <ClInclude Include="Headers\ApplicationStates\AbstractTimeableApplicationState.h" />
     <ClInclude Include="Headers\ToolClasses\IDrawable.h" />
     <ClInclude Include="Headers\ToolClasses\IUpdatable.h" />
-    <ClInclude Include="Headers\DayNightCircleSystem\SkySystem.h" />
-    <ClInclude Include="Headers\DayNightCircleSystem\SunriseSunsetUtils.h" />
+    <ClInclude Include="Headers\SkySystem\DayNightCircleSystem.h" />
+    <ClInclude Include="Headers\SkySystem\Months.h" />
+    <ClInclude Include="Headers\SkySystem\SkySystem.h" />
+    <ClInclude Include="Headers\SkySystem\StarsSystem.h" />
+    <ClInclude Include="Headers\SkySystem\SunriseSunsetUtils.h" />
+    <ClInclude Include="Headers\SkySystem\DateTime.h" />
+    <ClInclude Include="Headers\SkySystem\DayNightCircleSystem.h" />
+    <ClInclude Include="Headers\SkySystem\Months.h" />
+    <ClInclude Include="Headers\SkySystem\SkySystem.h" />
+    <ClInclude Include="Headers\SkySystem\StarsSystem.h" />
+    <ClInclude Include="Headers\SkySystem\SunriseSunsetUtils.h" />
+    <ClInclude Include="Headers\Core\DateTime.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

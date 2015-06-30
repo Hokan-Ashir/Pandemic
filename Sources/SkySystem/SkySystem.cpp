@@ -1,4 +1,4 @@
-#include <Headers/DayNightCircleSystem/SkySystem.h>
+#include <Headers/SkySystem/SkySystem.h>
 
 namespace pan {
 	SkySystem::SkySystem() {

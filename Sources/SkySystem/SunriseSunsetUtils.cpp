@@ -1,7 +1,7 @@
 #include <cmath>
 
-#include <Headers/DayNightCircleSystem/SunriseSunsetUtils.h>
-#include <Headers/DayNightCircleSystem/DateTime.h>
+#include <Headers/SkySystem/SunriseSunsetUtils.h>
+#include <Headers/Core/DateTime.h>
 
 namespace pan {
 	namespace util {

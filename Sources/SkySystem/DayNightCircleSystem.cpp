@@ -1,5 +1,5 @@
-#include <Headers/DayNightCircleSystem/DayNightCircleSystem.h>
-#include <Headers/DayNightCircleSystem/DateTime.h>
+#include <Headers/SkySystem/DayNightCircleSystem.h>
+#include <Headers/Core/DateTime.h>
 
 namespace pan {
 	void DayNightCircleSystem::initializeHorisonColourInterpolator() {
