@@ -4,7 +4,7 @@
 #include <Engine/Headers/EsenthelEngine.h>
 
 #include <Headers/ToolClasses/Singleton.h>
-#include <Headers/SkySystem/Months.h>
+#include <Headers/Core/Months.h>
 #include <Headers/ToolClasses/IUpdatable.h>
 
 // the very first year, when game starts when player choose "New game"

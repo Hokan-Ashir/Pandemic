@@ -2,7 +2,7 @@
 #define __ABSTRACTTIMEABLEAPPLICATIONSTATE_H__
 
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
-#include <Headers/DayNightCircleSystem/DateTime.h>
+#include <Headers/Core/DateTime.h>
 
 namespace pan {
 	/*

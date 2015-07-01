@@ -4,7 +4,7 @@
 #include <Headers/ToolClasses/ProxyCall.h>
 #include <Headers/ApplicationStates/StateManager.h>
 #include <string>
-#include <Headers/DayNightCircleSystem/SkySystem.h>
+#include <Headers/Environment/LocalEnvironment.h>
 
 namespace pan {
 	MainApplicationState::MainApplicationState() {
@@ -35,8 +35,8 @@ namespace pan {
 			Game::World.settings().environment->set();
 		}
 
-		std::shared_ptr<SkySystem> skySystem(new SkySystem());
-		addUpdateableObject(skySystem);
+		std::shared_ptr<LocalEnvironment> environment(new LocalEnvironment());
+		addUpdateableObject(environment);
 
 		return true;
 	}
