@@ -9,9 +9,9 @@ namespace pan {
 
 	void LocalEnvironment::update()	{
 		auto baryCenterHeightOverHorizont = starsSystem.getBarycenterHeightOverHorizont();
-		skySystem.setSunHeightOverHorizont(baryCenterHeightOverHorizont);
+		weatherSystem.setSunHeightOverHorizont(baryCenterHeightOverHorizont);
 
 		starsSystem.update();
-		skySystem.update();
+		weatherSystem.update();
 	}
 }

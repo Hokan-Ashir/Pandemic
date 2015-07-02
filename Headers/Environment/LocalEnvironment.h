@@ -2,8 +2,8 @@
 #define __LOCALENVIRONMENT_H__
 
 #include <Headers/ToolClasses/IUpdatable.h>
-#include "SkySystem/SkySystem.h"
 #include "StarsSystem.h"
+#include "SkySystem/WeatherSystem.h"
 
 namespace pan {
 	class LocalEnvironment : public IUpdateable {
@@ -12,7 +12,7 @@ namespace pan {
 		~LocalEnvironment();
 		void update() override;
 	private:
-		SkySystem skySystem;
+		WeatherSystem weatherSystem;
 		StarsSystem starsSystem;
 	};
 }

@@ -12,6 +12,7 @@ namespace pan {
 	}
 
 	Months::Months() {
+		// TODO add days_in_year == sum(days_in_all_months) check
 		MonthInfo info;
 		info.monthName = "Winter - 1";
 		info.numberOfDays = 20;

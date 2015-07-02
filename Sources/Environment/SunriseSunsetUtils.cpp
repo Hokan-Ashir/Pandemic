@@ -46,7 +46,7 @@ namespace pan {
 			auto sunriseTime = getSunriseTime(latitureDegree);
 			auto minuteSecondsPart = sunriseTime - static_cast<long>(sunriseTime);
 			// unnecessary casting, cause compiler will do it itself, but more understandible
-			return static_cast<UShort>(minuteSecondsPart * 60);
+			return static_cast<UShort>(minuteSecondsPart * SECONDS_IN_MINUTE);
 		}
 
 		UShort getSunsetHour(Flt latitureDegree) {
@@ -58,7 +58,7 @@ namespace pan {
 			auto sunriseTime = getSunsetTime(latitureDegree);
 			auto minuteSecondsPart = sunriseTime - static_cast<long>(sunriseTime);
 			// unnecessary casting, cause compiler will do it itself, but more understandible
-			return static_cast<UShort>(minuteSecondsPart * 60);
+			return static_cast<UShort>(minuteSecondsPart * SECONDS_IN_MINUTE);
 		}
 
 		// get Guassian function value, based on argument, sigma and mu parameters

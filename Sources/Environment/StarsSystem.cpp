@@ -32,10 +32,10 @@ namespace pan {
 			);
 	}
 
-	void StarsSystem::setBarycenterPosition(Flt hour) {
+	void StarsSystem::setBarycenterPosition(Flt time) {
 		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
 		auto sagitta = calculateBaryCenterOffset();
-		phi = DegToRad(calculateHourAngle(hour) - calculateHourAngle(sunriseTime)) + Asin(sagitta);
+		phi = DegToRad(calculateHourAngle(time) - calculateHourAngle(sunriseTime)) + Asin(sagitta);
 		theta = DegToRad(90.0f);
 		barycenterPosition.x = Sin(theta) * Cos(phi);
 		barycenterPosition.y = Sin(theta) * Sin(phi);
@@ -44,8 +44,8 @@ namespace pan {
 	}
 
 	StarsSystem::StarsSystem() {
-		Flt hour = DateTime::getInstance()->getHours();
-		setBarycenterPosition(hour);
+		auto time = DateTime::getInstance()->getFloatTime();
+		setBarycenterPosition(time);
 
 		createVigilantEye();
 		createAllSeeinggEye();	
@@ -88,7 +88,13 @@ namespace pan {
 	}
 
 	void StarsSystem::updateBarycenterPosition() {		
-		auto angle = SECOND_TICK * PI2 / (60 * 60 * HOURS_IN_DAY);
+		/*
+		Another possibility to set barycenter position based on angle speed, NOT on DateTime::time
+		TODO check this method speed
+		It may be faster, if so, we can use Strategy-pattern to use more effective method,
+		if we're not manipulating DateTime::time
+
+		auto angle = SECOND_TICK * PI2 / (SECONDS_IN_MINUTE * MINUTES_IN_HOUR * HOURS_IN_DAY);
 
 		phi += angle;
 		if (phi >= PI2)	{
@@ -102,7 +108,11 @@ namespace pan {
 		// TODO add inclination movement, based on latitude
 		// TODO OPTIMIZATION calculate sagitta only once, when lattitude changed 
 		// (via observer-pattern or add EventHandler ?)
-		barycenterPosition.y -= calculateBaryCenterOffset();		
+		barycenterPosition.y -= calculateBaryCenterOffset();
+		*/	
+
+		auto time = DateTime::getInstance()->getFloatTime();
+		setBarycenterPosition(time);
 	}
 
 	void StarsSystem::normalizeStartsPositionsAndHeightLight() {

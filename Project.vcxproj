@@ -716,9 +716,12 @@
     <ClCompile Include="Sources\Core\DateTime.cpp" />
     <ClCompile Include="Sources\Environment\LocalEnvironment.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\CloudsSystem.cpp" />
-    <ClCompile Include="Sources\Environment\SkySystem\DayNightCircleSystem.cpp" />
+    <ClCompile Include="Sources\Environment\SkySystem\SkySystemSystem.cpp" />
     <ClCompile Include="Sources\Core\Months.cpp" />
-    <ClCompile Include="Sources\Environment\SkySystem\SkySystem.cpp" />
+    <ClCompile Include="Sources\Environment\SkySystem\WeatherEffects\AbstractWeatherEffect.cpp" />
+    <ClCompile Include="Sources\Environment\SkySystem\WeatherEffects\RainEffect.cpp" />
+    <ClCompile Include="Sources\Environment\SkySystem\WeatherEffects\SunnyEffect.cpp" />
+    <ClCompile Include="Sources\Environment\SkySystem\WeatherSystem.cpp" />
     <ClCompile Include="Sources\Environment\StarsSystem.cpp" />
     <ClCompile Include="Sources\Environment\SunriseSunsetUtils.cpp" />
     <ClCompile Include="Sources\DirectParticlesEmitter\DirectParticlesEmitter.cpp" />
@@ -726,7 +729,6 @@
     <ClCompile Include="Sources\Logging\Logger.cpp" />
     <ClCompile Include="Sources\Auto.cpp" />
     <ClCompile Include="Sources\Main.cpp" />
-    <ClCompile Include="Sources\Environment\WeatherSystem.cpp" />
     <ClCompile Include="Sources\ToolClasses\ProxyCall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -737,16 +739,18 @@
     <ClInclude Include="Headers\Core\DateTime.h" />
     <ClInclude Include="Headers\Environment\LocalEnvironment.h" />
     <ClInclude Include="Headers\Environment\SkySystem\CloudsSystem.h" />
-    <ClInclude Include="Headers\Environment\SkySystem\DayNightCircleSystem.h" />
+    <ClInclude Include="Headers\Environment\SkySystem\SkyColourSystem.h" />
     <ClInclude Include="Headers\Core\Months.h" />
-    <ClInclude Include="Headers\Environment\SkySystem\SkySystem.h" />
+    <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\AbstractWeatherEffect.h" />
+    <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\RainEffect.h" />
+    <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\SunnyEffect.h" />
+    <ClInclude Include="Headers\Environment\SkySystem\WeatherSystem.h" />
     <ClInclude Include="Headers\Environment\StarsSystem.h" />
     <ClInclude Include="Headers\Environment\SunriseSunsetUtils.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\DirectParticleEmitter.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\PatricleHitDetect.h" />
     <ClInclude Include="Headers\ApplicationStates\AbstractApplicationState.h" />
     <ClInclude Include="Headers\Logging\Logger.h" />
-    <ClInclude Include="Headers\Environment\WeatherSystem.h" />
     <ClInclude Include="Headers\ToolClasses\IDrawable.h" />
     <ClInclude Include="Headers\ToolClasses\FinalClass.h" />
     <ClInclude Include="Headers\Auto.h" />

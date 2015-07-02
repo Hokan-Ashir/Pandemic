@@ -6,19 +6,36 @@ namespace pan {
 		return time;
 	}
 
+	Flt DateTime::getFloatTime() const {
+		Flt hours = getHours();
+		Flt minutes = getMinutes();
+		Flt seconds = getSeconds();
+		return hours + (minutes * SECONDS_IN_MINUTE + seconds) / (SECONDS_IN_MINUTE * MINUTES_IN_HOUR);
+	}
+
 	UShort DateTime::getHours() const {
-		return static_cast<Short> (time / 60 / 60);
+		return static_cast<Short> (time / SECONDS_IN_MINUTE / MINUTES_IN_HOUR);
 	}
 
 	UShort DateTime::getMinutes() const {
 		auto hours = getHours();
-		return static_cast<UShort>((time - hours * 60 * 60) / 60);
+		return static_cast<UShort>((time - hours * MINUTES_IN_HOUR * SECONDS_IN_MINUTE) / MINUTES_IN_HOUR);
 	}
 
 	UShort DateTime::getSeconds() const {
 		auto hours = getHours();
 		auto minutes = getMinutes();
-		return static_cast<UShort>(time - hours * 60 * 60 - minutes * 60);
+		return static_cast<UShort>(time - hours * MINUTES_IN_HOUR * SECONDS_IN_MINUTE - minutes * SECONDS_IN_MINUTE);
+	}
+
+	sDateTime DateTime::getDateTime() const	{
+		sDateTime time;
+		time.hour = getHours();
+		time.minute = getMinutes();
+		time.dayInYear = dayInYear;
+		time.year = year;
+
+		return time;
 	}
 
 	UShort DateTime::getDayInYear() const {
@@ -48,7 +65,7 @@ namespace pan {
 	void DateTime::updateTime()	{
 		auto hour = getHours();
 		if (hour == HOURS_IN_DAY) {
-			time -= HOURS_IN_DAY * 60 * 60;
+			time -= HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE;
 			dayInYear++;
 			dayInMonth++;
 		}

@@ -91,8 +91,8 @@ namespace pan {
 		void createVigilantEye();
 		void createAllSeeinggEye();
 
-		// set barycenter position based on hour
-		void setBarycenterPosition(Flt hour);
+		// set barycenter position based on time
+		void setBarycenterPosition(Flt time);
 
 		Flt theta;
 		Flt phi;
