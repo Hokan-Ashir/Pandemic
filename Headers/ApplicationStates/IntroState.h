@@ -3,10 +3,9 @@
 
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
-#include <Headers/ToolClasses/FinalClass.h>
 
 namespace pan {
-	class IntroState : public Singleton<IntroState>, public AbstractApplicationState, virtual FinalClass {
+	class IntroState final : public Singleton<IntroState>, public AbstractApplicationState {
 		SET_SINGLETON(IntroState)
 	protected:
 		IntroState();

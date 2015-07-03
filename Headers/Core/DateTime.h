@@ -54,7 +54,7 @@ namespace pan {
 		}
 	};
 
-	class DateTime : public Singleton<DateTime>, public IUpdateable, virtual FinalClass {
+	class DateTime final : public Singleton<DateTime>, public IUpdateable {
 		SET_SINGLETON(DateTime)
 	public:
 		Flt getTime() const;

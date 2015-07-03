@@ -3,7 +3,6 @@
 
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
-#include "FinalClass.h"
 
 // TODO maybe do generic method
 // cause one ProxyCall for ApplicationStates with "init", "draw", "render", "update", "shutdown"
@@ -21,7 +20,7 @@ ProxyCall::setClass(this)
 Render(ProxyCall::render)
 */
 namespace pan {
-	class ProxyCall : public Singleton<ProxyCall>, virtual FinalClass {
+	class ProxyCall final : public Singleton<ProxyCall> {
 		SET_SINGLETON(ProxyCall)
 	public:
 		static void setClass(AbstractApplicationState* state);

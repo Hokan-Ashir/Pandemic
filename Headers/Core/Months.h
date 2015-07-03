@@ -4,7 +4,6 @@
 #include <map>
 
 #include <Headers/ToolClasses/Singleton.h>
-#include <Headers/ToolClasses/FinalClass.h>
 
 namespace pan {
 	enum MonthsEnum {
@@ -24,7 +23,7 @@ namespace pan {
 		return month;
 	}
 
-	class Months : public Singleton <Months>, virtual FinalClass {
+	class Months final : public Singleton <Months> {
 		SET_SINGLETON(Months)
 	public:
 

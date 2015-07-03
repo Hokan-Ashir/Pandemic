@@ -3,10 +3,9 @@
 
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/ApplicationStates/AbstractTimeableApplicationState.h>
-#include <Headers/ToolClasses/FinalClass.h>
 
 namespace pan {
-	class MainApplicationState : public Singleton <MainApplicationState>, public AbstractTimeableApplicationState, virtual FinalClass {
+	class MainApplicationState final : public Singleton <MainApplicationState>, public AbstractTimeableApplicationState {
 		SET_SINGLETON(MainApplicationState)
 
 	protected:

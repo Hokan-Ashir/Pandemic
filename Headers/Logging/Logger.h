@@ -4,7 +4,7 @@
 #include <Headers/ToolClasses/Singleton.h>
 
 namespace pan {
-	class Logger : public Singleton<Logger> {
+	class Logger final : public Singleton<Logger> {
 		SET_SINGLETON(Logger)
 	public:
 		void trace(const char* message);

@@ -7,7 +7,6 @@
 
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
-#include <Headers/ToolClasses/FinalClass.h>
 
 /*
 Class that manage storing and setting Esenthel Engine states
@@ -49,7 +48,7 @@ both actions MUST be in AAS constructor
 	it call pointer-to-AAS method that want to be called
 */
 namespace pan {
-	class StateManager : public Singleton<StateManager>, virtual FinalClass {
+	class StateManager final : public Singleton<StateManager> {
 		SET_SINGLETON(StateManager)
 
 	public:
