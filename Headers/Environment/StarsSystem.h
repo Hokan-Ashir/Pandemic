@@ -10,7 +10,7 @@ namespace pan {
 	public:
 		explicit StarsSystem();
 		void update() override;
-		Flt getBarycenterHeightOverHorizont() const;
+		Flt getBarycenterHeightOverHorizont() const;		
 
 	private:
 		struct Star {
@@ -23,8 +23,8 @@ namespace pan {
 		// angle of full circle (whole degrees, that sun passes through day)
 		const UShort FULL_CIRCLE_ANGLE = 360;
 
-		Flt calculateDayLength() const;
-		Flt calculateNightLength() const;
+		Flt calculateDayLength(Flt worldLatitude) const;
+		Flt calculateNightLength(Flt worldLatitude) const;
 
 		/*
 		This method is used to draw barycenter (and so as stars) in sunch way
@@ -73,7 +73,8 @@ namespace pan {
 		 Calculation formulae taken from http://mathworld.wolfram.com/CircularSector.html
 		 in this link it is refereced as "h"
 		*/
-		Flt calculateBaryCenterOffset() const;
+		Flt calculateBaryCenterOffset(Flt worldLatitude) const;
+		void updateBarycenterOffset();
 
 		// calculate hour on circle
 		Flt calculateHourAngle(Flt hour) const;
@@ -97,6 +98,9 @@ namespace pan {
 		Flt theta;
 		Flt phi;
 		Vec barycenterPosition;
+
+		// see documentation to calculateBaryCenterOffset() method
+		Flt barycenterOffset;
 	
 		Star vigilantEye;
 		Star allSeeingEye;

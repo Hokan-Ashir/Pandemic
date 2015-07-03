@@ -33,17 +33,17 @@ namespace pan {
 	}
 
 	void StarsSystem::setBarycenterPosition(Flt time) {
-		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
-		auto sagitta = calculateBaryCenterOffset();
-		phi = DegToRad(calculateHourAngle(time) - calculateHourAngle(sunriseTime)) + Asin(sagitta);
+		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);		
+		phi = DegToRad(calculateHourAngle(time) - calculateHourAngle(sunriseTime)) + Asin(barycenterOffset);
 		theta = DegToRad(90.0f);
 		barycenterPosition.x = Sin(theta) * Cos(phi);
 		barycenterPosition.y = Sin(theta) * Sin(phi);
 		barycenterPosition.z = Cos(theta);				
-		barycenterPosition.y -= sagitta;
+		barycenterPosition.y -= barycenterOffset;
 	}
 
 	StarsSystem::StarsSystem() {
+		updateBarycenterOffset();
 		auto time = DateTime::getInstance()->getFloatTime();
 		setBarycenterPosition(time);
 
@@ -136,19 +136,19 @@ namespace pan {
 		Astros.add(allSeeingEye.sun);
 	}
 
-	Flt StarsSystem::calculateDayLength() const	{
-		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
-		auto sunsetTime = util::getSunsetTime(util::WORLD_LATITUDE);
+	Flt StarsSystem::calculateDayLength(Flt worldLatitude) const {
+		auto sunriseTime = util::getSunriseTime(worldLatitude);
+		auto sunsetTime = util::getSunsetTime(worldLatitude);
 		return fabs(sunsetTime - sunriseTime);
 	}
 
-	Flt StarsSystem::calculateNightLength() const {
-		auto dayLength = calculateDayLength();
+	Flt StarsSystem::calculateNightLength(Flt worldLatitude) const {
+		auto dayLength = calculateDayLength(worldLatitude);
 		return static_cast<Flt>(HOURS_IN_DAY - dayLength);
 	}
 
-	Flt StarsSystem::calculateBaryCenterOffset() const	{
-		auto dayLength = calculateDayLength();	
+	Flt StarsSystem::calculateBaryCenterOffset(Flt worldLatitude) const {
+		auto dayLength = calculateDayLength(worldLatitude);
 		auto radiusAngle = calculateHourAngle(dayLength);
 		// actual formulae is "r = R * cos(...)", but R = 1
 		// see Astro.h in Esenthel Engine / comment to "pos" field
@@ -158,7 +158,13 @@ namespace pan {
 	Flt StarsSystem::getBarycenterHeightOverHorizont() const {
 		// actual formulae is "h = R * sin(...) - r", but R = 1
 		// see Astro.h in Esenthel Engine / comment to "pos" field
-		return Sin(phi) - calculateBaryCenterOffset();
+		return Sin(phi) - barycenterOffset;
+	}
+
+	void StarsSystem::updateBarycenterOffset() {
+		// TODO later create something like WorldManager (which will be final Singleton)
+		// and access current world latitude via its methods
+		barycenterOffset = calculateBaryCenterOffset(util::WORLD_LATITUDE);
 	}
 
 	Flt StarsSystem::calculateHourAngle(Flt hour) const	{

@@ -6,11 +6,8 @@ namespace pan {
 		return time;
 	}
 
-	Flt DateTime::getFloatTime() const {
-		Flt hours = getHours();
-		Flt minutes = getMinutes();
-		Flt seconds = getSeconds();
-		return hours + (minutes * SECONDS_IN_MINUTE + seconds) / (SECONDS_IN_MINUTE * MINUTES_IN_HOUR);
+	Flt DateTime::getFloatTime() const {		
+		return time / (MINUTES_IN_HOUR * SECONDS_IN_MINUTE);
 	}
 
 	UShort DateTime::getHours() const {

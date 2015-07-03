@@ -16,31 +16,31 @@ namespace pan {
 		MonthInfo info;
 		info.monthName = "Winter - 1";
 		info.numberOfDays = 20;
-		months.insert(std::pair<MonthsEnum, MonthInfo>(WINTER_1, info));
+		months.insert(std::make_pair(WINTER_1, info));
 
 		info.monthName = "Winter - 2";
 		info.numberOfDays = 23;
-		months.insert(std::pair<MonthsEnum, MonthInfo>(WINTER_2, info));
+		months.insert(std::make_pair(WINTER_2, info));
 
 		info.monthName = "Winter - 3";
 		info.numberOfDays = 24;
-		months.insert(std::pair<MonthsEnum, MonthInfo>(WINTER_3, info));
+		months.insert(std::make_pair(WINTER_3, info));
 
 		info.monthName = "Spring - 1";
 		info.numberOfDays = 24;
-		months.insert(std::pair<MonthsEnum, MonthInfo>(SPRING_1, info));
+		months.insert(std::make_pair(SPRING_1, info));
 
 		info.monthName = "Spring - 2";
 		info.numberOfDays = 21;
-		months.insert(std::pair<MonthsEnum, MonthInfo>(SPRING_2, info));
+		months.insert(std::make_pair(SPRING_2, info));
 
 		info.monthName = "Summer - 1";
 		info.numberOfDays = 28;
-		months.insert(std::pair<MonthsEnum, MonthInfo>(SUMMER_1, info));
+		months.insert(std::make_pair(SUMMER_1, info));
 
 		info.monthName = "Autumn - 1";
 		info.numberOfDays = 20;
-		months.insert(std::pair<MonthsEnum, MonthInfo>(AUTUMN_1, info));
+		months.insert(std::make_pair(AUTUMN_1, info));
 	}
 
 	Months::~Months() {

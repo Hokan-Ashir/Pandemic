@@ -7,9 +7,9 @@ namespace pan {
 	class SunnyEffect : public AbstractWeatherEffect {
 	public:
 		SunnyEffect();
-		void create(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) override;
+		void createActions(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) override;
 		void effect() override;
-		void destroy() override;		
+		void destroyActions() override;		
 	};
 
 }

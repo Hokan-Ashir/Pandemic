@@ -6,17 +6,15 @@ namespace pan {
 		//Logger::getInstance()->info("Rain effect runned constructor");
 	}
 
-	void RainEffect::create(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) {
+	void RainEffect::createActions(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) {
 		//Logger::getInstance()->info("Rain effect created");
-		setIsCreated(true);
 	}
 
 	void RainEffect::effect() {
 		//Logger::getInstance()->info("Rain effect runned");
 	}
 
-	void RainEffect::destroy() {
+	void RainEffect::destroyActions() {
 		//Logger::getInstance()->info("Rain effect destroyed");
-		setIsCreated(false);
 	}
 }

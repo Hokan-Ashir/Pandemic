@@ -8,9 +8,9 @@ namespace pan {
 	class RainEffect : public AbstractWeatherEffect, public DirectParticleEmitter {
 	public:
 		explicit RainEffect(const UID& particleImageUID = UIDZero, const Vec& particlesSourcePosition = VecZero);
-		void create(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) override;
+		void createActions(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) override;
 		void effect() override;
-		void destroy() override;
+		void destroyActions() override;
 	};
 }
 

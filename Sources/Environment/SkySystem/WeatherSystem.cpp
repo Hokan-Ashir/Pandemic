@@ -6,8 +6,8 @@
 
 namespace pan {
 	void WeatherSystem::initializeWeatherTypes() {
-		weatherTypes.insert(std::pair<WeatherType, AbstractWeatherEffect*>(SUNNY, new SunnyEffect()));
-		weatherTypes.insert(std::pair<WeatherType, AbstractWeatherEffect*>(RAIN, new RainEffect()));
+		weatherTypes.insert(std::make_pair(SUNNY, new SunnyEffect()));
+		weatherTypes.insert(std::make_pair(RAIN, new RainEffect()));
 	}
 
 	WeatherSystem::WeatherSystem() {
