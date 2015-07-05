@@ -1,11 +1,15 @@
-#ifndef __DIRECTPARTICLE_SYSTEM_H__
-#define __DIRECTPARTICLE_SYSTEM_H__
+#ifndef __DIRECTPARTICLEEMITTER_H__
+#define __DIRECTPARTICLEEMITTER_H__
 
 #include <Engine/Headers/EsenthelEngine.h>
 #include <Headers/ToolClasses/IDrawable.h>
 #include <Headers/ToolClasses/IUpdatable.h>
 
 namespace pan {
+
+	/**
+	 * Class, that describes emitting set of particles from some position
+	 */
 	class DirectParticleEmitter : public IDrawable, public IUpdateable {
 	public:
 		DirectParticleEmitter(UID particleImageUID, Vec particlesSourcePosition);

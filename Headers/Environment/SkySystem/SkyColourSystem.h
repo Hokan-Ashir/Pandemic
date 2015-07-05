@@ -13,13 +13,13 @@ namespace pan {
 		void setSunHeightOverHorizont(Flt sunHeightOverHorizont);
 
 	private:
-		/* 
-		Possible sun height over horizont (= 2 * R)
-		Where R = 1 (see "pos" member comment in Astro.h in Esenthel Engine)
-		Because sun circle can have offset \in [-1; 1] 
-		(see calculateBaryCenterOffset() method in StarsSystem.h)
-		real sun height	in heighest point is 1 + 1 = 2
-		and in lowest point is -1 + (-1) = -2
+		/**
+		 * Possible sun height over horizont (= 2 * R)
+		 * Where R = 1 (see "pos" member comment in Astro.h in Esenthel Engine)
+		 * Because sun circle can have offset \in [-1; 1] 
+		 * (see StarsSystem::calculateBaryCenterOffset())
+		 * real sun height in highest point is 1 + 1 = 2
+		 * and in lowest point is -1 + (-1) = -2
 		*/
 		const UShort SUN_HEIGHT = 2;
 

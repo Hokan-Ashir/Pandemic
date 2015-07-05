@@ -2,9 +2,6 @@
 #include <Headers/Core/DateTime.h>
 
 namespace pan {
-	Flt DateTime::getTime() const {
-		return time;
-	}
 
 	Flt DateTime::getFloatTime() const {		
 		return time / (MINUTES_IN_HOUR * SECONDS_IN_MINUTE);
@@ -37,18 +34,6 @@ namespace pan {
 
 	UShort DateTime::getDayInYear() const {
 		return dayInYear;
-	}
-
-	UShort DateTime::getDayInMonth() const {
-		return dayInMonth;
-	}
-
-	MonthsEnum DateTime::getMonth() const {
-		return month;
-	}
-
-	UShort DateTime::getYear() const {
-		return year;
 	}
 
 	void DateTime::setTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year) {
@@ -86,6 +71,8 @@ namespace pan {
 	}
 
 	void DateTime::update() {
+		// if you want to speed up in-game time, slow it down, or even stop
+		// just change increment value of "time", or change SECOND_TICK constant
 		time += SECOND_TICK;
 		
 		// check new day coming

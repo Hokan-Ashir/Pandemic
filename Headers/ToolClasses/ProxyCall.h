@@ -4,25 +4,33 @@
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
 
-// TODO maybe do generic method
-// cause one ProxyCall for ApplicationStates with "init", "draw", "render", "update", "shutdown"
-// method calls
-// and one for other objects with "draw", "update", "create" method calls
-
-/*
-Class that manage to convert pointer-to-methods to pointer-to-functions
-to pass to Esenthel Engine callback class-methods like Render(&void())
-
-Usage:
-inside desirable class that want to convert its method pointer to function pointer
-i.e "A" with "render" method
-ProxyCall::setClass(this)
-Render(ProxyCall::render)
-*/
 namespace pan {
+	/**
+	 * Class that manage to convert pointer-to-methods to pointer-to-functions <p>
+	 * to pass to Esenthel Engine callback class-methods like Render(&void()) <p><p>
+	 *
+	 * Usage: <p>
+	 * Inside desirable class that want to convert its method pointer to function pointer <p>
+	 * i.e "A" with "render" method <p>
+	 * ProxyCall::setClass(this) <p>
+	 * Render(ProxyCall::render) <p><p>
+	 *
+	 * \todo 
+	 * Maybe do generic method <p>
+	 * One ProxyCall for AbstractApplicationState with "init", "draw", "render", "update", "shutdown"
+	 * method calls <p>
+	 * And one for other objects with "draw", "update", "create" method calls
+	 */
 	class ProxyCall final : public Singleton<ProxyCall> {
 		SET_SINGLETON(ProxyCall)
 	public:
+		/**
+		 * Store pointer to application state in static variable, which is mapped to <p>
+		 * init(), draw(), update(), shutdown() and render() calls, so each call of those methods
+		 * will call same methods from static variable
+		 *
+		 * \param AbstractApplicationState* pointer to application state, that want to be active
+		 */
 		static void setClass(AbstractApplicationState* state);
 		static Bool init();
 		static void draw();
@@ -38,6 +46,10 @@ namespace pan {
 		}
 
 	private:
+
+		/**
+		 * Storage of pointer to currently active application state
+		 */
 		static AbstractApplicationState* instance;
 	};
 }

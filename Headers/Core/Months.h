@@ -3,6 +3,7 @@
 
 #include <map>
 
+#include <Engine/Headers/EsenthelEngine.h>
 #include <Headers/ToolClasses/Singleton.h>
 
 namespace pan {
@@ -26,9 +27,15 @@ namespace pan {
 	class Months final : public Singleton <Months> {
 		SET_SINGLETON(Months)
 	public:
-
-		std::string getMonthName(MonthsEnum& month) const;		
-		unsigned short getNumberOfDaysInMonth(MonthsEnum& month) const;
+		/**
+		 * Gets number of days in month, based on its value in enum <p>
+		 * In no month found in collection of maps, warning raised in log <p>
+		 * And number of days in first month returned
+		 *
+		 * \param MonthsEnum month element of MonthEnum, which info extracted
+		 * \return UShort number of days in month
+		 */
+		UShort getNumberOfDaysInMonth(MonthsEnum& month) const;
 
 	protected:
 		Months();
@@ -37,10 +44,22 @@ namespace pan {
 	private:
 		struct MonthInfo {
 			std::string monthName;			
-			unsigned short numberOfDays;
+			UShort numberOfDays;
 		};
 
+		/**
+		 * Collection of months and their info
+		 */
 		std::map<MonthsEnum, MonthInfo> months;
+
+		/**
+		 * Gets month info, based on its value in enum <p>
+		 * In no month found in collection of maps, warning raised in log <p>
+		 * And month info of first month returned
+		 *
+		 * \param MonthsEnum month element of MonthEnum, which info extracted
+		 * \return pan::Months::MonthInfo info about month
+		 */
 		MonthInfo getMonthInfo(MonthsEnum month) const;	
 	};
 }

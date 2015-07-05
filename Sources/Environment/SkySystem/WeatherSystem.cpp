@@ -24,10 +24,9 @@ namespace pan {
 	}
 
 	void WeatherSystem::setWeather(WeatherType weatherType, UShort hoursDuration, UShort minutesDuratuion)	{
-		time.year = DateTime::getInstance()->getYear();
-		time.dayInYear = DateTime::getInstance()->getDayInYear();
-		time.hour = DateTime::getInstance()->getHours() + hoursDuration;
-		time.minute = DateTime::getInstance()->getMinutes() + minutesDuratuion;
+		time = DateTime::getInstance()->getDateTime();
+		time.hour += hoursDuration;
+		time.minute += minutesDuratuion;
 		time.updateTime();
 
 		// no need to recreate weather effect, if we set the same weather

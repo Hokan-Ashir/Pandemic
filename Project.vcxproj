@@ -710,7 +710,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sources\ApplicationStates\AbstractApplicationState.cpp" />
-    <ClCompile Include="Sources\ApplicationStates\IntroState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\MainApplicationState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
     <ClCompile Include="Sources\Core\DateTime.cpp" />
@@ -733,7 +732,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\ApplicationStates\AbstractTimeableApplicationState.h" />
-    <ClInclude Include="Headers\ApplicationStates\IntroState.h" />
     <ClInclude Include="Headers\ApplicationStates\MainApplicationState.h" />
     <ClInclude Include="Headers\ApplicationStates\StateManager.h" />
     <ClInclude Include="Headers\Core\DateTime.h" />
@@ -753,7 +751,6 @@
     <ClInclude Include="Headers\Logging\Logger.h" />
     <ClInclude Include="Headers\ToolClasses\IDrawable.h" />
     <ClInclude Include="Headers\Auto.h" />
-    <ClInclude Include="Headers\stdafx.h" />
     <ClInclude Include="Headers\ToolClasses\Identifirable.h" />
     <ClInclude Include="Headers\ToolClasses\Singleton.h" />
     <ClInclude Include="Headers\ToolClasses\ProxyCall.h" />

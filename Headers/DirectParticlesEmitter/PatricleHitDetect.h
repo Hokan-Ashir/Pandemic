@@ -5,6 +5,10 @@
 #include <Engine/Headers/EsenthelEngine.h>
 
 namespace pan {
+
+	/**
+	 * Class, that preforms collision detection with set of actors of scene
+	 */
 	class ParticleHitDetect : public PhysCutsCallback {
 	public:
 		explicit ParticleHitDetect(std::vector<ACTOR_GROUP>& actorGroups);

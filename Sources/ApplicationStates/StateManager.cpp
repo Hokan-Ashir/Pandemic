@@ -11,7 +11,7 @@ namespace pan {
 	void StateManager::setCurrentState(std::string Id) {
 		Logger::getInstance()->info(std::string("Calling state with Id '" + Id + "'").data());
 
-		AbstractApplicationState* state = nullptr;
+		AbstractApplicationState* state;
 		try {
 			state = states.at(Id);
 		} catch (std::out_of_range e) {

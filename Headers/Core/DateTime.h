@@ -7,37 +7,85 @@
 #include <Headers/Core/Months.h>
 #include <Headers/ToolClasses/IUpdatable.h>
 
-// the very first year, when game starts when player choose "New game"
+/**
+ * The very first year, when game starts when player choose "New game"
+ */
 const UShort START_YEAR = 426;
-const UShort DAYS_IN_YEAR = 365;
-const UShort HOURS_IN_DAY = 24;
-const UShort MINUTES_IN_HOUR = 60;
-const UShort SECONDS_IN_MINUTE = 60;
-// assuming definition of second and minute in game the same as IRL
-// assuming 1 second IRL = 1 second in game
 
+/**
+ * Number of days in in-game year
+ */
+const UShort DAYS_IN_YEAR = 365;
+
+/**
+ * Number of hours in in-game day
+ */
+const UShort HOURS_IN_DAY = 24;
+
+/**
+ * Number of minutes in in-game hour
+ */
+const UShort MINUTES_IN_HOUR = 60;
+
+/**
+ * Number of seconds in in-game minute
+ */
+const UShort SECONDS_IN_MINUTE = 60;
+
+/**
+ * Time that passes each frame in game
+ * 0.015 approximately equal 1 seconds in real life
+ */
 const Flt SECOND_TICK = 0.015 * 2500;
 
 namespace pan {
+
+	/**
+	 * Structure, that represent in-game time in short comparative format 
+	 */
 	struct sDateTime {
+
+		/**
+		 * In-game hour
+		 */
 		UShort hour;
+
+		/**
+		 * In-game minute
+		 */
 		UShort minute;
+
+		/**
+		 * In-game day in year
+		 */
 		UShort dayInYear;
+
+		/**
+		 * In-game year
+		 */
 		UShort year;
 
+		/**
+		 * Compassion operator <p>
+		 * Make compassion from smallest period of time to <p>
+		 * biggest, cause if minute equality failed - no other <p>
+		 * equality-checks will proceed <p>
+		 *
+		 * \param const sDateTime & date comparative object
+		 * \return bool true, if objects are equal, false otherwise
+		 */
 		bool operator==(const sDateTime& date) {
-			// make comparasion from smallest period of time to 
-			// biggest, cause if minute equality failed - no other
-			// equality-checks will proceed
+			// 
 			return minute == date.minute
 				&& hour == date.hour
 				&& dayInYear == date.dayInYear
 				&& year == date.year;
 		}
 
-		// this method for incrementing time:
-		// increment hour if minutes >= MINUTES_IN_HOUR and set minutes to 0
-		// and so on
+		/**
+		 * This method for incrementing time: <p>
+		 * Increment hour if minutes >= MINUTES_IN_HOUR and set minutes to 0 and so on
+		 */
 		void updateTime() {	
 			if (minute >= MINUTES_IN_HOUR) {
 				dayInYear++;
@@ -54,22 +102,46 @@ namespace pan {
 		}
 	};
 
+	/**
+	 * Class that represents in-game time <p>
+	 * Has getters and setters, and also is Singleton, so each class can have access
+	 * to it and know current in-game time
+	 */
 	class DateTime final : public Singleton<DateTime>, public IUpdateable {
 		SET_SINGLETON(DateTime)
-	public:
-		Flt getTime() const;
-		// return time in format "HOUR.MUNUTES_SECONDS"
+	public:		
+		/**
+		 * \return Flt time in format "HOUR.MUNUTES_SECONDS"
+		 */
 		Flt getFloatTime() const;
+
+		/**
+		 * \return UShort current hours in current day
+		 */
 		UShort getHours() const;
+
+		/**
+		 * \return UShort current minutes in current hour
+		 */
 		UShort getMinutes() const;
+
+		/**
+		 * \return UShort current seconds in current minute
+		 */
 		UShort getSeconds() const;
+
+		/**
+		 * \return sDateTime time in sDateTime format
+		 */
 		sDateTime getDateTime() const;
 
+		/**
+		 * \return UShort number of day in current year
+		 */
 		UShort getDayInYear() const;
-		UShort getDayInMonth() const;
-		MonthsEnum getMonth() const;
-		UShort getYear() const;
+		
 		virtual void update() override;
+		
 		void setTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year);
 		
 	protected:
@@ -78,16 +150,48 @@ namespace pan {
 		~DateTime();
 
 	private:
+		/**
+		 * Updates time, checking new in-game day is coming <p>
+		 * Nullify minutes, hours if their values overflow limits
+		 */
 		void updateTime();
+
+		/**
+		 * Updates time, checking new in-game month is coming <p>
+		 * Nullify dayInMonths value if its value overflow limit
+		 */
 		void updateMonth();
+
+		/**
+		 * Updates time, checking new in-game year is coming <p>
+		 * Nullify dayInYear value if its value overflow limit
+		 */
 		void updateYear();
 
-		// integer part of this value is seconds
+		/**
+		 * In-game time (microseconds/seconds/hours) <p>
+		 * Integer part of this value is seconds
+		 */
 		Flt time;
+
+		/**
+		* In-game current day in current year
+		*/
 		UShort dayInYear;
+
+		/**
+		* In-game day in current month
+		*/
 		UShort dayInMonth;
+
+		/**
+		* In-game current month
+		*/
 		MonthsEnum month;
-		// = START_YEAR + number of years passed in game
+
+		/**
+		* In-game day current year
+		*/
 		UShort year;
 	};
 }

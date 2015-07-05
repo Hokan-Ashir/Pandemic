@@ -30,7 +30,7 @@ namespace pan {
 		void setWeather(WeatherType weatherType, UShort hoursDuration, UShort minutesDuratuion);
 		void setDefaultWeather();
 		
-		// TODO maybe add setter and getter to WeatherSystem position, if there will be necessarity
+		// TODO maybe add setter and getter to WeatherSystem position, if there will be necessarily
 		// to create another rain not just in place where player stays
 		void update() override;
 
@@ -38,13 +38,16 @@ namespace pan {
 		void updateWeather();
 		void initializeWeatherTypes();
 
-		// time till currentWeather will exists
+		/**
+		 * Time till currentWeather will exists
+		 */
 		sDateTime time;
 		WeatherType currentWeather;
-		// type of weather begins any time another weather setted by "setWeather()" ends
+
+		/**
+		 * Type of weather, that begins any time another weather settled by setWeather() method ends
+		 */
 		WeatherType defaultWeather;
-		// TODO maybe make this elements constant
-		// maybe use similar solution for other maps
 		std::map<WeatherType, AbstractWeatherEffect*> weatherTypes;
 
 		Flt sunHeightOverHorizont;

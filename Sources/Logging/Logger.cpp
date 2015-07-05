@@ -45,7 +45,7 @@ namespace pan {
 		boost::log::register_simple_filter_factory<boost::log::trivial::severity_level>("Severity");
 		boost::log::core::get()->add_global_attribute("TimeStamp", boost::log::attributes::local_clock());
 
-		std::ifstream file("logging.ini");
+		std::ifstream file(LOGGER_CONFIG_FILE);
 		boost::log::init_from_stream(file);
 	}
 }

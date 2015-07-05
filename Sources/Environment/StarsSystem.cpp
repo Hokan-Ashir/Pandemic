@@ -103,11 +103,7 @@ namespace pan {
 
 		barycenterPosition.x = Sin(theta) * Cos(phi);
 		barycenterPosition.y = Sin(theta) * Sin(phi);
-		barycenterPosition.z = Cos(theta);
-		
-		// TODO add inclination movement, based on latitude
-		// TODO OPTIMIZATION calculate sagitta only once, when lattitude changed 
-		// (via observer-pattern or add EventHandler ?)
+		barycenterPosition.z = Cos(theta);		
 		barycenterPosition.y -= calculateBaryCenterOffset();
 		*/	
 
@@ -150,20 +146,18 @@ namespace pan {
 	Flt StarsSystem::calculateBaryCenterOffset(Flt worldLatitude) const {
 		auto dayLength = calculateDayLength(worldLatitude);
 		auto radiusAngle = calculateHourAngle(dayLength);
-		// actual formulae is "r = R * cos(...)", but R = 1
+		// actual formula is "r = R * cos(...)", but R = 1
 		// see Astro.h in Esenthel Engine / comment to "pos" field
 		return Cos(DegToRad(radiusAngle / 2));		 
 	}
 
 	Flt StarsSystem::getBarycenterHeightOverHorizont() const {
-		// actual formulae is "h = R * sin(...) - r", but R = 1
+		// actual formula is "h = R * sin(...) - r", but R = 1
 		// see Astro.h in Esenthel Engine / comment to "pos" field
 		return Sin(phi) - barycenterOffset;
 	}
 
-	void StarsSystem::updateBarycenterOffset() {
-		// TODO later create something like WorldManager (which will be final Singleton)
-		// and access current world latitude via its methods
+	void StarsSystem::updateBarycenterOffset() {		
 		barycenterOffset = calculateBaryCenterOffset(util::WORLD_LATITUDE);
 	}
 

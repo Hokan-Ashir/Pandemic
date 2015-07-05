@@ -3,11 +3,7 @@
 #include <string>
 
 namespace pan {
-	std::string Months::getMonthName(MonthsEnum& month) const {
-		return getMonthInfo(month).monthName;
-	}	
-
-	unsigned short Months::getNumberOfDaysInMonth(MonthsEnum& month) const {
+	UShort Months::getNumberOfDaysInMonth(MonthsEnum& month) const {
 		return getMonthInfo(month).numberOfDays;
 	}
 
@@ -51,7 +47,11 @@ namespace pan {
 		try {
 			info = months.at(month);
 		} catch (std::out_of_range e) {
-			Logger::getInstance()->warning(std::string("No month with value '" + std::to_string(month) + "' exists").data());
+			Logger::getInstance()->warning(std::string(
+				"No month with value '" 
+				+ std::to_string(month) 
+				+ "' exists\n"
+				+ "Using first month info").data());
 			info = months.begin()->second;
 		}
 
