@@ -10,8 +10,8 @@
 This is documentation to calculations in this file of sunset/sunrise times
 via approximation with GDF
 
-On real Earth times of sunrise and sunset can be approximate GDF, as it seems
-from statistics in this site
+On real Earth times of sunrise and sunset can be approximate via GDF, according to
+statistics from this site
 http://ptaff.ca/soleil/wizard/?lang=en_CA
 
 But if we take pure GDF (with x \in [0; 5] and y \in [0; 1]) 
@@ -27,7 +27,7 @@ realX = x * coefficientX
 where 5 is pure GDF x-range
 
 And also modify result value ("y") by coefficientY:
-coefficientX = hours_in_day / 2
+coefficientY = hours_in_day / 2
 realY = y * coefficientY
 
 Then we calculate "sigma" (GDF-parameter) offsetted by latitude

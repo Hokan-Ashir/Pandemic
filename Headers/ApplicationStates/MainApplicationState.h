@@ -28,7 +28,6 @@ namespace pan {
 		virtual Bool update() override;
 		virtual void shutdown() override;
 		virtual void render() override;
-		std::string getId() const;
 	};
 }
 

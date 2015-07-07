@@ -5,7 +5,6 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 
 #include <Engine/Headers/EsenthelEngine.h>
-#include <Headers/ToolClasses/Identifirable.h>
 #include <Headers/ToolClasses/IDrawable.h>
 #include <Headers/ToolClasses/IUpdatable.h>
 
@@ -14,12 +13,11 @@ namespace pan {
 	 * Abstract class of any state in the game <p>
 	 * With usage of ProxyCall impersonate State from Esenthel Engine <p>
 	 * (see documentation for ProxyCall for more info) <p>
-	 * Also allow all derived classes to assign to themselves identifier via Identifirable class inheritance <p> <p>
 	 * Stores game objects and systems that want to be drawn (implements IDrawable), <p>
 	 * which will be drawn in draw() method, <p>
 	 * or/and updated (implements IUpdateable), which will be updated in update() method
 	 */
-	class AbstractApplicationState : public Identifirable {
+	class AbstractApplicationState {
 	public:
 		AbstractApplicationState();
 		virtual ~AbstractApplicationState();

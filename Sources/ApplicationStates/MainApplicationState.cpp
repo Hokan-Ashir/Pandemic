@@ -7,9 +7,9 @@
 #include <Headers/Environment/LocalEnvironment.h>
 
 namespace pan {
-	MainApplicationState::MainApplicationState() {
-		setId("MainApplicationState");
-		StateManager::getInstance()->registerState(getId(), this);
+	MainApplicationState::MainApplicationState() {		
+		StateManager::getInstance()->registerState(this);
+		ProxyCall::setClass(this);
 	}
 
 	MainApplicationState::~MainApplicationState() {
@@ -41,8 +41,7 @@ namespace pan {
 		return true;
 	}
 
-	void MainApplicationState::draw() {
-		ProxyCall::setClass(this);
+	void MainApplicationState::draw() {		
 		Renderer(ProxyCall::render);
 
 		auto timeString = std::string("Hour " + std::to_string(DateTime::getInstance()->getHours())
@@ -84,9 +83,5 @@ namespace pan {
 			}
 			break;
 		}
-	}
-
-	std::string MainApplicationState::getId() const {
-		return Identifirable::getId();
 	}
 }
