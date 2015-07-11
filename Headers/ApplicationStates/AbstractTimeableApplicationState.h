@@ -7,19 +7,20 @@
 namespace pan {
 
 	/**
-	 * Class that update real game time via DateTime::update() call <p> <p>
-	 *
-	 * Each application state, that want manipulate real game time MUST <p>
-	 * inherit from this class and call update(), <p>
-	 * in overridden update method, at first place
+	 * Class-wrapper that update real game time via DateTime::update() call before call actual <p>
+	 * updateActions call in derived classes
 	 */
 	class AbstractTimeableApplicationState : public AbstractApplicationState {
 	public:
-		virtual Bool update() override {
-			DateTime::getInstance()->update();
+		virtual ~AbstractTimeableApplicationState() {}
 
-			return true;
+		virtual Bool update() final override {
+			DateTime::getInstance()->update();
+			return updateActions();
 		}
+
+	protected:
+		virtual Bool updateActions() = 0;
 	};
 }
 

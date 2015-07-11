@@ -5,22 +5,19 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 
 #include <Engine/Headers/EsenthelEngine.h>
-#include <Headers/ToolClasses/IDrawable.h>
-#include <Headers/ToolClasses/IUpdatable.h>
+#include <Headers/Core/EventSystem/EventManager.h>
 
 namespace pan {
 	/**
 	 * Abstract class of any state in the game <p>
 	 * With usage of ProxyCall impersonate State from Esenthel Engine <p>
 	 * (see documentation for ProxyCall for more info) <p>
-	 * Stores game objects and systems that want to be drawn (implements IDrawable), <p>
-	 * which will be drawn in draw() method, <p>
-	 * or/and updated (implements IUpdateable), which will be updated in update() method
+	 * Stores game objects and systems that want to be drawn, which will be drawn in draw() method, <p>
+	 * or/and updated, which will be updated in update() method
 	 */
 	class AbstractApplicationState {
 	public:
-		AbstractApplicationState();
-		virtual ~AbstractApplicationState();
+		virtual ~AbstractApplicationState() {}
 
 		/**
 		 * This method that called only once, when state is set as active via State::set() <p>
@@ -55,32 +52,25 @@ namespace pan {
 		 * Impersonates State render-callback function
 		 */
 		virtual void render() = 0;
-
 	protected:
-				
-		/**
-		 * Wrapper around std::list::push_back() to register drawable object for drawing
-		 *
-		 * \param std::shared_ptr<IDrawable> object object that want to be drawn
-		 */
-		void addDrawableObject(std::shared_ptr<IDrawable> object);
 
 		/**
-		 * Wrapper around std::list::push_back() to register updateable object for update
-		 *
-		 * \param std::shared_ptr<IUpdateable> object object that want to be updated
+		 * Wrapper around list::push_back call for list of application state core event handlers <p>
+		 * 
+		 * \param std::shared_ptr<BaseEventHandler> handler - object that whished to be stored
 		 */
-		void addUpdateableObject(std::shared_ptr<IUpdateable> object);
+		void addEventHandler(std::shared_ptr<BaseEventHandler> handler) {
+			eventHandlers.push_back(handler);
+		}
+
+	private:
 
 		/**
-		 *	\ref List of objects, that want to be drawn
+		 * List of application state core event handlers <p>
+		 * More precisely, it allows to store objects, that created in application states and must be stored <p>
+		 * to be updated/drawn in application state live-loop
 		 */
-		std::list<std::shared_ptr<IDrawable>> drawableObjects;
-
-		/**
-		 *	\ref List of objects, that want to be updated
-		 */
-		std::list<std::shared_ptr<IUpdateable>> updateableObjects;
+		std::list<std::shared_ptr<BaseEventHandler>> eventHandlers;
 	};
 }
 

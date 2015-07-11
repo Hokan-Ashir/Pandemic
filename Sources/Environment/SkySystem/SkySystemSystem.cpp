@@ -38,7 +38,8 @@ namespace pan {
 		skyColors.add(SUN_HEIGHT, createColour(70, 107, 161));
 	}
 
-	SkyColourSystem::SkyColourSystem() : sunHeightOverHorizont(0) {
+	SkyColourSystem::SkyColourSystem() {
+		EventManager::getInstance()->registerEventHandlerMethod(this, &SkyColourSystem::update);
 		initializeHorisonColourInterpolator();
 		initializeSkyColourInterpolator();
 	}
@@ -62,11 +63,7 @@ namespace pan {
 		Sky.atmosphericColor(horizonColour, skyColour);
 	}
 
-	void SkyColourSystem::update() {
-		setSkyColour(sunHeightOverHorizont);
-	}
-
-	void SkyColourSystem::setSunHeightOverHorizont(Flt sunHeightOverHorizont) {
-		this->sunHeightOverHorizont = sunHeightOverHorizont;
+	void SkyColourSystem::update(const SunHeightChangedEvent* event) {
+		setSkyColour(event->getHeightOverHorizont());
 	}
 }

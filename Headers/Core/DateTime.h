@@ -5,7 +5,6 @@
 
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/Core/Months.h>
-#include <Headers/ToolClasses/IUpdatable.h>
 
 /**
  * The very first year, when game starts when player choose "New game"
@@ -39,7 +38,6 @@ const UShort SECONDS_IN_MINUTE = 60;
 const Flt SECOND_TICK = 0.015 * 2500;
 
 namespace pan {
-
 	/**
 	 * Structure, that represent in-game time in short comparative format 
 	 */
@@ -107,7 +105,7 @@ namespace pan {
 	 * Has getters and setters, and also is Singleton, so each class can have access
 	 * to it and know current in-game time
 	 */
-	class DateTime final : public Singleton<DateTime>, public IUpdateable {
+	class DateTime final : public Singleton<DateTime> {
 		SET_SINGLETON(DateTime)
 	public:		
 		/**
@@ -140,7 +138,7 @@ namespace pan {
 		 */
 		UShort getDayInYear() const;
 		
-		virtual void update() override;
+		virtual void update();
 		
 		void setTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year);
 		

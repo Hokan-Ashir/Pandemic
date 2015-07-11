@@ -25,7 +25,7 @@ namespace pan {
 		void initializeEgine();
 		virtual Bool init() override;
 		virtual void draw() override;
-		virtual Bool update() override;
+		virtual Bool updateActions() override;
 		virtual void shutdown() override;
 		virtual void render() override;
 	};

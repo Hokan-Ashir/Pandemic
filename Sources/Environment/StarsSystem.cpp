@@ -3,6 +3,7 @@
 #include <Headers/Environment/StarsSystem.h>
 #include <Headers/Core/DateTime.h>
 #include <Headers/Environment/SunriseSunsetUtils.h>
+#include <Headers/Environment/SunHeightChangedEvent.h>
 
 namespace pan {
 
@@ -43,6 +44,7 @@ namespace pan {
 	}
 
 	StarsSystem::StarsSystem() {
+		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::update);
 		updateBarycenterOffset();
 		auto time = DateTime::getInstance()->getFloatTime();
 		setBarycenterPosition(time);
@@ -109,6 +111,8 @@ namespace pan {
 
 		auto time = DateTime::getInstance()->getFloatTime();
 		setBarycenterPosition(time);
+		SunHeightChangedEvent event(getBarycenterHeightOverHorizont());
+		EventManager::getInstance()->fireEvent(&event);
 	}
 
 	void StarsSystem::normalizeStartsPositionsAndHeightLight() {
@@ -116,7 +120,7 @@ namespace pan {
 		normalizeAndSetHeightLight(&allSeeingEye.sun);
 	}
 
-	void StarsSystem::update() {
+	void StarsSystem::update(const UpdateEvent* eventToProceed) {
 		// because Esenthel Engine set position of Astro object only once
 		// during adding it to Astro container, to implement movement of two suns
 		// we pop them from container and add them each frame

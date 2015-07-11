@@ -3,14 +3,14 @@
 
 #include <Engine/Headers/EsenthelEngine.h>
 
-#include <Headers/ToolClasses/IUpdatable.h>
+#include <Headers/Core/EventSystem/EventManager.h>
+#include <Headers/Core/EventSystem/Events/UpdateEvent.h>
 
 namespace pan {
-	class CloudsSystem : public IUpdateable {
+	class CloudsSystem : public BaseEventHandler {
 	public:
 		explicit CloudsSystem(Int numberOfCloudsLayers = 3);
-		~CloudsSystem();
-		void update() override;
+		void update(const UpdateEvent* event);
 	private:
 		Int numberOfCloudsLayers;		
 	};

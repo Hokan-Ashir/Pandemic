@@ -1,10 +1,14 @@
-#include <Headers/Auto.h>
+#include <string>
 
+#include <Headers/Auto.h>
 #include <Headers/ApplicationStates/MainApplicationState.h>
 #include <Headers/ToolClasses/ProxyCall.h>
 #include <Headers/ApplicationStates/StateManager.h>
-#include <string>
-#include <Headers/Environment/LocalEnvironment.h>
+#include <Headers/Core/EventSystem/EventManager.h>
+#include <Headers/Core/EventSystem/Events/UpdateEvent.h>
+#include <Headers/Core/EventSystem/Events/DrawEvent.h>
+#include <Headers/Environment/SkySystem/WeatherSystem.h>
+#include <Headers/Environment/StarsSystem.h>
 
 namespace pan {
 	MainApplicationState::MainApplicationState() {		
@@ -34,9 +38,11 @@ namespace pan {
 		if (Game::World.settings().environment) {
 			Game::World.settings().environment->set();
 		}
-
-		std::shared_ptr<LocalEnvironment> environment(new LocalEnvironment());
-		addUpdateableObject(environment);
+		
+		std::shared_ptr<BaseEventHandler> starsSystem(new StarsSystem());
+		addEventHandler(starsSystem);
+		std::shared_ptr<BaseEventHandler> weatherSystem(new WeatherSystem());
+		addEventHandler(weatherSystem);		
 
 		return true;
 	}
@@ -50,9 +56,7 @@ namespace pan {
 		D.text(0, 0.9, timeString.data());
 	}
 
-	Bool MainApplicationState::update() {
-		AbstractTimeableApplicationState::update();
-
+	Bool MainApplicationState::updateActions() {		
 		if (Kb.bp(KB_ESC)) {
 			return false;
 		}
@@ -60,9 +64,8 @@ namespace pan {
 		Cam.transformByMouse(0.1f, 100, CAMH_ZOOM | (Ms.b(1) ? CAMH_MOVE : CAMH_ROT));
 		Game::World.update(Cam.at);
 
-		for (auto updateable : updateableObjects) {
-			updateable->update();
-		}
+		UpdateEvent event;
+		EventManager::getInstance()->fireEvent(&event);
 
 		return true;
 	}
@@ -77,9 +80,8 @@ namespace pan {
 			case RM_BLEND:
 			case RM_PALETTE:
 			{
-				for (auto drawable : drawableObjects) {
-					drawable->draw();
-				}
+				DrawEvent event;
+				EventManager::getInstance()->fireEvent(&event);
 			}
 			break;
 		}

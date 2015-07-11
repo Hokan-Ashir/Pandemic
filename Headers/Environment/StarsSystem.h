@@ -3,19 +3,19 @@
 
 #include <Engine/Headers/EsenthelEngine.h>
 
-#include <Headers/ToolClasses/IUpdatable.h>
+#include <Headers/Core/EventSystem/EventManager.h>
+#include <Headers/Core/EventSystem/Events/UpdateEvent.h>
 
 namespace pan {
-
 	/**
 	 * Star that create and control movement of binary in-game star system <p>
 	 * Both stars moving around stars barycenter (center of star masses), <p>
 	 * while barycenter moves circularly, imitating sunset/sunrise on surface
 	 */
-	class StarsSystem : public IUpdateable {
+	class StarsSystem : public BaseEventHandler {
 	public:
 		explicit StarsSystem();
-		void update() override;
+		void update(const UpdateEvent* eventToProceed);
 		Flt getBarycenterHeightOverHorizont() const;		
 
 	private:
@@ -45,7 +45,7 @@ namespace pan {
 		 *			   ...
 		 *  /					   \
 		 * /						\
-		 * r - - - - - - - - - - - s - - - - horizon
+		 * r - - - - - - - - - - - - s - - - - horizon
 		 * \						/
 		 *  \					   /
 		 *			   ...

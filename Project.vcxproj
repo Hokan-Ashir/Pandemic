@@ -709,11 +709,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\ApplicationStates\AbstractApplicationState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\MainApplicationState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
     <ClCompile Include="Sources\Core\DateTime.cpp" />
-    <ClCompile Include="Sources\Environment\LocalEnvironment.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\CloudsSystem.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\SkySystemSystem.cpp" />
     <ClCompile Include="Sources\Core\Months.cpp" />
@@ -735,7 +733,6 @@
     <ClInclude Include="Headers\ApplicationStates\MainApplicationState.h" />
     <ClInclude Include="Headers\ApplicationStates\StateManager.h" />
     <ClInclude Include="Headers\Core\DateTime.h" />
-    <ClInclude Include="Headers\Environment\LocalEnvironment.h" />
     <ClInclude Include="Headers\Environment\SkySystem\CloudsSystem.h" />
     <ClInclude Include="Headers\Environment\SkySystem\SkyColourSystem.h" />
     <ClInclude Include="Headers\Core\Months.h" />
@@ -744,16 +741,18 @@
     <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\SunnyEffect.h" />
     <ClInclude Include="Headers\Environment\SkySystem\WeatherSystem.h" />
     <ClInclude Include="Headers\Environment\StarsSystem.h" />
+    <ClInclude Include="Headers\Environment\SunHeightChangedEvent.h" />
     <ClInclude Include="Headers\Environment\SunriseSunsetUtils.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\DirectParticleEmitter.h" />
     <ClInclude Include="Headers\DirectParticlesEmitter\PatricleHitDetect.h" />
     <ClInclude Include="Headers\ApplicationStates\AbstractApplicationState.h" />
     <ClInclude Include="Headers\Logging\Logger.h" />
-    <ClInclude Include="Headers\ToolClasses\IDrawable.h" />
+    <ClInclude Include="Headers\Core\EventSystem\Events\DrawEvent.h" />
+    <ClInclude Include="Headers\Core\EventSystem\EventManager.h" />
     <ClInclude Include="Headers\Auto.h" />
     <ClInclude Include="Headers\ToolClasses\Singleton.h" />
     <ClInclude Include="Headers\ToolClasses\ProxyCall.h" />
-    <ClInclude Include="Headers\ToolClasses\IUpdatable.h" />
+    <ClInclude Include="Headers\Core\EventSystem\Events\UpdateEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

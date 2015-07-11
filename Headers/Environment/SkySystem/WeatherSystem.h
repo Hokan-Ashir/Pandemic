@@ -3,11 +3,11 @@
 
 #include <map>
 
-#include <Headers/ToolClasses/IUpdatable.h>
 #include <Headers/Environment/SkySystem/SkyColourSystem.h>
 #include "CloudsSystem.h"
 #include "WeatherEffects/AbstractWeatherEffect.h"
 #include <Headers/Core/DateTime.h>
+#include <Headers/Core/EventSystem/Events/UpdateEvent.h>
 
 namespace pan {
 	// TODO weather modificators like CLOUDY/NONCLOUDY, THUNDER/NONTHUNDER
@@ -22,20 +22,18 @@ namespace pan {
 		NUMBER_OF_WEATHER_TYPES = WINTER_STORM + 1
 	};
 	
-	class WeatherSystem : public IUpdateable {
+	class WeatherSystem : public BaseEventHandler {
 	public:		
 		WeatherSystem();
 		~WeatherSystem();
-		void setSunHeightOverHorizont(Flt heightOverHorizont);
 		void setWeather(WeatherType weatherType, UShort hoursDuration, UShort minutesDuratuion);
 		void setDefaultWeather();
 		
 		// TODO maybe add setter and getter to WeatherSystem position, if there will be necessarily
 		// to create another rain not just in place where player stays
-		void update() override;
+		void update(const UpdateEvent* event);
 
 	private:
-		void updateWeather();
 		void initializeWeatherTypes();
 
 		/**
@@ -50,7 +48,6 @@ namespace pan {
 		WeatherType defaultWeather;
 		std::map<WeatherType, AbstractWeatherEffect*> weatherTypes;
 
-		Flt sunHeightOverHorizont;
 		CloudsSystem cloudsSystem;
 		SkyColourSystem skyColourSystem;
 	};

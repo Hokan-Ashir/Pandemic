@@ -2,20 +2,20 @@
 #define __DIRECTPARTICLEEMITTER_H__
 
 #include <Engine/Headers/EsenthelEngine.h>
-#include <Headers/ToolClasses/IDrawable.h>
-#include <Headers/ToolClasses/IUpdatable.h>
+#include <Headers/Core/EventSystem/Events/UpdateEvent.h>
+#include <Headers/Core/EventSystem/Events/DrawEvent.h>
 
 namespace pan {
 
 	/**
 	 * Class, that describes emitting set of particles from some position
 	 */
-	class DirectParticleEmitter : public IDrawable, public IUpdateable {
+	class DirectParticleEmitter : public BaseEventHandler {
 	public:
 		DirectParticleEmitter(UID particleImageUID, Vec particlesSourcePosition);
 		~DirectParticleEmitter();
-		void draw() override;
-		void update() override;
+		void draw(const DrawEvent* eventToProceed);
+		void update(const UpdateEvent* eventToProceed);
 		Vec getDirection() const;
 		void setDirection(Vec direction);
 		Flt getParticlesLifeTime() const;

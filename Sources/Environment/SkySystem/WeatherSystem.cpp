@@ -11,16 +11,13 @@ namespace pan {
 	}
 
 	WeatherSystem::WeatherSystem() {
+		EventManager::getInstance()->registerEventHandlerMethod(this, &WeatherSystem::update);
 		initializeWeatherTypes();
 		defaultWeather = SUNNY;
 		setDefaultWeather();		
 	}
 
 	WeatherSystem::~WeatherSystem() {
-	}
-
-	void WeatherSystem::setSunHeightOverHorizont(Flt heightOverHorizont) {
-		this->sunHeightOverHorizont = heightOverHorizont;
 	}
 
 	void WeatherSystem::setWeather(WeatherType weatherType, UShort hoursDuration, UShort minutesDuratuion)	{
@@ -54,10 +51,10 @@ namespace pan {
 		time.minute = USHRT_MAX;
 	}
 
-	void WeatherSystem::updateWeather()	{
+	void WeatherSystem::update(const UpdateEvent* event) {
 		// check if this leads to copying (with using references, not pointers)
 		// TODO check in other same places
-		auto effect = weatherTypes.at(currentWeather);		
+		auto effect = weatherTypes.at(currentWeather);
 
 		auto realTime = DateTime::getInstance()->getDateTime();
 		if (realTime == time) {
@@ -67,13 +64,5 @@ namespace pan {
 		}
 
 		effect->effect();
-	}
-
-	void WeatherSystem::update() {
-		skyColourSystem.setSunHeightOverHorizont(sunHeightOverHorizont);
-		skyColourSystem.update();
-
-		cloudsSystem.update();		
-		updateWeather();
 	}
 }

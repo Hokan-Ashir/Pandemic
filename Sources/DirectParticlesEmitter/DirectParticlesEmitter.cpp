@@ -5,6 +5,8 @@ namespace pan {
 	DirectParticleEmitter::DirectParticleEmitter(UID particleImageUID, Vec particlesSourcePosition) {
 		this->particlesSourcePosition = particlesSourcePosition;
 		this->particleImageUID = particleImageUID;
+		EventManager::getInstance()->registerEventHandlerMethod(this, &DirectParticleEmitter::update);
+		EventManager::getInstance()->registerEventHandlerMethod(this, &DirectParticleEmitter::draw);
 		create();
 	}
 
@@ -26,11 +28,11 @@ namespace pan {
 		particles.damping = 0.98;
 	}
 
-	void DirectParticleEmitter::draw() {
+	void DirectParticleEmitter::draw(const DrawEvent* event) {
 		particles.draw();
 	}
 
-	void DirectParticleEmitter::update() {
+	void DirectParticleEmitter::update(const UpdateEvent* event) {
 		particles.update();
 
 		std::vector<ACTOR_GROUP> actorGroups;

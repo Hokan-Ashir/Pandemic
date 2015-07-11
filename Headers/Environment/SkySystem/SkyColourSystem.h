@@ -2,15 +2,13 @@
 #define __SKYCOLOURSYSTEM_H__
 
 #include <Engine/Headers/EsenthelEngine.h>
-
-#include <Headers/ToolClasses/IUpdatable.h>
+#include <Headers/Environment/SunHeightChangedEvent.h>
 
 namespace pan {
-	class SkyColourSystem : public IUpdateable {
+	class SkyColourSystem : public BaseEventHandler {
 	public:
 		explicit SkyColourSystem();		
-		void update() override;
-		void setSunHeightOverHorizont(Flt sunHeightOverHorizont);
+		void update(const SunHeightChangedEvent* event);
 
 	private:
 		/**
@@ -30,7 +28,6 @@ namespace pan {
 		Vec4 createColour(Byte r, Byte g, Byte b, Byte a = 255);
 		Interpolator<Vec4> horizonColors;
 		Interpolator<Vec4> skyColors;
-		Flt sunHeightOverHorizont;
 	};
 }
 
