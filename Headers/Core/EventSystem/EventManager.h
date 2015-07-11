@@ -108,6 +108,30 @@ namespace pan {
 			}
 		}
 
+		/**
+		* Search through all possible events in handlers-map, find corresponding event-handlers list <p>
+		* and delete instance corresponding of BaseEventHandler <p>
+		* NOTE: Non-derivable from Event classes won't proceed <p>
+		* NOTE: Non-derivable from BaseEventHandler classes won't proceed <p>
+		*
+		* \param T* instance - object, that store event-handler method
+		* \param void (T::*method)(E*) - pointer to event-handler method, that will be deleted
+		*/
+		template <class T, class E>	void unregisterEventHandlerMethod(T* instance, void (T::*method)(E*)) {
+			BOOST_STATIC_ASSERT((boost::is_base_of<Event, E>::value));
+			BOOST_STATIC_ASSERT((boost::is_base_of<BaseEventHandler, T>::value));
+
+			auto it = handlers.find(std::type_index(typeid(E)));
+			if (it != handlers.end()) {
+				for (auto handler : it->second) {
+					if (static_cast<MemberFunctionHandler<T, E> *>(handler)->getInstance() == instance) {
+						it->second.remove(handler);
+						return;
+					}
+				}
+			}			
+		}
+
 	private:
 		/**
 		 * Wrapper-class, base for all event handlers <p>
@@ -123,6 +147,10 @@ namespace pan {
 
 			void call(const Event* eventToProceed) override {
 				(instance->*method)(static_cast<E*>(eventToProceed));
+			}
+		
+			T* getInstance() const {
+				return instance;
 			}
 
 		private:

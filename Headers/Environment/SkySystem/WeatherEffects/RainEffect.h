@@ -3,14 +3,18 @@
 
 #include "AbstractWeatherEffect.h"
 #include <Headers/DirectParticlesEmitter/DirectParticleEmitter.h>
+#include "WeatherTypeEvent.h"
 
 namespace pan {
-	class RainEffect : public AbstractWeatherEffect, public DirectParticleEmitter {
+	class RainEffect : public AbstractWeatherEffect, public BaseEventHandler {
 	public:
-		explicit RainEffect(const UID& particleImageUID = UIDZero, const Vec& particlesSourcePosition = VecZero);
+		explicit RainEffect();
 		void createActions(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) override;
-		void effect() override;
 		void destroyActions() override;
+	protected:
+		void handleEventAction(const WeatherTypeEvent<RAIN>* event);
+	private:
+		DirectParticleEmitter* emitter;
 	};
 }
 

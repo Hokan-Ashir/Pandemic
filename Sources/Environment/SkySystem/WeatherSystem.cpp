@@ -14,7 +14,8 @@ namespace pan {
 		EventManager::getInstance()->registerEventHandlerMethod(this, &WeatherSystem::update);
 		initializeWeatherTypes();
 		defaultWeather = SUNNY;
-		setDefaultWeather();		
+		setDefaultWeather();
+		setWeather(RAIN, 3, 0);
 	}
 
 	WeatherSystem::~WeatherSystem() {
@@ -63,6 +64,7 @@ namespace pan {
 			effect = weatherTypes.at(defaultWeather);
 		}
 
-		effect->effect();
+		WeatherTypeEvent<RAIN> weatherEvent;
+		EventManager::getInstance()->fireEvent(&weatherEvent);
 	}
 }

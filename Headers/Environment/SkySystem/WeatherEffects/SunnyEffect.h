@@ -8,7 +8,6 @@ namespace pan {
 	public:
 		SunnyEffect();
 		void createActions(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) override;
-		void effect() override;
 		void destroyActions() override;		
 	};
 

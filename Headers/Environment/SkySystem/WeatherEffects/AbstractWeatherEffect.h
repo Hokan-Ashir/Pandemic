@@ -13,11 +13,6 @@ namespace pan {
 		virtual ~AbstractWeatherEffect();
 
 		/**
-		 * Actions that weather effect performs
-		 */
-		virtual void effect() = 0;
-
-		/**
 		 * Public, non-overriable wrapper-method around createActions() method. <p>
 		 * This method set "created" flag after createActions() method call
 		 *

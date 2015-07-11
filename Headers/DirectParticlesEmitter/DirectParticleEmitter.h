@@ -2,7 +2,6 @@
 #define __DIRECTPARTICLEEMITTER_H__
 
 #include <Engine/Headers/EsenthelEngine.h>
-#include <Headers/Core/EventSystem/Events/UpdateEvent.h>
 #include <Headers/Core/EventSystem/Events/DrawEvent.h>
 
 namespace pan {
@@ -15,7 +14,7 @@ namespace pan {
 		DirectParticleEmitter(UID particleImageUID, Vec particlesSourcePosition);
 		~DirectParticleEmitter();
 		void draw(const DrawEvent* eventToProceed);
-		void update(const UpdateEvent* eventToProceed);
+		void update();
 		Vec getDirection() const;
 		void setDirection(Vec direction);
 		Flt getParticlesLifeTime() const;

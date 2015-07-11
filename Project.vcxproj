@@ -713,7 +713,7 @@
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
     <ClCompile Include="Sources\Core\DateTime.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\CloudsSystem.cpp" />
-    <ClCompile Include="Sources\Environment\SkySystem\SkySystemSystem.cpp" />
+    <ClCompile Include="Sources\Environment\SkySystem\SkySystem.cpp" />
     <ClCompile Include="Sources\Core\Months.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\WeatherEffects\AbstractWeatherEffect.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\WeatherEffects\RainEffect.cpp" />
@@ -739,6 +739,7 @@
     <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\AbstractWeatherEffect.h" />
     <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\RainEffect.h" />
     <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\SunnyEffect.h" />
+    <ClInclude Include="Headers\Environment\SkySystem\WeatherEffects\WeatherTypeEvent.h" />
     <ClInclude Include="Headers\Environment\SkySystem\WeatherSystem.h" />
     <ClInclude Include="Headers\Environment\StarsSystem.h" />
     <ClInclude Include="Headers\Environment\SunHeightChangedEvent.h" />
