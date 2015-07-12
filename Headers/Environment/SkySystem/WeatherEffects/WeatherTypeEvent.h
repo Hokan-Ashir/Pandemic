@@ -5,7 +5,16 @@
 #include <Headers/Core/EventSystem/EventManager.h>
 
 namespace pan {
-	template<WeatherType N> class WeatherTypeEvent : public Event {
+	class WeatherTypeEvent : public Event {
+	public:
+		explicit WeatherTypeEvent(WeatherType weatherType) : weatherType(weatherType) {}
+
+		WeatherType getWeatherType() const {
+			return weatherType;
+		}
+
+	private:
+		WeatherType weatherType;
 	};	
 }
 

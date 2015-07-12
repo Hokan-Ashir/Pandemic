@@ -92,7 +92,7 @@ namespace pan {
 		 * \param T* instance - object, that store event-handler method
 		 * \param void (T::*method)(E*) - pointer to event-handler method, that will be stored
 		 */
-		template <class T, class E>	void registerEventHandlerMethod(T* instance, void (T::*method)(E*)) {
+		template <class T, class E>	void registerEventHandlerMethod(T* instance, void (T::*method)(E*), bool (T::*predicate)(E*) = nullptr) {
 			BOOST_STATIC_ASSERT((boost::is_base_of<Event, E>::value));
 			BOOST_STATIC_ASSERT((boost::is_base_of<BaseEventHandler, T>::value));
 
@@ -100,10 +100,10 @@ namespace pan {
 			std::list<BaseEventHandler*> list;
 			try {
 				list = handlers.at(key);
-				list.push_back(new MemberFunctionHandler<T, E>(instance, method));
+				list.push_back(new MemberFunctionHandler<T, E>(instance, method, predicate));
 				handlers.at(key) = list;
 			} catch (std::out_of_range e) {
-				list.push_back(new MemberFunctionHandler<T, E>(instance, method));
+				list.push_back(new MemberFunctionHandler<T, E>(instance, method, predicate));
 				handlers.insert(std::make_pair(std::type_index(typeid(E)), list));
 			}
 		}
@@ -142,11 +142,17 @@ namespace pan {
 		template <class T, class E>
 		class MemberFunctionHandler : public BaseEventHandler {
 		public:
-			typedef void (T::*MemberFunc)(E*);
-			MemberFunctionHandler(T* instance, MemberFunc method) : instance(instance), method(method) {};
+			typedef void (T::*Method)(E*);
+			typedef bool (T::*Predicate)(E*);
+			MemberFunctionHandler(T* instance, Method method, Predicate predicate) :
+				instance(instance), method(method), predicate(predicate) {};
 
 			void call(const Event* eventToProceed) override {
-				(instance->*method)(static_cast<E*>(eventToProceed));
+				if (predicate != nullptr && (instance->*predicate)(static_cast<E*>(eventToProceed))) {
+					(instance->*method)(static_cast<E*>(eventToProceed));
+				} else {
+					(instance->*method)(static_cast<E*>(eventToProceed));
+				}
 			}
 		
 			T* getInstance() const {
@@ -155,7 +161,8 @@ namespace pan {
 
 		private:
 			T* instance;
-			MemberFunc method;
+			Method method;
+			Predicate predicate;
 		};
 
 		std::map<std::type_index, std::list<BaseEventHandler*>> handlers;

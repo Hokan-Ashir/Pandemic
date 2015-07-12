@@ -12,7 +12,8 @@ namespace pan {
 		void createActions(CloudsSystem& cloudsSystem, SkyColourSystem& skyColourSystem) override;
 		void destroyActions() override;
 	protected:
-		void handleEventAction(const WeatherTypeEvent<RAIN>* event);
+		void handleEvent(const WeatherTypeEvent* event);
+		bool predicateEvent(const WeatherTypeEvent* event);
 	private:
 		DirectParticleEmitter* emitter;
 	};

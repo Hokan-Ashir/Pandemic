@@ -61,10 +61,9 @@ namespace pan {
 		if (realTime == time) {
 			effect->destroy();
 			setDefaultWeather();
-			effect = weatherTypes.at(defaultWeather);
 		}
 
-		WeatherTypeEvent<RAIN> weatherEvent;
+		WeatherTypeEvent weatherEvent(currentWeather);
 		EventManager::getInstance()->fireEvent(&weatherEvent);
 	}
 }
