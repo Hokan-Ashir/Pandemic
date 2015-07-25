@@ -31,12 +31,6 @@ const UShort MINUTES_IN_HOUR = 60;
  */
 const UShort SECONDS_IN_MINUTE = 60;
 
-/**
- * Time that passes each frame in game
- * 0.015 approximately equal 1 seconds in real life
- */
-const Flt SECOND_TICK = 0.015 * 2500;
-
 namespace pan {
 	/**
 	 * Structure, that represent in-game time in short comparative format 
@@ -138,7 +132,7 @@ namespace pan {
 		 */
 		UShort getDayInYear() const;
 		
-		virtual void update();
+		void update();
 		
 		void setTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year);
 		
@@ -148,6 +142,12 @@ namespace pan {
 		~DateTime();
 
 	private:
+		/**
+		* Time that passes each frame in game
+		* 0.015 approximately equal 1 seconds in real life
+		*/
+		const Flt SECOND_TICK = 0.015 * 2500;
+
 		/**
 		 * Updates time, checking new in-game day is coming <p>
 		 * Nullify minutes, hours if their values overflow limits

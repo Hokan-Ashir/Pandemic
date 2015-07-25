@@ -216,6 +216,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <PrecompiledHeaderFile>Headers\stdafx.h</PrecompiledHeaderFile>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalOptions>/IGNORE:4078 %(AdditionalOptions)</AdditionalOptions>
@@ -713,7 +714,7 @@
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
     <ClCompile Include="Sources\Core\DateTime.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\CloudsSystem.cpp" />
-    <ClCompile Include="Sources\Environment\SkySystem\SkySystem.cpp" />
+    <ClCompile Include="Sources\Environment\SkySystem\SkyColourSystem.cpp" />
     <ClCompile Include="Sources\Core\Months.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\WeatherEffects\AbstractWeatherEffect.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\WeatherEffects\RainEffect.cpp" />

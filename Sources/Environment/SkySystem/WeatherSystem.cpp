@@ -15,7 +15,6 @@ namespace pan {
 		initializeWeatherTypes();
 		defaultWeather = SUNNY;
 		setDefaultWeather();
-		setWeather(RAIN, 3, 0);
 	}
 
 	WeatherSystem::~WeatherSystem() {

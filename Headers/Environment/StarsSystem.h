@@ -1,4 +1,4 @@
-#ifndef __STARSSYSTEM_H__
+﻿#ifndef __STARSSYSTEM_H__
 #define __STARTSSYSTEM_H__
 
 #include <Engine/Headers/EsenthelEngine.h>
@@ -11,6 +11,12 @@ namespace pan {
 	 * Star that create and control movement of binary in-game star system <p>
 	 * Both stars moving around stars barycenter (center of star masses), <p>
 	 * while barycenter moves circularly, imitating sunset/sunrise on surface
+	 *
+	 * IMPORTANT:
+	 * Cause "rays_colour" parameter, which describes sun's brightness (and also colour of "God's rays")
+	 * only takes effect on so called "Main Sun" (extern Sun variable from Sun.h), main star (named vigilantEye)
+	 * is represented by extern Sun variable and lesser star (named allseeingEye) represented by SunClass variable
+	 * (and because of this allseeingEye can't shine)
 	 */
 	class StarsSystem : public BaseEventHandler {
 	public:
@@ -19,8 +25,7 @@ namespace pan {
 		Flt getBarycenterHeightOverHorizont() const;		
 
 	private:
-		struct Star {
-			SunClass sun;
+		struct StarParameters {
 			Flt radiusToBarycenter;	
 			Flt angleSpeed;
 			Flt angle;
@@ -30,6 +35,14 @@ namespace pan {
 		 * Angle of full circle (whole degrees, that sun (barycenter) passes through day)
 		 */
 		const UShort FULL_CIRCLE_ANGLE = 360;
+
+		/**
+		 * Coefficient of brightness calculation formula, that represent speed, with which
+		 * brightness increase during forenoon and decrease during afternoon
+		 *
+		 * Mathematicaly this is "lambda" parameter of exponential distribution
+		 */
+		const Flt brightnessCoefficient = 2.5;
 
 		Flt calculateDayLength(Flt worldLatitude) const;
 		Flt calculateNightLength(Flt worldLatitude) const;
@@ -101,18 +114,15 @@ namespace pan {
 		// calculate hour on circle
 		Flt calculateHourAngle(Flt hour) const;
 
-		void setStarsRaysAndHeighlight();
-		void setSunRaysAndHeighlight(SunClass* sun);
-
 		void updateBarycenterPosition();
 		void setStarsPositions();
-		void setStarPosition(Star* star);
+		void updateVigilantEyeRaysColour();
+		Vec getUpdatedStarPosition(StarParameters* star);
 
-		void normalizeStartsPositionsAndHeightLight();
-		void normalizeAndSetHeightLight(SunClass* sun);
+		void normalizeStarsPositions();
 		
 		void createVigilantEye();
-		void createAllSeeinggEye();
+		void createAllSeeingEye();
 
 		/**
 		 * Set barycenter position based on time, <p>
@@ -141,9 +151,28 @@ namespace pan {
 		 * See documentation to calculateBaryCenterOffset() method
 		 */
 		Flt barycenterOffset;
+
+		/**
+		 * Position of barycenter in midday, using to calculate brightness ratio of current sun's position
+		 * see updateVigilantEyeRaysColour() method calculations
+		 */
+		Flt middayBarycenterPosition;
+
+		/**
+		 * Colour of main sun's rays in midday (describe sun's brightness)
+		 *
+		 * TODO half of this value during winter months
+		 * see https://de.wikipedia.org/wiki/Beleuchtungsstärke
+		 */
+		static Vec middayRaysColour;
 	
-		Star vigilantEye;
-		Star allSeeingEye;
+		StarParameters vigilantEyeParameters;
+
+		/**
+		 * Second star (allSeeingEye), see comment to this class for more info
+		 */
+		SunClass allSeeingEyeSun;
+		StarParameters allSeeingEyeParameters;
 	};
 }
 

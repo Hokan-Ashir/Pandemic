@@ -21,7 +21,6 @@ namespace pan {
 		*/
 		const UShort SUN_HEIGHT = 2;
 
-		Flt getHeightOverHorizont(Flt hour) const;
 		void initializeHorisonColourInterpolator();
 		void initializeSkyColourInterpolator();
 		void setSkyColour(Flt sunHeightOverHorizont);

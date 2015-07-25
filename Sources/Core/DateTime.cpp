@@ -73,7 +73,9 @@ namespace pan {
 	void DateTime::update() {
 		// if you want to speed up in-game time, slow it down, or even stop
 		// just change increment value of "time", or change SECOND_TICK constant
-		time += SECOND_TICK;
+		//if (Kb.b(KB_1)) {
+			time += SECOND_TICK;
+		//}
 		
 		// check new day coming
 		updateTime();
@@ -90,7 +92,7 @@ namespace pan {
 	}
 
 	DateTime::DateTime() {
-		setTime(0, 0, DAYS_IN_YEAR / 2, WINTER_1, START_YEAR);
+		setTime(0 * (SECONDS_IN_MINUTE * MINUTES_IN_HOUR) + 0 * SECONDS_IN_MINUTE, 0, DAYS_IN_YEAR / 2, WINTER_1, START_YEAR);
 	}
 
 	DateTime::~DateTime() {
