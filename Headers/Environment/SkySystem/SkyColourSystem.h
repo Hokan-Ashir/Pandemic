@@ -23,8 +23,13 @@ namespace pan {
 
 		void initializeHorisonColourInterpolator();
 		void initializeSkyColourInterpolator();
+
+		/**
+		 * Fills colour interpolator with gradient-like horizontal-oriented image
+		 * (preferabaly 1px height)
+		 */
+		void fillInterpolatorWithImageData(Interpolator<Vec4>* interpolator, UID imageUID);
 		void setSkyColour(Flt sunHeightOverHorizont);
-		Vec4 createColour(Byte r, Byte g, Byte b, Byte a = 255);
 		Interpolator<Vec4> horizonColors;
 		Interpolator<Vec4> skyColors;
 	};

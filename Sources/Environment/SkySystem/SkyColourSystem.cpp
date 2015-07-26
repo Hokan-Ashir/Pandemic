@@ -14,20 +14,8 @@ namespace pan {
 		horizonColors.max_x = SUN_HEIGHT;
 
 		// TODO make latitude/day-of-year-dependent sky/horizont colour changes
-		// loading sky/horizont colour via gradient image
-		horizonColors.add(-SUN_HEIGHT, createColour(30, 40, 56));
-
-		horizonColors.add(-1, createColour(30, 40, 56));
-		horizonColors.add(-0.75, createColour(30, 40, 56));
-		horizonColors.add(-0.5, createColour(65, 86, 112));
-		horizonColors.add(-0.25, createColour(114, 68, 56));
-		horizonColors.add(0, createColour(145, 84, 99));
-		horizonColors.add(0.25, createColour(232, 193, 115));
-		horizonColors.add(0.5, createColour(113, 234, 222));
-		horizonColors.add(0.75, createColour(155, 240, 232));
-		horizonColors.add(1, createColour(201, 248, 243));
-		
-		horizonColors.add(SUN_HEIGHT, createColour(201, 248, 243));
+		auto horizonColourImageUID = UID(220838454, 1105424687, 738437037, 3218905559); // Images/Sky/HorizontColour
+		fillInterpolatorWithImageData(&horizonColors, horizonColourImageUID);
 	}
 
 	void SkyColourSystem::initializeSkyColourInterpolator() {
@@ -35,26 +23,31 @@ namespace pan {
 		skyColors.min_x = -SUN_HEIGHT;
 		skyColors.max_x = SUN_HEIGHT;
 
-		Vec4 colour(15, 31, 47, 255);
-		auto hsbColor =  RgbToHsb(colour.v3());
-		skyColors.add(-SUN_HEIGHT, colour / 255);
-
-		for (auto i = -1.0; i <= 1.0; i += 0.25) {
-			colour = Vec4(HsbToRgb(hsbColor), 255);
-			skyColors.add(i, colour / 255);
-			// during night sky become brighter/darker faster than during day
-			if (i >= 0) {
-				hsbColor.z += 18.5;
-			} else {				
-				hsbColor.z += 25;
-			}
-		}
-		
-		skyColors.add(SUN_HEIGHT, colour / 255);
+		auto skyColourImageUID = UID(1536787649, 1302548901, 3357141931, 2032443279); // Images/Sky/SkyColour
+		fillInterpolatorWithImageData(&skyColors, skyColourImageUID);
 	}
 
-	Vec4 SkyColourSystem::createColour(Byte r, Byte g, Byte b, Byte a) {
-		return Vec4(r, g, b, a) / 255;
+	void SkyColourSystem::fillInterpolatorWithImageData(Interpolator<Vec4>* interpolator, UID imageUID) {
+		ImagePtr image = imageUID;
+		Int width = image()->w();
+		Int height = image()->h();
+
+		image()->lockRead();
+		Vec4 color = image()->color(0, height - 1).asVec4();
+		interpolator->add(-SUN_HEIGHT, color);
+
+		int index;
+		for (auto i = -1.0; i <= 1.0; i += 0.25)	{
+			index = (i + 1) * ((width - 1) / 2);
+			color = image()->color(index, height - 1).asVec4();
+			interpolator->add(i, color);
+		}
+
+		color = image()->color(width - 1, height - 1).asVec4();
+		interpolator->add(SUN_HEIGHT, color);
+		image()->unlock();
+
+		image = NULL;
 	}
 
 	void SkyColourSystem::setSkyColour(Flt sunHeightOverHorizont) {
