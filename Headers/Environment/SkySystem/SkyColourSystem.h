@@ -19,7 +19,9 @@ namespace pan {
 		 * real sun height in highest point is 1 + 1 = 2
 		 * and in lowest point is -1 + (-1) = -2
 		*/
-		const UShort SUN_HEIGHT = 2;
+		const Flt MAXIMUM_SUN_HEIGHT = 2.0;
+
+		const Flt INTERPOLATION_STEP = 0.25;
 
 		void initializeHorisonColourInterpolator();
 		void initializeSkyColourInterpolator();

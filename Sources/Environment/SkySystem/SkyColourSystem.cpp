@@ -10,8 +10,8 @@ namespace pan {
 
 	void SkyColourSystem::initializeHorisonColourInterpolator() {
 		horizonColors.loop = true;
-		horizonColors.min_x = -SUN_HEIGHT;
-		horizonColors.max_x = SUN_HEIGHT;
+		horizonColors.min_x = -MAXIMUM_SUN_HEIGHT;
+		horizonColors.max_x = MAXIMUM_SUN_HEIGHT;
 
 		// TODO make latitude/day-of-year-dependent sky/horizont colour changes
 		auto horizonColourImageUID = UID(220838454, 1105424687, 738437037, 3218905559); // Images/Sky/HorizontColour
@@ -20,8 +20,8 @@ namespace pan {
 
 	void SkyColourSystem::initializeSkyColourInterpolator() {
 		skyColors.loop = true;
-		skyColors.min_x = -SUN_HEIGHT;
-		skyColors.max_x = SUN_HEIGHT;
+		skyColors.min_x = -MAXIMUM_SUN_HEIGHT;
+		skyColors.max_x = MAXIMUM_SUN_HEIGHT;
 
 		auto skyColourImageUID = UID(1536787649, 1302548901, 3357141931, 2032443279); // Images/Sky/SkyColour
 		fillInterpolatorWithImageData(&skyColors, skyColourImageUID);
@@ -34,17 +34,17 @@ namespace pan {
 
 		image()->lockRead();
 		Vec4 color = image()->color(0, height - 1).asVec4();
-		interpolator->add(-SUN_HEIGHT, color);
+		interpolator->add(-MAXIMUM_SUN_HEIGHT, color);
 
 		int index;
-		for (auto i = -1.0; i <= 1.0; i += 0.25)	{
-			index = (i + 1) * ((width - 1) / 2);
+		for (auto i = -MAXIMUM_SUN_HEIGHT / 2; i <= MAXIMUM_SUN_HEIGHT / 2; i += INTERPOLATION_STEP) {
+			index = (i + MAXIMUM_SUN_HEIGHT / 2) * ((width - 1) / 2);
 			color = image()->color(index, height - 1).asVec4();
 			interpolator->add(i, color);
 		}
 
 		color = image()->color(width - 1, height - 1).asVec4();
-		interpolator->add(SUN_HEIGHT, color);
+		interpolator->add(MAXIMUM_SUN_HEIGHT, color);
 		image()->unlock();
 
 		image = NULL;

@@ -6,8 +6,6 @@
 #include <Headers/Environment/SunHeightChangedEvent.h>
 
 namespace pan {
-	// TODO On high latitudes stars move too fast and rotates too fast
-
 	Vec StarsSystem::middayRaysColour = Vec(192.0, 186.0, 98.0);		
 	
 	StarsSystem::StarsSystem() {
@@ -35,9 +33,7 @@ namespace pan {
 
 	void StarsSystem::createVigilantEye() {
 		vigilantEyeParameters.radiusToBarycenter = -0.4;
-		// TODO dramaticly decrease this value during real time flow
-		// full round of star must be like in a year or more
-		vigilantEyeParameters.angleSpeed = 0.002;
+		vigilantEyeParameters.angleSpeed = 0.00002;
 		vigilantEyeParameters.angle = 0;
 	}
 
@@ -51,10 +47,8 @@ namespace pan {
 		allSeeingEyeSun.image_color.set(imageColour.x, imageColour.y, imageColour.z);
 		allSeeingEyeSun.glow = 255;
 
-		allSeeingEyeParameters.radiusToBarycenter = 0.4;
-		// TODO dramaticly decrease this value during real time flow
-		// full round of star must be like in a year or more		
-		allSeeingEyeParameters.angleSpeed = 0.002;
+		allSeeingEyeParameters.radiusToBarycenter = -0.44;		
+		allSeeingEyeParameters.angleSpeed = 0.00002;
 		allSeeingEyeParameters.angle = 0;
 	}
 
