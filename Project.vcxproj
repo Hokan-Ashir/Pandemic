@@ -734,6 +734,9 @@
     <ClInclude Include="Headers\ApplicationStates\MainApplicationState.h" />
     <ClInclude Include="Headers\ApplicationStates\StateManager.h" />
     <ClInclude Include="Headers\Core\DateTime.h" />
+    <ClInclude Include="Headers\Core\NewDayEvent.h" />
+    <ClInclude Include="Headers\Core\NewMonthEvent.h" />
+    <ClInclude Include="Headers\Core\NewYearEvent.h" />
     <ClInclude Include="Headers\Environment\SkySystem\CloudsSystem.h" />
     <ClInclude Include="Headers\Environment\SkySystem\SkyColourSystem.h" />
     <ClInclude Include="Headers\Core\Months.h" />

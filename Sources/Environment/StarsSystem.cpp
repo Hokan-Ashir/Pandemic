@@ -6,11 +6,14 @@
 #include <Headers/Environment/SunHeightChangedEvent.h>
 
 namespace pan {
-	Vec StarsSystem::middayRaysColour = Vec(192.0, 186.0, 98.0);		
+	const Vec StarsSystem::MIDYEAR_MIDDAY_RAYS_COLOUR = Vec(192.0, 186.0, 98.0);		
 	
 	StarsSystem::StarsSystem() {
+		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateMiddayRaysIntensity);
 		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::update);
 		updateBarycenterOffset();
+		NewDayEvent event(DateTime::getInstance()->getDayInYear());
+		updateMiddayRaysIntensity(&event);
 		auto time = DateTime::getInstance()->getFloatTime();
 		setBarycenterPosition(time);
 
@@ -47,7 +50,7 @@ namespace pan {
 		allSeeingEyeSun.image_color.set(imageColour.x, imageColour.y, imageColour.z);
 		allSeeingEyeSun.glow = 255;
 
-		allSeeingEyeParameters.radiusToBarycenter = -0.04;		
+		allSeeingEyeParameters.radiusToBarycenter = -0.08;		
 		allSeeingEyeParameters.angleSpeed = 0.00002;
 		allSeeingEyeParameters.angle = 0;
 	}
@@ -126,6 +129,29 @@ namespace pan {
 		updateVigilantEyeRaysColour();
 		
 		Astros.add(allSeeingEyeSun);
+	}
+
+	void StarsSystem::updateMiddayRaysIntensity(const NewDayEvent* eventToProceed) {
+		auto dayInYear = eventToProceed->getNewDayNumberInYear();
+		/*
+		Originaly we have [0; DAYS_IN_YEAR] interval
+		At DAYS_IN_YEAR / 2 day sun rays intensity equal MIDYEAR_MIDDAY_RAYS_COLOUR
+		At 0 day and DAYS_IN_YEAR day sun rays intensity equal (3 * MIDYEAR_MIDDAY_RAYS_COLOUR / 4)
+		So before we calculate rays intensity in current day, we divide interval by half
+		making it [0; DAYS_IN_YEAR / 2] and translate current day to this interval
+		*/
+		if (dayInYear > DAYS_IN_YEAR / 2) {
+			dayInYear -= (dayInYear - DAYS_IN_YEAR / 2) * 2;
+		}
+
+		/*
+		After interval dividing, assuming that rays intensity at DAYS_IN_YEAR / 2 day is "a"
+		we have sun rays intensity at 0 day as "3a / 4"
+		So common formula for rays intensity at any day in year is:
+		I = 3a / 4 + day / (DAYS_IN_YEAR / 2) * (a - 3a / 4)
+		*/
+		middayRaysColour = 3 * MIDYEAR_MIDDAY_RAYS_COLOUR / 4 
+			+ (static_cast<Flt>(dayInYear * 2) / DAYS_IN_YEAR) * (MIDYEAR_MIDDAY_RAYS_COLOUR - 3 * MIDYEAR_MIDDAY_RAYS_COLOUR / 4);
 	}
 
 	Flt StarsSystem::calculateDayLength(Flt worldLatitude) const {

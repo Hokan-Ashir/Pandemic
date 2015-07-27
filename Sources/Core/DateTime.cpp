@@ -1,5 +1,8 @@
 #include <Engine/Headers/EsenthelEngine.h>
 #include <Headers/Core/DateTime.h>
+#include <Headers/Core/NewDayEvent.h>
+#include <Headers/Core/NewMonthEvent.h>
+#include <Headers/Core/NewYearEvent.h>
 
 namespace pan {
 
@@ -50,6 +53,9 @@ namespace pan {
 			time -= HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE;
 			dayInYear++;
 			dayInMonth++;
+
+			NewDayEvent event(dayInYear);
+			EventManager::getInstance()->fireEvent(&event);
 		}
 	}
 
@@ -60,6 +66,9 @@ namespace pan {
 			if (month > NUMBER_OF_MONTHS) {
 				month = WINTER_1;
 			}
+
+			NewMonthEvent event(month);
+			EventManager::getInstance()->fireEvent(&event);
 		}
 	}
 
@@ -67,6 +76,9 @@ namespace pan {
 		if (dayInYear == DAYS_IN_YEAR) {
 			dayInYear = 0;
 			year++;
+
+			NewYearEvent event(year);
+			EventManager::getInstance()->fireEvent(&event);
 		}
 	}
 

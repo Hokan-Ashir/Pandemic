@@ -5,6 +5,7 @@
 
 #include <Headers/Core/EventSystem/EventManager.h>
 #include <Headers/Core/EventSystem/Events/UpdateEvent.h>
+#include <Headers/Core/NewDayEvent.h>
 
 namespace pan {
 	/**
@@ -22,6 +23,12 @@ namespace pan {
 	public:
 		explicit StarsSystem();
 		void update(const UpdateEvent* eventToProceed);
+
+		/**
+		 * Calculate midday rays intensity for current day, based on mid year midday rays intensity 
+		 * (MIDYEAR_MIDDAY_RAYS_COLOUR class member)
+		 */
+		void updateMiddayRaysIntensity(const NewDayEvent* eventToProceed);
 		Flt getBarycenterHeightOverHorizont() const;		
 
 	private:
@@ -159,20 +166,21 @@ namespace pan {
 		Flt middayBarycenterPosition;
 
 		/**
-		 * Colour of main sun's rays in midday (describe sun's brightness)
-		 *
-		 * TODO half of this value during winter months
-		 * see https://de.wikipedia.org/wiki/Beleuchtungsstärke
+		 * Colour of main sun's rays in midday at (DAYS_IN_YEAR / 2) day (describe sun's brightness)
 		 */
-		static Vec middayRaysColour;
-	
-		StarParameters vigilantEyeParameters;
+		const static Vec MIDYEAR_MIDDAY_RAYS_COLOUR;
+
+		/**
+		 * Colour of main sun's rays in midday at CURRENT day (describe sun's brightness)
+		 */
+		Vec middayRaysColour;		
 
 		/**
 		 * Second star (allSeeingEye), see comment to this class for more info
 		 */
 		SunClass allSeeingEyeSun;
 		StarParameters allSeeingEyeParameters;
+		StarParameters vigilantEyeParameters;
 	};
 }
 
