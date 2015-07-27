@@ -31,11 +31,11 @@ namespace pan {
 
 		// coefficient that adds to sunrise time each 10 latitude degrees above/under equator
 		// this is used for more accurate real sunrise simulation with Guassian distribution function
-		const Flt LATITUDE_SUNRISE_COEFFICIENT = 0.3;
+		const Flt LATITUDE_SUNRISE_COEFFICIENT = 0.6;
 
 		// coefficient that adds to sunset time each 10 latitude degrees above/under equator
 		// this is used for more accurate real sunset simulation with Guassian distribution function
-		const Flt LATITUDE_SUNSET_COEFFICIENT = -0.6;		
+		const Flt LATITUDE_SUNSET_COEFFICIENT = -0.05;		
 
 		UShort getSunriseHour(Flt latitureDegree) {
 			// not necessary casting cause compiler will do it itself, but more understandible
@@ -75,7 +75,7 @@ namespace pan {
 		Flt getSunriseTime(Flt latitudeDegree) {
 			auto mu = static_cast<Flt>(GUASSIAN_X_RANGE) / 2;
 			auto sigma = getLatitideSigma(latitudeDegree);
-			auto latitudeTime = getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, mu, sigma) * HOURS_IN_DAY / 2;
+			auto latitudeTime = getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
 			latitudeTime += EQUATOR_DEFAULT_SUNRISE_HOUR + LATITUDE_SUNRISE_COEFFICIENT * latitudeDegree / 10;
 			while (latitudeTime >= HOURS_IN_DAY) {
 				latitudeTime -= HOURS_IN_DAY;
@@ -87,7 +87,7 @@ namespace pan {
 		Flt getSunsetTime(Flt latitudeDegree) {
 			auto mu = static_cast<Flt>(GUASSIAN_X_RANGE) / 2;
 			auto sigma = getLatitideSigma(latitudeDegree);
-			auto latitudeTime = -getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, mu, sigma) * HOURS_IN_DAY / 2;
+			auto latitudeTime = -getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
 			latitudeTime += EQUATOR_DEFAULT_SUNSET_HOUR + LATITUDE_SUNSET_COEFFICIENT * latitudeDegree / 10;
 			while (latitudeTime >= HOURS_IN_DAY) {
 				latitudeTime -= HOURS_IN_DAY;

@@ -32,7 +32,7 @@ namespace pan {
 	}
 
 	void StarsSystem::createVigilantEye() {
-		vigilantEyeParameters.radiusToBarycenter = -0.4;
+		vigilantEyeParameters.radiusToBarycenter = 0;
 		vigilantEyeParameters.angleSpeed = 0.00002;
 		vigilantEyeParameters.angle = 0;
 	}
@@ -47,7 +47,7 @@ namespace pan {
 		allSeeingEyeSun.image_color.set(imageColour.x, imageColour.y, imageColour.z);
 		allSeeingEyeSun.glow = 255;
 
-		allSeeingEyeParameters.radiusToBarycenter = -0.44;		
+		allSeeingEyeParameters.radiusToBarycenter = -0.04;		
 		allSeeingEyeParameters.angleSpeed = 0.00002;
 		allSeeingEyeParameters.angle = 0;
 	}
