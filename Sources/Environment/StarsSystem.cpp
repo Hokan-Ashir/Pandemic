@@ -9,29 +9,19 @@ namespace pan {
 	const Vec StarsSystem::MIDYEAR_MIDDAY_RAYS_COLOUR = Vec(192.0, 186.0, 98.0);		
 	
 	StarsSystem::StarsSystem() {
-		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateMiddayRaysIntensity);
+		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateNewDayIncoming);
 		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::update);
+		// TODO subscribe to event like "NewWorldSetEvent"
+		sunInclination = util::POLAR_LATITUDE - util::WORLD_LATITUDE;
 		updateBarycenterOffset();
 		NewDayEvent event(DateTime::getInstance()->getDayInYear());
-		updateMiddayRaysIntensity(&event);
-		auto time = DateTime::getInstance()->getFloatTime();
-		setBarycenterPosition(time);
+		updateNewDayIncoming(&event);
+		updateBarycenterPosition();
 
 		createVigilantEye();
 		createAllSeeingEye();	
 		
 		Astros.add(allSeeingEyeSun);
-	}
-
-	void StarsSystem::setBarycenterPosition(Flt time) {
-		// TODO get this value from something like WorldManager
-		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
-		phi = DegToRad(calculateHourAngle(time) - calculateHourAngle(sunriseTime)) + Asin(barycenterOffset);
-		theta = DegToRad(90.0f);
-		barycenterPosition.x = Sin(theta) * Cos(phi);
-		barycenterPosition.y = Sin(theta) * Sin(phi);
-		barycenterPosition.z = Cos(theta);
-		barycenterPosition.y -= barycenterOffset;
 	}
 
 	void StarsSystem::createVigilantEye() {
@@ -117,6 +107,89 @@ namespace pan {
 		EventManager::getInstance()->fireEvent(&event);
 	}
 
+	/**
+	 * To simulate sunset/sunrise offsets during year, according to this
+	 * http://notesfromnoosphere.blogspot.ca/2012/05/simple-geometry-of-sun-paths.html
+	 *
+	 * sun has negative offset during June solstice and positive offset during December solstice
+	 * (sign of offset is taken from Z-axis orientation in Esenthel Engine).
+	 *
+	 * To calculate sun's offset correctly we must emulate this function
+	 * Assuming number of days in year = 365
+	 * -------- March equinox day (20th March) = 79
+	 * -------- June solstice day (20th June) = 172
+	 * -------- September equinox day (23th September) = 266
+	 * -------- December solstice day (22th December) = 356
+	 * -------- June's solstice offset = -0.4
+	 * -------- December's solstice offset = 0.4
+	 * sun's offset function will be look like:
+	 *
+	 *     |         |         |
+	 * z <-|---------|---------|---------
+	 *     |         |         |
+	 *    356        79       172
+	 *   (0,4)       266      (-0.4)
+	 *               (0.0)
+	 *
+	 * offset for 0-day (0,36) will be calculated like this:
+	 *
+	 * offset_range = 0.4 - 0.0
+	 * end_year_days = 365 - 356
+	 * zero_day_offset = 0.4 - (offset_range / (end_year_days + 79)) * end_year_days
+	 *
+	 * offsets
+	 *     |
+	 * 0,4 |                       *
+	 *     |                      * *
+	 * 0,36| *                   *   *
+	 *     |  *                 *
+	 *     |   *               *
+	 *     |    *             * 
+	 *     |-----*-----------*---------------------------------- days
+	 *     | 0   79   172  266   356 365
+	 *     |       *       *
+	 *     |        *     *
+	 *     |         *   *
+	 *     |          * *
+	 * -0,4|           *
+	 *     |
+	 *
+	 * 
+	 * This function perfectly brokes to three intervals 
+	 * - descending interval [0; 172]
+	 * - ascending interval [172; 356]
+	 * - descending interval [356; 365]
+	 * which are calculated in this method
+	 */
+	Flt StarsSystem::getSunsetSunriseHorizontOffset(UShort dayInYear) {
+		auto zeroDayOffset = lateSolsticeOffset - (lateSolsticeOffset / (DAYS_IN_YEAR - LATE_SOLSTICE_DAY + EARLY_EQUINOX_DAY)) 
+			* (DAYS_IN_YEAR - LATE_SOLSTICE_DAY);
+
+		Flt resultOffset = 0;
+		if (dayInYear >= 0 && dayInYear < EARLY_SOLSTICE_DAY) {
+			resultOffset = zeroDayOffset - ((Abs(earlySolsticeOffset) + zeroDayOffset) / EARLY_SOLSTICE_DAY) * dayInYear;
+		} else if (dayInYear >= EARLY_SOLSTICE_DAY && dayInYear < LATE_SOLSTICE_DAY) {
+			resultOffset = earlySolsticeOffset
+				+ ((Abs(earlySolsticeOffset) + zeroDayOffset) / (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY)) * (dayInYear - EARLY_SOLSTICE_DAY);
+		} else if (dayInYear >= LATE_SOLSTICE_DAY && dayInYear <= DAYS_IN_YEAR) {
+			resultOffset = lateSolsticeOffset
+				- ((lateSolsticeOffset - zeroDayOffset) / (DAYS_IN_YEAR - LATE_SOLSTICE_DAY)) * (dayInYear - LATE_SOLSTICE_DAY);
+		}
+
+		return resultOffset;
+	}
+
+	void StarsSystem::setBarycenterPosition(Flt time) {
+		// TODO get this value from something like WorldManager
+		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
+		phi = DegToRad(calculateHourAngle(time) - calculateHourAngle(sunriseTime)) + Asin(barycenterOffset);
+		theta = DegToRad(90.0f);
+		barycenterPosition.x = Cos(phi);
+		barycenterPosition.y = Sin(sunInclination) * Sin(phi);
+		barycenterPosition.z = Sin(phi) * Cos(sunInclination) + sunHorizonOffset;
+		barycenterPosition.y -= barycenterOffset;
+	}
+
 	void StarsSystem::update(const UpdateEvent* eventToProceed) {
 		// because Esenthel Engine set position of Astro object only once
 		// during adding it to Astro container, to implement movement of two suns
@@ -131,8 +204,7 @@ namespace pan {
 		Astros.add(allSeeingEyeSun);
 	}
 
-	void StarsSystem::updateMiddayRaysIntensity(const NewDayEvent* eventToProceed) {
-		auto dayInYear = eventToProceed->getNewDayNumberInYear();
+	void StarsSystem::updateMiddayRaysIntensity(UShort dayInYear) {
 		/*
 		Originaly we have [0; DAYS_IN_YEAR] interval
 		At DAYS_IN_YEAR / 2 day sun rays intensity equal MIDYEAR_MIDDAY_RAYS_COLOUR
@@ -150,8 +222,16 @@ namespace pan {
 		So common formula for rays intensity at any day in year is:
 		I = 3a / 4 + day / (DAYS_IN_YEAR / 2) * (a - 3a / 4)
 		*/
+
 		middayRaysColour = 3 * MIDYEAR_MIDDAY_RAYS_COLOUR / 4 
 			+ (static_cast<Flt>(dayInYear * 2) / DAYS_IN_YEAR) * (MIDYEAR_MIDDAY_RAYS_COLOUR - 3 * MIDYEAR_MIDDAY_RAYS_COLOUR / 4);
+	}
+
+	void StarsSystem::updateNewDayIncoming(const NewDayEvent* eventToProceed) {
+		auto dayInYear = eventToProceed->getNewDayNumberInYear();		
+		updateMiddayRaysIntensity(dayInYear);
+
+		sunHorizonOffset = getSunsetSunriseHorizontOffset(dayInYear);
 	}
 
 	Flt StarsSystem::calculateDayLength(Flt worldLatitude) const {
@@ -179,7 +259,8 @@ namespace pan {
 		return Sin(phi) - barycenterOffset;
 	}
 
-	void StarsSystem::updateBarycenterOffset() {		
+	void StarsSystem::updateBarycenterOffset() {
+		// TODO subscribe to event like "NewWorldSetEvent"
 		barycenterOffset = calculateBaryCenterOffset(util::WORLD_LATITUDE);		
 		if (barycenterOffset < 0) {
 			middayBarycenterPosition = 1.0 + barycenterOffset;

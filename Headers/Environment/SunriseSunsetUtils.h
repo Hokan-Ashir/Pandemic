@@ -43,6 +43,9 @@ namespace pan {
 		// temporary store world latitude here
 		const Flt WORLD_LATITUDE = 0;
 
+		// polar latitude in degreees
+		const UShort POLAR_LATITUDE = 90;
+
 		UShort getSunriseHour(Flt latitudeDegree);
 		UShort getSunriseMinute(Flt latitudeDegree);
 		UShort getSunsetHour(Flt latitudeDegree);

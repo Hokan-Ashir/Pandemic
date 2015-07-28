@@ -12,10 +12,7 @@ namespace pan {
 		// NOTE: technically it's possible to use 0.0 value for polar sigma,
 		// but sunset/sunrise time approximation via Guassian distribution is not
 		// accurate enough to give correct results with polar sigma = 0.0
-		const Flt POLAR_SIGMA = 0.7;
-
-		// polar latitude in degreees
-		const UShort POLAR_LATITUDE = 90;
+		const Flt POLAR_SIGMA = 0.7;		
 
 		// default sunrise hour on equator in 0 hour at first month
 		const UShort EQUATOR_DEFAULT_SUNRISE_HOUR = 4;

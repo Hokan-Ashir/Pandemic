@@ -22,13 +22,8 @@ namespace pan {
 	class StarsSystem : public BaseEventHandler {
 	public:
 		explicit StarsSystem();
-		void update(const UpdateEvent* eventToProceed);
-
-		/**
-		 * Calculate midday rays intensity for current day, based on mid year midday rays intensity 
-		 * (MIDYEAR_MIDDAY_RAYS_COLOUR class member)
-		 */
-		void updateMiddayRaysIntensity(const NewDayEvent* eventToProceed);
+		void update(const UpdateEvent* eventToProceed);				
+		void updateNewDayIncoming(const NewDayEvent* eventToProceed);
 		Flt getBarycenterHeightOverHorizont() const;		
 
 	private:
@@ -141,6 +136,14 @@ namespace pan {
 		 */
 		void setBarycenterPosition(Flt time);
 
+		Flt getSunsetSunriseHorizontOffset(UShort dayInYear);
+
+		/**
+		* Calculate midday rays intensity for current day, based on mid year midday rays intensity
+		* (MIDYEAR_MIDDAY_RAYS_COLOUR class member)
+		*/
+		void updateMiddayRaysIntensity(UShort dayInYear);
+
 		/**
 		 * Theta angle in spherical coordinate system <p>
 		 * Mathematical case, where theta is angle in XY-plane, NOT in YZ-plane
@@ -152,6 +155,21 @@ namespace pan {
 		 * Mathematical case, where theta is angle in YZ-plane, NOT in XY-plane
 		 */
 		Flt phi;
+
+		const Flt earlySolsticeOffset = -0.4;
+
+		const Flt lateSolsticeOffset = 0.4;
+
+		/**
+		 * Sun's inclination for current latitude
+		 */
+		Flt sunInclination;
+
+		/**
+		* Sun's horizont offset for current day
+		*/
+		Flt sunHorizonOffset;
+
 		Vec barycenterPosition;
 
 		/**

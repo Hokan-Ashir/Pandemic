@@ -31,6 +31,21 @@ const UShort MINUTES_IN_HOUR = 60;
  */
 const UShort SECONDS_IN_MINUTE = 60;
 
+// temporary store planet axis tilt here
+const Flt AXIS_TILT = 19.8;
+
+// "December" solstice day
+const UShort LATE_SOLSTICE_DAY = DAYS_IN_YEAR - (DAYS_IN_YEAR * AXIS_TILT / 1000);
+
+// "June" solstice day
+const UShort EARLY_SOLSTICE_DAY = DAYS_IN_YEAR / 2 - (DAYS_IN_YEAR * AXIS_TILT / 1000);
+
+// "March" equinox day
+const UShort EARLY_EQUINOX_DAY = EARLY_SOLSTICE_DAY - (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY) / 2;
+
+// "September" equinox day
+const UShort LATE_EQUINOX_DAY = EARLY_SOLSTICE_DAY + (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY) / 2;
+
 namespace pan {
 	/**
 	 * Structure, that represent in-game time in short comparative format 
