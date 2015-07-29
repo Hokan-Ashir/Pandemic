@@ -7,6 +7,9 @@
 #include <Headers/ToolClasses/Singleton.h>
 
 namespace pan {
+	/**
+	 * NOTE: Months' namings are for northern hemisphere
+	 */
 	enum MonthsEnum {
 		WINTER_1 = 0,
 		WINTER_2,

@@ -66,14 +66,14 @@ namespace pan {
 
 		// get sigma value for Guassian distribution forulae, modified by latitude
 		Flt getLatitideSigma(Flt latitudeDegree) {
-			return static_cast<Flt>(EQUATOR_SIGMA - latitudeDegree / POLAR_LATITUDE * (EQUATOR_SIGMA - POLAR_SIGMA));
+			return static_cast<Flt>(EQUATOR_SIGMA - Abs(latitudeDegree) / POLAR_LATITUDE * (EQUATOR_SIGMA - POLAR_SIGMA));
 		}
 
 		Flt getSunriseTime(Flt latitudeDegree) {
 			auto mu = static_cast<Flt>(GUASSIAN_X_RANGE) / 2;
 			auto sigma = getLatitideSigma(latitudeDegree);
 			auto latitudeTime = getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
-			latitudeTime += EQUATOR_DEFAULT_SUNRISE_HOUR + LATITUDE_SUNRISE_COEFFICIENT * latitudeDegree / 10;
+			latitudeTime += EQUATOR_DEFAULT_SUNRISE_HOUR + LATITUDE_SUNRISE_COEFFICIENT * Abs(latitudeDegree) / 10;
 			while (latitudeTime >= HOURS_IN_DAY) {
 				latitudeTime -= HOURS_IN_DAY;
 			}
@@ -85,7 +85,7 @@ namespace pan {
 			auto mu = static_cast<Flt>(GUASSIAN_X_RANGE) / 2;
 			auto sigma = getLatitideSigma(latitudeDegree);
 			auto latitudeTime = -getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
-			latitudeTime += EQUATOR_DEFAULT_SUNSET_HOUR + LATITUDE_SUNSET_COEFFICIENT * latitudeDegree / 10;
+			latitudeTime += EQUATOR_DEFAULT_SUNSET_HOUR + LATITUDE_SUNSET_COEFFICIENT * Abs(latitudeDegree) / 10;
 			while (latitudeTime >= HOURS_IN_DAY) {
 				latitudeTime -= HOURS_IN_DAY;
 			}

@@ -161,7 +161,7 @@ namespace pan {
 		const Flt lateSolsticeOffset = 0.4;
 
 		/**
-		 * Sun's inclination for current latitude
+		 * Sun's inclination for current latitude (in radians)
 		 */
 		Flt sunInclination;
 

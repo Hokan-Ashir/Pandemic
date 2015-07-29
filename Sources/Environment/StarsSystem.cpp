@@ -12,7 +12,11 @@ namespace pan {
 		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateNewDayIncoming);
 		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::update);
 		// TODO subscribe to event like "NewWorldSetEvent"
-		sunInclination = util::POLAR_LATITUDE - util::WORLD_LATITUDE;
+		if (util::WORLD_LATITUDE < 0) {
+			sunInclination = DegToRad(2 * util::POLAR_LATITUDE + util::WORLD_LATITUDE);
+		} else {
+			sunInclination = DegToRad(util::POLAR_LATITUDE - util::WORLD_LATITUDE);
+		}
 		updateBarycenterOffset();
 		NewDayEvent event(DateTime::getInstance()->getDayInYear());
 		updateNewDayIncoming(&event);
