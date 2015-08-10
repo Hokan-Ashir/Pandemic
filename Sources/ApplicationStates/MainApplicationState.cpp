@@ -25,6 +25,7 @@ namespace pan {
 
 		D.ambientPower(0.2f);
 		D.mode(App.desktopW() * 0.75f, App.desktopH() * 0.8f);
+		D.highPrecColRT(true);
 
 		Cam.dist = 1;
 		Cam.at.set(16, 4, 2);
@@ -42,7 +43,7 @@ namespace pan {
 		std::shared_ptr<BaseEventHandler> starsSystem(new StarsSystem());
 		addEventHandler(starsSystem);
 		std::shared_ptr<BaseEventHandler> weatherSystem(new WeatherSystem());
-		addEventHandler(weatherSystem);		
+		addEventHandler(weatherSystem);
 
 		return true;
 	}

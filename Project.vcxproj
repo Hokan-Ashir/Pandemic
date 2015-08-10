@@ -737,6 +737,7 @@
     <ClInclude Include="Headers\Core\NewDayEvent.h" />
     <ClInclude Include="Headers\Core\NewMonthEvent.h" />
     <ClInclude Include="Headers\Core\NewYearEvent.h" />
+    <ClInclude Include="Headers\Environment\MoonSystem.h" />
     <ClInclude Include="Headers\Environment\SkySystem\CloudsSystem.h" />
     <ClInclude Include="Headers\Environment\SkySystem\SkyColourSystem.h" />
     <ClInclude Include="Headers\Core\Months.h" />

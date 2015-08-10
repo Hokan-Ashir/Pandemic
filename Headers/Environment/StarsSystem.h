@@ -189,6 +189,11 @@ namespace pan {
 		const static Vec MIDYEAR_MIDDAY_RAYS_COLOUR;
 
 		/**
+		 * Colour of main sun's rays in midday at sunrise (when barycenter.y = 0)
+		 */
+		const static Vec SUNRISE_RAYS_COLOUR;
+
+		/**
 		 * Colour of main sun's rays in midday at CURRENT day (describe sun's brightness)
 		 */
 		Vec middayRaysColour;		

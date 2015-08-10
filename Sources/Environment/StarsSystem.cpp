@@ -6,7 +6,8 @@
 #include <Headers/Environment/SunHeightChangedEvent.h>
 
 namespace pan {
-	const Vec StarsSystem::MIDYEAR_MIDDAY_RAYS_COLOUR = Vec(192.0, 186.0, 98.0);		
+	const Vec StarsSystem::MIDYEAR_MIDDAY_RAYS_COLOUR = Vec(192.0, 186.0, 98.0);	
+	const Vec StarsSystem::SUNRISE_RAYS_COLOUR = Vec(35.0, 35.0, 35.0) / 255;
 	
 	StarsSystem::StarsSystem() {
 		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateNewDayIncoming);
@@ -72,17 +73,6 @@ namespace pan {
 		updateBarycenterPosition();
 		allSeeingEyeSun.pos = getUpdatedStarPosition(&allSeeingEyeParameters);
 		Sun.pos = getUpdatedStarPosition(&vigilantEyeParameters);		
-	}
-
-	void StarsSystem::updateVigilantEyeRaysColour() {
-		auto barycenterYPositionRatio = Abs(barycenterPosition.y / middayBarycenterPosition);
-
-		// this is CDF (cumulative distribution function) of exponential distribution
-		barycenterYPositionRatio = 1 - exp(-brightnessCoefficient * barycenterYPositionRatio);
-		if (barycenterYPositionRatio >= 1.0) {
-			barycenterYPositionRatio = 1.0;
-		}		
-		Sun.rays_color = middayRaysColour * barycenterYPositionRatio / 255;
 	}
 
 	void StarsSystem::updateBarycenterPosition() {		
@@ -206,6 +196,49 @@ namespace pan {
 		updateVigilantEyeRaysColour();
 		
 		Astros.add(allSeeingEyeSun);
+	}
+
+	/**
+	 * Updates main sun's rays colour in 3 stages:
+	 * 1. From dusk till dawn (night): barycenterPosition.y \in [-barycenterOffset; -1] 
+	 *		(1 is celestial sphere radius) see Astro.h comment to "pos" member
+	 *
+	 *		At this stage sun's rays are off: Vec(0, 0, 0), cause no sun is visible under terrain/water surface
+	 *
+	 * 2. From sunset till dusk and from dawn till sunrise (twilight): barycenterPosition.y \in [-barycenterOffset; 0]
+	 *
+	 *		At this stage sun's rays visible, but not bright, cause sun is still under terrain/water surface
+	 *		And ray's brightness calculated as part of SUNRISE_RAYS_COLOUR value 
+	 *		with 0 * SUNRISE_RAYS_COLOUR at barycenterPosition.y == -barycenterOffset (= dusk, dawn)
+	 *		and SUNRISE_RAYS_COLOUR at barycenterPosition.y == 0 (= sunrise, sunset)
+	 *
+	 * 3. From sunrise till sunset (day): barycenterPosition.y \in [0; 1]
+	 *		(1 is celestial sphere radius) see Astro.h comment to "pos" member
+	 *
+	 *		At this stage sun is visible and sun's rays begin to shine from SUNRISE_RAYS_COLOUR to their maximum
+	 *		which defines by barycenter position relative to its midday position (which defines by day of year)
+	 *		with SUNRISE_RAYS_COLOUR at barycenterPosition.y == 0 (= sunrise, sunset)
+	 *		with X (calculated for different day differently, see code) at barycenterPosition.y == middayBarycenterPosition (= midday)
+	 */
+	void StarsSystem::updateVigilantEyeRaysColour() {		
+		Flt twilightSunBorder = -barycenterOffset;		
+		if (barycenterPosition.y < twilightSunBorder) {
+			Sun.rays_color = Vec(0, 0, 0);
+			return;
+		}
+
+		if (barycenterPosition.y < 0) {
+			Sun.rays_color = (Abs(twilightSunBorder) - Abs(barycenterPosition.y)) / Abs(twilightSunBorder) * SUNRISE_RAYS_COLOUR;
+			return;
+		}
+
+		auto barycenterYPositionRatio = barycenterPosition.y / middayBarycenterPosition;
+		// this is CDF (cumulative distribution function) of exponential distribution
+		barycenterYPositionRatio = 1 - exp(-brightnessCoefficient * barycenterYPositionRatio);
+		if (barycenterYPositionRatio >= 1.0) {
+			barycenterYPositionRatio = 1.0;
+		}
+		Sun.rays_color = middayRaysColour * barycenterYPositionRatio / 255 + SUNRISE_RAYS_COLOUR;
 	}
 
 	void StarsSystem::updateMiddayRaysIntensity(UShort dayInYear) {
