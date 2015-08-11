@@ -9,6 +9,7 @@
 #include <Headers/Core/EventSystem/Events/DrawEvent.h>
 #include <Headers/Environment/SkySystem/WeatherSystem.h>
 #include <Headers/Environment/StarsSystem.h>
+#include <Headers/WorldsManagment/WorldChangingEvent.h>
 
 namespace pan {
 	MainApplicationState::MainApplicationState() {		
@@ -34,16 +35,20 @@ namespace pan {
 	Bool MainApplicationState::init() {
 		Physics.create(EE_PHYSX_DLL_PATH);
 
-		Game::World.activeRange(D.viewRange())
-			.New(UID(793057521, 1165468649, 532672188, 1296740157)); // TestWorld
-		if (Game::World.settings().environment) {
-			Game::World.settings().environment->set();
-		}
-		
 		std::shared_ptr<BaseEventHandler> starsSystem(new StarsSystem());
 		addEventHandler(starsSystem);
 		std::shared_ptr<BaseEventHandler> weatherSystem(new WeatherSystem());
 		addEventHandler(weatherSystem);
+
+		auto testWorldUID = UID(793057521, 1165468649, 532672188, 1296740157); // TestWorld
+		Game::World.activeRange(D.viewRange())
+			.New(testWorldUID); 
+		if (Game::World.settings().environment) {
+			Game::World.settings().environment->set();
+		}
+
+		WorldChangingEvent event(testWorldUID, WORLD_LATITUDE);
+		EventManager::getInstance()->fireEvent(&event);				
 
 		return true;
 	}

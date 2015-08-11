@@ -759,6 +759,7 @@
     <ClInclude Include="Headers\ToolClasses\Singleton.h" />
     <ClInclude Include="Headers\ToolClasses\ProxyCall.h" />
     <ClInclude Include="Headers\Core\EventSystem\Events\UpdateEvent.h" />
+    <ClInclude Include="Headers\WorldsManagment\WorldChangingEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

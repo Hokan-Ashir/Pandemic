@@ -4,21 +4,31 @@
 #include <Headers/Core/DateTime.h>
 #include <Headers/Environment/SunriseSunsetUtils.h>
 #include <Headers/Environment/SunHeightChangedEvent.h>
+#include <Headers/WorldsManagment/WorldChangingEvent.h>
 
 namespace pan {
 	const Vec StarsSystem::MIDYEAR_MIDDAY_RAYS_COLOUR = Vec(192.0, 186.0, 98.0);	
 	const Vec StarsSystem::SUNRISE_RAYS_COLOUR = Vec(35.0, 35.0, 35.0) / 255;
-	
-	StarsSystem::StarsSystem() {
+
+	void StarsSystem::updateSunInclination(const WorldChangingEvent* event)	{
+		if (event->getWorldLatitude() < 0) {
+			sunInclination = DegToRad(2 * util::POLAR_LATITUDE + event->getWorldLatitude());
+		} else {
+			sunInclination = DegToRad(util::POLAR_LATITUDE - event->getWorldLatitude());
+		}
+	}
+
+	void StarsSystem::subscribeToEvents() {
 		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateNewDayIncoming);
 		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::update);
-		// TODO subscribe to event like "NewWorldSetEvent"
-		if (util::WORLD_LATITUDE < 0) {
-			sunInclination = DegToRad(2 * util::POLAR_LATITUDE + util::WORLD_LATITUDE);
-		} else {
-			sunInclination = DegToRad(util::POLAR_LATITUDE - util::WORLD_LATITUDE);
-		}
-		updateBarycenterOffset();
+		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateBarycenterOffset);
+		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateSunInclination);
+		EventManager::getInstance()->registerEventHandlerMethod(this, &StarsSystem::updateSunriseTime);
+	}
+
+	StarsSystem::StarsSystem() {
+		subscribeToEvents();
+
 		NewDayEvent event(DateTime::getInstance()->getDayInYear());
 		updateNewDayIncoming(&event);
 		updateBarycenterPosition();
@@ -173,9 +183,11 @@ namespace pan {
 		return resultOffset;
 	}
 
+	void StarsSystem::updateSunriseTime(const WorldChangingEvent* event) {
+		sunriseTime = util::getSunriseTime(event->getWorldLatitude());
+	}
+
 	void StarsSystem::setBarycenterPosition(Flt time) {
-		// TODO get this value from something like WorldManager
-		auto sunriseTime = util::getSunriseTime(util::WORLD_LATITUDE);
 		phi = DegToRad(calculateHourAngle(time) - calculateHourAngle(sunriseTime)) + Asin(barycenterOffset);
 		theta = DegToRad(90.0f);
 		barycenterPosition.x = Cos(phi);
@@ -296,9 +308,8 @@ namespace pan {
 		return Sin(phi) - barycenterOffset;
 	}
 
-	void StarsSystem::updateBarycenterOffset() {
-		// TODO subscribe to event like "NewWorldSetEvent"
-		barycenterOffset = calculateBaryCenterOffset(util::WORLD_LATITUDE);		
+	void StarsSystem::updateBarycenterOffset(const WorldChangingEvent* event) {
+		barycenterOffset = calculateBaryCenterOffset(event->getWorldLatitude());		
 		if (barycenterOffset < 0) {
 			middayBarycenterPosition = 1.0 + barycenterOffset;
 		} else {

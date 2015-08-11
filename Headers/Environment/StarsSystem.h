@@ -6,6 +6,7 @@
 #include <Headers/Core/EventSystem/EventManager.h>
 #include <Headers/Core/EventSystem/Events/UpdateEvent.h>
 #include <Headers/Core/NewDayEvent.h>
+#include <Headers/WorldsManagment/WorldChangingEvent.h>
 
 namespace pan {
 	/**
@@ -24,6 +25,23 @@ namespace pan {
 		explicit StarsSystem();
 		void update(const UpdateEvent* eventToProceed);				
 		void updateNewDayIncoming(const NewDayEvent* eventToProceed);
+		void updateSunriseTime(const WorldChangingEvent* event);
+
+		/**
+		* Update barycenter offset based on current world latitude (currently hardcoded) <p>
+		* This is made due to optimization - sunset/sunrise times wont change till player <p>
+		* exists in current world
+		*
+		* \todo later create something like WorldManager (which will be final Singleton)
+		* and access current world latitude via its methods;
+		* Other option is firing "change latitude" event from WorldManager, when it loads another world
+		* and StarsSystem will catch it; or it will be subscribed to this event via Observer-pattern
+		*/
+		void updateBarycenterOffset(const WorldChangingEvent* event);
+
+		void updateSunInclination(const WorldChangingEvent* event);
+
+
 		Flt getBarycenterHeightOverHorizont() const;		
 
 	private:
@@ -100,18 +118,8 @@ namespace pan {
 		 * \return Flt calculated offset
 		 */
 		Flt calculateBaryCenterOffset(Flt worldLatitude) const;
-
-		/**
-		 * Update barycenter offset based on current world latitude (currently hardcoded) <p>
-		 * This is made due to optimization - sunset/sunrise times wont change till player <p>
-		 * exists in current world
-		 *
-		 * \todo later create something like WorldManager (which will be final Singleton)
-		 * and access current world latitude via its methods;
-		 * Other option is firing "change latitude" event from WorldManager, when it loads another world
-		 * and StarsSystem will catch it; or it will be subscribed to this event via Observer-pattern
-		 */
-		void updateBarycenterOffset();
+		
+		void subscribeToEvents();
 
 		// calculate hour on circle
 		Flt calculateHourAngle(Flt hour) const;
@@ -136,7 +144,7 @@ namespace pan {
 		 */
 		void setBarycenterPosition(Flt time);
 
-		Flt getSunsetSunriseHorizontOffset(UShort dayInYear);
+		Flt getSunsetSunriseHorizontOffset(UShort dayInYear);		
 
 		/**
 		* Calculate midday rays intensity for current day, based on mid year midday rays intensity
@@ -192,11 +200,16 @@ namespace pan {
 		 * Colour of main sun's rays in midday at sunrise (when barycenter.y = 0)
 		 */
 		const static Vec SUNRISE_RAYS_COLOUR;
-
+		
 		/**
 		 * Colour of main sun's rays in midday at CURRENT day (describe sun's brightness)
 		 */
-		Vec middayRaysColour;		
+		Vec middayRaysColour;
+
+		/**
+		 * Sunrise time for current world latitude
+		 */
+		Flt sunriseTime;
 
 		/**
 		 * Second star (allSeeingEye), see comment to this class for more info

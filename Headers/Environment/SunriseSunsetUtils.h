@@ -39,10 +39,7 @@ Thereby we get sunrise/sunset times
 */
 
 namespace pan {
-	namespace util {
-		// temporary store world latitude here
-		const Flt WORLD_LATITUDE = 45;
-
+	namespace util {		
 		// polar latitude in degreees
 		const UShort POLAR_LATITUDE = 90;
 
