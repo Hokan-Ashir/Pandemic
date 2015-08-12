@@ -713,6 +713,7 @@
     <ClCompile Include="Sources\ApplicationStates\MainApplicationState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
     <ClCompile Include="Sources\Core\DateTime.cpp" />
+    <ClCompile Include="Sources\Environment\MoonSystem.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\CloudsSystem.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\SkyColourSystem.cpp" />
     <ClCompile Include="Sources\Core\Months.cpp" />

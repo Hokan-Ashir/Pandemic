@@ -25,23 +25,11 @@ namespace pan {
 		explicit StarsSystem();
 		void update(const UpdateEvent* eventToProceed);				
 		void updateNewDayIncoming(const NewDayEvent* eventToProceed);
-		void updateSunriseTime(const WorldChangingEvent* event);
 
 		/**
-		* Update barycenter offset based on current world latitude (currently hardcoded) <p>
-		* This is made due to optimization - sunset/sunrise times wont change till player <p>
-		* exists in current world
-		*
-		* \todo later create something like WorldManager (which will be final Singleton)
-		* and access current world latitude via its methods;
-		* Other option is firing "change latitude" event from WorldManager, when it loads another world
-		* and StarsSystem will catch it; or it will be subscribed to this event via Observer-pattern
-		*/
-		void updateBarycenterOffset(const WorldChangingEvent* event);
-
-		void updateSunInclination(const WorldChangingEvent* event);
-
-
+		 * Updates barycenter offset, sun's inclination and sunrise time
+		 */
+		void updateCelestialSphereParameters(const WorldChangingEvent* event);		
 		Flt getBarycenterHeightOverHorizont() const;		
 
 	private:
@@ -153,12 +141,6 @@ namespace pan {
 		void updateMiddayRaysIntensity(UShort dayInYear);
 
 		/**
-		 * Theta angle in spherical coordinate system <p>
-		 * Mathematical case, where theta is angle in XY-plane, NOT in YZ-plane
-		 */
-		Flt theta;
-
-		/**
 		 * Phi angle in spherical coordinate system <p>
 		 * Mathematical case, where theta is angle in YZ-plane, NOT in XY-plane
 		 */
@@ -190,6 +172,22 @@ namespace pan {
 		 * see updateVigilantEyeRaysColour() method calculations
 		 */
 		Flt middayBarycenterPosition;
+
+		void updateSunriseTime(const WorldChangingEvent* event);
+
+		/**
+		* Update barycenter offset based on current world latitude (currently hardcoded) <p>
+		* This is made due to optimization - sunset/sunrise times wont change till player <p>
+		* exists in current world
+		*
+		* \todo later create something like WorldManager (which will be final Singleton)
+		* and access current world latitude via its methods;
+		* Other option is firing "change latitude" event from WorldManager, when it loads another world
+		* and StarsSystem will catch it; or it will be subscribed to this event via Observer-pattern
+		*/
+		void updateBarycenterOffset(const WorldChangingEvent* event);
+
+		void updateSunInclination(const WorldChangingEvent* event);
 
 		/**
 		 * Colour of main sun's rays in midday at (DAYS_IN_YEAR / 2) day (describe sun's brightness)
