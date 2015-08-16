@@ -5,6 +5,7 @@
 #include <Headers/Environment/SunriseSunsetUtils.h>
 #include <Headers/Environment/SunHeightChangedEvent.h>
 #include <Headers/WorldsManagment/WorldChangingEvent.h>
+#include <Headers/Environment/AstroObjectsUtils.h>
 
 namespace pan {
 	const Vec StarsSystem::MIDYEAR_MIDDAY_RAYS_COLOUR = Vec(192.0, 186.0, 98.0);	
@@ -13,14 +14,12 @@ namespace pan {
 	StarsSystem::StarsSystem() {
 		subscribeToEvents();
 
-		NewDayEvent event(DateTime::getInstance()->getDayInYear());
-		updateNewDayIncoming(&event);
-		updateBarycenterPosition();
-
 		createVigilantEye();
 		createAllSeeingEye();	
-		
-		Astros.add(allSeeingEyeSun);
+	}
+
+	StarsSystem::~StarsSystem() {
+		Astros.removeData(allSeeingEyeSun);
 	}
 
 	void StarsSystem::subscribeToEvents() {
@@ -35,15 +34,27 @@ namespace pan {
 		vigilantEyeParameters.angle = 0;
 	}
 
-	void StarsSystem::createAllSeeingEye() {
-		allSeeingEyeSun.image = UID(2922889087, 1171051764, 3010789764, 3570309810); // Images/sun
-		allSeeingEyeSun.size = 0.005;
+	void StarsSystem::createAllSeeingEye() {	
+		// cause Esenthel Engine copy Astro object during
+		// Astros.add() method call, we create Asrto object via Astros.New(),
+		// then get pointer to it via Astros.addrLast()
+		// BUT, cause Astros.New() method reallocate memory, if we first create
+		// stars, store pointers to them, then create moon, pointers to stars will be invalid
+		// so we allocate enough memory for all Astro-like objects
+		if (Astros.elms() < NUMBER_OF_ASTRO_OBJECTS) {
+			Astros.setNum(NUMBER_OF_ASTRO_OBJECTS);
+		}
+
+		Astros.New();
+		allSeeingEyeSun = Astros.addrLast();
+		allSeeingEyeSun->image = UID(2922889087, 1171051764, 3010789764, 3570309810); // Images/sun
+		allSeeingEyeSun->size = 0.005;
 		Vec lightColour(255, 160, 64);
 		lightColour /= 255;
 		Vec imageColour(255, 120, 120);
-		allSeeingEyeSun.light_color = lightColour;
-		allSeeingEyeSun.image_color.set(imageColour.x, imageColour.y, imageColour.z);
-		allSeeingEyeSun.glow = 255;
+		allSeeingEyeSun->light_color = lightColour;
+		allSeeingEyeSun->image_color.set(imageColour.x, imageColour.y, imageColour.z);
+		allSeeingEyeSun->glow = 255;
 
 		allSeeingEyeParameters.radiusToBarycenter = -0.08;		
 		allSeeingEyeParameters.angleSpeed = 0.00002;
@@ -51,9 +62,11 @@ namespace pan {
 	}
 
 	void StarsSystem::updateCelestialSphereParameters(const WorldChangingEvent* event) {
-		updateBarycenterOffset(event);
 		updateSunInclination(event);
 		updateSunriseTime(event);
+		updateBarycenterOffset(event);	
+		updateBarycenterPosition();
+		updateStarsParameters();
 	}
 
 	void StarsSystem::updateSunInclination(const WorldChangingEvent* event) {
@@ -66,34 +79,35 @@ namespace pan {
 	
 	void StarsSystem::updateSunriseTime(const WorldChangingEvent* event) {
 		sunriseTime = util::getSunriseTime(event->getWorldLatitude());
-	}	
+	}
 
 	void StarsSystem::update(const UpdateEvent* eventToProceed) {
 		// because Esenthel Engine set position of Astro object only once
 		// during adding it to Astro container, to implement movement of two suns
 		// we pop them from container and add them each frame
 		// it cost additional CPU, but not dramatically affect memory
-		Astros.pop();		
 
 		
 		updateBarycenterPosition();
 		auto twilightSunBorder = -barycenterOffset;
 		if (barycenterPosition.y < twilightSunBorder) {
-			allSeeingEyeSun.draw = false;
-			Sun.draw = false;			
-		} else {
-			allSeeingEyeSun.draw = true;
+			allSeeingEyeSun->draw = false;
+			Sun.draw = false;	
+		} else {		
+			allSeeingEyeSun->draw = true;
 			Sun.draw = true;
-			setStarsPositions();
-			normalizeStarsPositions();
-			updateVigilantEyeRaysColour();
-		}
-		
-		Astros.add(allSeeingEyeSun);
+			updateStarsParameters();
+		}				
+	}
+
+	void StarsSystem::updateStarsParameters() {
+		setStarsPositions();
+		normalizeStarsPositions();
+		updateVigilantEyeRaysColour();
 	}
 
 	void StarsSystem::setStarsPositions() {				
-		allSeeingEyeSun.pos = getUpdatedStarPosition(&allSeeingEyeParameters);
+		allSeeingEyeSun->pos = getUpdatedStarPosition(&allSeeingEyeParameters);
 		Sun.pos = getUpdatedStarPosition(&vigilantEyeParameters);
 	}
 
@@ -124,7 +138,7 @@ namespace pan {
 	}
 
 	void StarsSystem::setBarycenterPosition(Flt time) {
-		phi = DegToRad(calculateHourAngle(time) - calculateHourAngle(sunriseTime)) + Asin(barycenterOffset);		
+		phi = DegToRad(util::calculateHourAngle(time) - util::calculateHourAngle(sunriseTime)) + Asin(barycenterOffset);		
 		barycenterPosition.x = Cos(phi);
 		barycenterPosition.y = Sin(sunInclination) * Sin(phi);
 		barycenterPosition.z = Sin(phi) * Cos(sunInclination) + sunHorizonOffset;
@@ -145,11 +159,10 @@ namespace pan {
 		return updatedStarPosition;
 	}
 
-	void StarsSystem::normalizeStarsPositions() {
-		allSeeingEyeSun.pos.normalize();
+	void StarsSystem::normalizeStarsPositions() const {
+		allSeeingEyeSun->pos.normalize();
 		Sun.pos.normalize();
 	}
-
 
 	/**
 	 * Updates main sun's rays colour in 3 stages:
@@ -292,11 +305,6 @@ namespace pan {
 		return resultOffset;
 	}
 
-	Flt StarsSystem::calculateNightLength(Flt worldLatitude) const {
-		auto dayLength = calculateDayLength(worldLatitude);
-		return static_cast<Flt>(HOURS_IN_DAY - dayLength);
-	}
-
 	Flt StarsSystem::getBarycenterHeightOverHorizont() const {
 		// actual formula is "h = R * sin(...) - r", but R = 1
 		// see Astro.h in Esenthel Engine / comment to "pos" field
@@ -304,29 +312,11 @@ namespace pan {
 	}
 
 	void StarsSystem::updateBarycenterOffset(const WorldChangingEvent* event) {
-		barycenterOffset = calculateBaryCenterOffset(event->getWorldLatitude());		
+		barycenterOffset = util::calculateBaryCenterOffset(event->getWorldLatitude());		
 		if (barycenterOffset < 0) {
 			middayBarycenterPosition = 1.0 + barycenterOffset;
 		} else {
 			middayBarycenterPosition = 1.0 - barycenterOffset;
-		}
-	}
-
-	Flt StarsSystem::calculateBaryCenterOffset(Flt worldLatitude) const {
-		auto dayLength = calculateDayLength(worldLatitude);
-		auto radiusAngle = calculateHourAngle(dayLength);
-		// actual formula is "r = R * cos(...)", but R = 1
-		// see Astro.h in Esenthel Engine / comment to "pos" field
-		return Cos(DegToRad(radiusAngle / 2));
-	}
-
-	Flt StarsSystem::calculateDayLength(Flt worldLatitude) const {
-		auto sunriseTime = util::getSunriseTime(worldLatitude);
-		auto sunsetTime = util::getSunsetTime(worldLatitude);
-		return fabs(sunsetTime - sunriseTime);
-	}
-
-	Flt StarsSystem::calculateHourAngle(Flt hour) const	{
-		return hour / HOURS_IN_DAY * FULL_CIRCLE_ANGLE;
+		}		
 	}
 }

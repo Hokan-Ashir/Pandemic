@@ -46,6 +46,16 @@ const UShort EARLY_EQUINOX_DAY = EARLY_SOLSTICE_DAY - (LATE_SOLSTICE_DAY - EARLY
 // "September" equinox day
 const UShort LATE_EQUINOX_DAY = EARLY_SOLSTICE_DAY + (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY) / 2;
 
+/**
+ * Number of days in moon month, time during which moon became "new" again
+ */
+const UShort DAYS_IN_MOON_MONTH = 30;
+
+/**
+ * Whole number of game astro objects (Moon + second sun)
+ */
+const UShort NUMBER_OF_ASTRO_OBJECTS = 2;
+
 namespace pan {
 	/**
 	 * Structure, that represent in-game time in short comparative format 

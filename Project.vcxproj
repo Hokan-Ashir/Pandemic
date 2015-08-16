@@ -713,6 +713,8 @@
     <ClCompile Include="Sources\ApplicationStates\MainApplicationState.cpp" />
     <ClCompile Include="Sources\ApplicationStates\StateManager.cpp" />
     <ClCompile Include="Sources\Core\DateTime.cpp" />
+    <ClCompile Include="Sources\Environment\AstroObjectUtils.cpp" />
+    <ClCompile Include="Sources\Environment\MoonAlgorithms.cpp" />
     <ClCompile Include="Sources\Environment\MoonSystem.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\CloudsSystem.cpp" />
     <ClCompile Include="Sources\Environment\SkySystem\SkyColourSystem.cpp" />
@@ -738,6 +740,7 @@
     <ClInclude Include="Headers\Core\NewDayEvent.h" />
     <ClInclude Include="Headers\Core\NewMonthEvent.h" />
     <ClInclude Include="Headers\Core\NewYearEvent.h" />
+    <ClInclude Include="Headers\Environment\AstroObjectsUtils.h" />
     <ClInclude Include="Headers\Environment\MoonSystem.h" />
     <ClInclude Include="Headers\Environment\SkySystem\CloudsSystem.h" />
     <ClInclude Include="Headers\Environment\SkySystem\SkyColourSystem.h" />

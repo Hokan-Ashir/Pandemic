@@ -17,12 +17,13 @@ namespace pan {
 	 * IMPORTANT:
 	 * Cause "rays_colour" parameter, which describes sun's brightness (and also colour of "God's rays")
 	 * only takes effect on so called "Main Sun" (extern Sun variable from Sun.h), main star (named vigilantEye)
-	 * is represented by extern Sun variable and lesser star (named allseeingEye) represented by SunClass variable
-	 * (and because of this allseeingEye can't shine)
+	 * is represented by extern Sun variable and lesser star (named allseeingEye) represented by Astro variable
+	 * (and because of this allseeingEye can't shine), this is visually negated by placing starts near each other
 	 */
 	class StarsSystem : public BaseEventHandler {
 	public:
 		explicit StarsSystem();
+		
 		void update(const UpdateEvent* eventToProceed);				
 		void updateNewDayIncoming(const NewDayEvent* eventToProceed);
 
@@ -30,7 +31,9 @@ namespace pan {
 		 * Updates barycenter offset, sun's inclination and sunrise time
 		 */
 		void updateCelestialSphereParameters(const WorldChangingEvent* event);		
-		Flt getBarycenterHeightOverHorizont() const;		
+		Flt getBarycenterHeightOverHorizont() const;
+
+		~StarsSystem();
 
 	private:
 		struct StarParameters {
@@ -40,84 +43,22 @@ namespace pan {
 		};
 
 		/**
-		 * Angle of full circle (whole degrees, that sun (barycenter) passes through day)
-		 */
-		const UShort FULL_CIRCLE_ANGLE = 360;
-
-		/**
 		 * Coefficient of brightness calculation formula, that represent speed, with which
 		 * brightness increase during forenoon and decrease during afternoon
 		 *
 		 * Mathematicaly this is "lambda" parameter of exponential distribution
 		 */
 		const Flt brightnessCoefficient = 2.5;
-
-		Flt calculateDayLength(Flt worldLatitude) const;
-		Flt calculateNightLength(Flt worldLatitude) const;
-
-		/**
-		 * This method is used to draw barycenter (and so as stars) in such way
-		 * that arc of barycenter-circle movement will suffice length of day on this latitude in this day of year
-		 * i.e: 
-		 * Let we stand on equator (latitude = 0) and calculated sunrise/sunset times are 6h and 18h respectively
-		 * We take sun sphere with radius 1 (see comment to "pos" field in Astro.h in Esenthel Engine headers)
-		 * Thus angle of rising sun will be 0, and angle of setting sun will be 180
-		 * 
-		 *			   ...
-		 *  /					   \
-		 * /						\
-		 * r - - - - - - - - - - - - s - - - - horizon
-		 * \						/
-		 *  \					   /
-		 *			   ...
-		 *
-		 * where "r" is position of rising sun, "s" - position of setting sun
-		 *
-		 * As we go to the North or to the South sunrise/sunset times changes
-		 * i.e:
-		 * Let we stand on 45N deg and calculated sunrise/sunset times are 8h and 16h respectively
-		 * So position of the sun (relative to equator circle) in this hours will be:
-		 *
-		 *   /					  \
-		 *  r					   s
-		 * /						\
-		 * | - - - - - - - - - - - -| - - - - horizon
-		 * \						/
-		 *  \					   /
-		 *		 		...
-		 *
-		 * BUT to manage fact that sun rise and set on line of horizon we adjust horizon line
-		 * in a way that "r" and "s" positions will still be on horizon
-		 *
-		 * 	  /					  \
-		 *   r - - - - - - - - - - s - - - - new horizon
-		 *  /			| r`		\
-		 * | - - - - - - - - - - - - | - - - - horizon
-		 * \						/
-		 *  \					   /
-		 *
-		 * And this method calculate offset of this modified horizon "r`"
-		 * So, to get new real position of barycenter on 45N degree latitude,
-		 * we subtract "r`" from barycenter Y-position
-		 * Calculation formula taken from http://mathworld.wolfram.com/CircularSector.html
-		 * in this link it is referenced as "h"
-		 *
-		 * \param Flt worldLatitude latitude of world in which barycenter offset will be calculated
-		 * \return Flt calculated offset
-		 */
-		Flt calculateBaryCenterOffset(Flt worldLatitude) const;
 		
 		void subscribeToEvents();
 
-		// calculate hour on circle
-		Flt calculateHourAngle(Flt hour) const;
-
+		void updateStarsParameters();
 		void updateBarycenterPosition();
 		void setStarsPositions();
 		void updateVigilantEyeRaysColour();
 		Vec getUpdatedStarPosition(StarParameters* star);
 
-		void normalizeStarsPositions();
+		void normalizeStarsPositions() const;
 		
 		void createVigilantEye();
 		void createAllSeeingEye();
@@ -212,7 +153,7 @@ namespace pan {
 		/**
 		 * Second star (allSeeingEye), see comment to this class for more info
 		 */
-		SunClass allSeeingEyeSun;
+		Astro* allSeeingEyeSun;
 		StarParameters allSeeingEyeParameters;
 		StarParameters vigilantEyeParameters;
 	};
