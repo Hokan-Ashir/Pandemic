@@ -91,6 +91,21 @@ namespace pan {
 
 		const Flt lateSolsticeOffset = 0.4;
 
+		// Planet axis tilt
+		const static Flt AXIS_TILT;
+
+		// "December" solstice day
+		const static UShort LATE_SOLSTICE_DAY;
+
+		// "June" solstice day
+		const static UShort EARLY_SOLSTICE_DAY;
+
+		// "March" equinox day
+		const static UShort EARLY_EQUINOX_DAY;
+
+		// "September" equinox day
+		const static UShort LATE_EQUINOX_DAY;
+
 		/**
 		 * Sun's inclination for current latitude (in radians)
 		 */

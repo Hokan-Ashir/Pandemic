@@ -9,7 +9,12 @@
 
 namespace pan {
 	const Vec StarsSystem::MIDYEAR_MIDDAY_RAYS_COLOUR = Vec(192.0, 186.0, 98.0);	
-	const Vec StarsSystem::SUNRISE_RAYS_COLOUR = Vec(35.0, 35.0, 35.0) / 255;	
+	const Vec StarsSystem::SUNRISE_RAYS_COLOUR = Vec(35.0, 35.0, 35.0) / 255;
+	const Flt StarsSystem::AXIS_TILT = 19.8;
+	const UShort StarsSystem::LATE_SOLSTICE_DAY = DAYS_IN_YEAR - (DAYS_IN_YEAR * AXIS_TILT / 1000);
+	const UShort StarsSystem::EARLY_SOLSTICE_DAY = DAYS_IN_YEAR / 2 - (DAYS_IN_YEAR * AXIS_TILT / 1000);
+	const UShort StarsSystem::EARLY_EQUINOX_DAY = EARLY_SOLSTICE_DAY - (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY) / 2;
+	const  UShort StarsSystem::LATE_EQUINOX_DAY = EARLY_SOLSTICE_DAY + (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY) / 2;
 
 	StarsSystem::StarsSystem() {
 		subscribeToEvents();

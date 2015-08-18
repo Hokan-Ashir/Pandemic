@@ -97,13 +97,17 @@ namespace pan {
 		updateYear();
 	}
 
-	DateTime::DateTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year) {
-		setTime(time, dayInMonth, dayInYear, month, year);
+	void DateTime::updateLongitudeHourOffset(const WorldChangingEvent* event) {
+		time += event->getLongitudeHourOffset() * MINUTES_IN_HOUR * SECONDS_IN_MINUTE;
 	}
 
-	DateTime::DateTime() {
-		setTime(0 * (SECONDS_IN_MINUTE * MINUTES_IN_HOUR) + 0 * SECONDS_IN_MINUTE, 0, DAYS_IN_YEAR / 2, WINTER_1, START_YEAR);
+	DateTime::DateTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year) {
+		setTime(time, dayInMonth, dayInYear, month, year);
+		EventManager::getInstance()->registerEventHandlerMethod(this, &DateTime::updateLongitudeHourOffset);
 	}
+
+	DateTime::DateTime() : DateTime(0 * (SECONDS_IN_MINUTE * MINUTES_IN_HOUR) + 0 * SECONDS_IN_MINUTE, 0, DAYS_IN_YEAR / 2, WINTER_1, START_YEAR) 
+	{}
 
 	DateTime::~DateTime() {
 	}

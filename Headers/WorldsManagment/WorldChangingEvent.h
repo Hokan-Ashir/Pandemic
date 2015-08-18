@@ -10,7 +10,9 @@ namespace pan {
 
 	class WorldChangingEvent : public Event {
 	public:
-		WorldChangingEvent(UID worldUID, Flt worldLatitude) : worldUID(worldUID), worldLatitude(worldLatitude) {}
+		WorldChangingEvent(UID worldUID, Flt worldLatitude, Int longitudeHourOffset)
+			: worldUID(worldUID), worldLatitude(worldLatitude), longitudeHourOffset(longitudeHourOffset) {
+		}
 
 		UID getWorldUID() const {
 			return worldUID;
@@ -20,9 +22,16 @@ namespace pan {
 			return worldLatitude;
 		}
 
+		Int getLongitudeHourOffset() const {
+			return longitudeHourOffset;
+		}
+
 	private:
 		UID worldUID;
 		Flt worldLatitude;
+
+		// UTC-like time offset; UTC+0 is for longitude = 0
+		Int longitudeHourOffset;
 	};
 }
 

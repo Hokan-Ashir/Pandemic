@@ -5,6 +5,7 @@
 
 #include <Headers/ToolClasses/Singleton.h>
 #include <Headers/Core/Months.h>
+#include <Headers/WorldsManagment/WorldChangingEvent.h>
 
 /**
  * The very first year, when game starts when player choose "New game"
@@ -30,21 +31,6 @@ const UShort MINUTES_IN_HOUR = 60;
  * Number of seconds in in-game minute
  */
 const UShort SECONDS_IN_MINUTE = 60;
-
-// temporary store planet axis tilt here
-const Flt AXIS_TILT = 19.8;
-
-// "December" solstice day
-const UShort LATE_SOLSTICE_DAY = DAYS_IN_YEAR - (DAYS_IN_YEAR * AXIS_TILT / 1000);
-
-// "June" solstice day
-const UShort EARLY_SOLSTICE_DAY = DAYS_IN_YEAR / 2 - (DAYS_IN_YEAR * AXIS_TILT / 1000);
-
-// "March" equinox day
-const UShort EARLY_EQUINOX_DAY = EARLY_SOLSTICE_DAY - (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY) / 2;
-
-// "September" equinox day
-const UShort LATE_EQUINOX_DAY = EARLY_SOLSTICE_DAY + (LATE_SOLSTICE_DAY - EARLY_SOLSTICE_DAY) / 2;
 
 /**
  * Number of days in moon month, time during which moon became "new" again
@@ -78,6 +64,11 @@ namespace pan {
 		UShort dayInYear;
 
 		/**
+		 * In-game day in moon month
+		 */
+		UShort dayInMoonMonth;
+
+		/**
 		 * In-game year
 		 */
 		UShort year;
@@ -91,8 +82,7 @@ namespace pan {
 		 * \param const sDateTime & date comparative object
 		 * \return bool true, if objects are equal, false otherwise
 		 */
-		bool operator==(const sDateTime& date) {
-			// 
+		bool operator==(const sDateTime& date) const {
 			return minute == date.minute
 				&& hour == date.hour
 				&& dayInYear == date.dayInYear
@@ -109,7 +99,12 @@ namespace pan {
 			}
 
 			if (hour >= HOURS_IN_DAY) {				
-				dayInYear++;				
+				dayInYear++;
+				dayInMoonMonth++;
+			}
+
+			if (dayInMoonMonth >= DAYS_IN_MOON_MONTH) {
+				dayInMoonMonth = 0;
 			}
 
 			if (dayInYear >= DAYS_IN_YEAR) {
@@ -124,7 +119,7 @@ namespace pan {
 	 * Has getters and setters, and also is Singleton, so each class can have access
 	 * to it and know current in-game time
 	 */
-	class DateTime final : public Singleton<DateTime> {
+	class DateTime final : public Singleton<DateTime>, public BaseEventHandler {
 		SET_SINGLETON(DateTime)
 	public:		
 		/**
@@ -158,6 +153,8 @@ namespace pan {
 		UShort getDayInYear() const;
 		
 		void update();
+
+		void updateLongitudeHourOffset(const WorldChangingEvent* event);
 		
 		void setTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year);
 		
