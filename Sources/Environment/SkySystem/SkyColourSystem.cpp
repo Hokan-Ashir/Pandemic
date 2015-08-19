@@ -4,6 +4,7 @@ namespace pan {
 
 	SkyColourSystem::SkyColourSystem() {
 		EventManager::getInstance()->registerEventHandlerMethod(this, &SkyColourSystem::update);
+		Sky.atmosphericHorizonExponent(0.0);
 		initializeHorisonColourInterpolator();
 		initializeSkyColourInterpolator();
 	}
@@ -50,13 +51,9 @@ namespace pan {
 		image = NULL;
 	}
 
-	void SkyColourSystem::setSkyColour(Flt sunHeightOverHorizont) {
-		auto horizonColour = horizonColors(sunHeightOverHorizont);
-		auto skyColour = skyColors(sunHeightOverHorizont);		
-		Sky.atmosphericColor(horizonColour, skyColour);
-	}
-
 	void SkyColourSystem::update(const SunHeightChangedEvent* event) {
-		setSkyColour(event->getHeightOverHorizont());
+		auto horizonColour = horizonColors(event->getHeightOverHorizont());
+		auto skyColour = skyColors(event->getHeightOverHorizont());
+		Sky.atmosphericColor(horizonColour, skyColour);
 	}
 }

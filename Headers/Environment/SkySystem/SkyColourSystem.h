@@ -31,7 +31,6 @@ namespace pan {
 		 * (preferabaly 1px height)
 		 */
 		void fillInterpolatorWithImageData(Interpolator<Vec4>* interpolator, UID imageUID);
-		void setSkyColour(Flt sunHeightOverHorizont);
 		Interpolator<Vec4> horizonColors;
 		Interpolator<Vec4> skyColors;
 	};

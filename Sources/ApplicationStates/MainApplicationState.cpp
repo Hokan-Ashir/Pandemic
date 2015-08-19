@@ -51,7 +51,7 @@ namespace pan {
 			Game::World.settings().environment->set();
 		}
 
-		WorldChangingEvent event(testWorldUID, WORLD_LATITUDE,  3);
+		WorldChangingEvent event(testWorldUID, WORLD_LATITUDE,  7);
 		EventManager::getInstance()->fireEvent(&event);	
 
 		NewDayEvent newDayEvent(DateTime::getInstance()->getDayInYear());
