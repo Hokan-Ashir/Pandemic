@@ -21,10 +21,9 @@ namespace pan {
 	}
 
 	void WeatherSystem::setWeather(WeatherType weatherType, UShort hoursDuration, UShort minutesDuratuion)	{
-		time = DateTime::getInstance()->getDateTime();
-		time.hour += hoursDuration;
-		time.minute += minutesDuratuion;
-		time.updateTime();
+		time = CurrentDateTime::getInstance()->getDateTime();
+		time.addHours(hoursDuration);
+		time.addMinutes(minutesDuratuion);		
 
 		// no need to recreate weather effect, if we set the same weather
 		if (weatherType == currentWeather) {
@@ -45,10 +44,7 @@ namespace pan {
 		currentWeather = defaultWeather;
 		auto effect = weatherTypes.at(currentWeather);
 		effect->create(cloudsSystem, skyColourSystem);
-		time.year = USHRT_MAX;
-		time.dayInYear = USHRT_MAX;
-		time.hour = USHRT_MAX;
-		time.minute = USHRT_MAX;
+		time = DateTime::INFINITE_DATE;
 	}
 
 	void WeatherSystem::update(const UpdateEvent* event) {
@@ -56,7 +52,7 @@ namespace pan {
 		// TODO check in other same places
 		auto effect = weatherTypes.at(currentWeather);
 
-		auto realTime = DateTime::getInstance()->getDateTime();
+		auto realTime = CurrentDateTime::getInstance()->getDateTime();
 		if (realTime == time) {
 			effect->destroy();
 			setDefaultWeather();

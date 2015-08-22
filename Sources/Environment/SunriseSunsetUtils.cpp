@@ -1,7 +1,7 @@
 #include <cmath>
 
 #include <Headers/Environment/SunriseSunsetUtils.h>
-#include <Headers/Core/DateTime.h>
+#include <Headers/Core/CurrentDateTime.h>
 
 namespace pan {
 	namespace util {
@@ -72,7 +72,7 @@ namespace pan {
 		Flt getSunriseTime(Flt latitudeDegree) {
 			auto mu = static_cast<Flt>(GUASSIAN_X_RANGE) / 2;
 			auto sigma = getLatitideSigma(latitudeDegree);
-			auto latitudeTime = getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
+			auto latitudeTime = getGuassianFunctionValue(CurrentDateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
 			latitudeTime += EQUATOR_DEFAULT_SUNRISE_HOUR + LATITUDE_SUNRISE_COEFFICIENT * Abs(latitudeDegree) / 10;
 			while (latitudeTime >= HOURS_IN_DAY) {
 				latitudeTime -= HOURS_IN_DAY;
@@ -84,7 +84,7 @@ namespace pan {
 		Flt getSunsetTime(Flt latitudeDegree) {
 			auto mu = static_cast<Flt>(GUASSIAN_X_RANGE) / 2;
 			auto sigma = getLatitideSigma(latitudeDegree);
-			auto latitudeTime = -getGuassianFunctionValue(DateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
+			auto latitudeTime = -getGuassianFunctionValue(CurrentDateTime::getInstance()->getDayInYear() * X_RANGE, sigma, mu) * HOURS_IN_DAY / 2;
 			latitudeTime += EQUATOR_DEFAULT_SUNSET_HOUR + LATITUDE_SUNSET_COEFFICIENT * Abs(latitudeDegree) / 10;
 			while (latitudeTime >= HOURS_IN_DAY) {
 				latitudeTime -= HOURS_IN_DAY;

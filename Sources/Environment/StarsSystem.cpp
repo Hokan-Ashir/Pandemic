@@ -1,7 +1,7 @@
 ﻿#include <Engine/Headers/EsenthelEngine.h>
 
 #include <Headers/Environment/StarsSystem.h>
-#include <Headers/Core/DateTime.h>
+#include <Headers/Core/CurrentDateTime.h>
 #include <Headers/Environment/SunriseSunsetUtils.h>
 #include <Headers/Environment/SunHeightChangedEvent.h>
 #include <Headers/WorldsManagment/WorldChangingEvent.h>
@@ -136,7 +136,7 @@ namespace pan {
 		barycenterPosition.y -= calculateBaryCenterOffset();
 		*/
 
-		auto time = DateTime::getInstance()->getFloatTime();
+		auto time = CurrentDateTime::getInstance()->getFloatTime();
 		setBarycenterPosition(time);
 		SunHeightChangedEvent event(getBarycenterHeightOverHorizont());
 		EventManager::getInstance()->fireEvent(&event);

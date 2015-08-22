@@ -2,7 +2,7 @@
 #define __ABSTRACTTIMEABLEAPPLICATIONSTATE_H__
 
 #include <Headers/ApplicationStates/AbstractApplicationState.h>
-#include <Headers/Core/DateTime.h>
+#include <Headers/Core/CurrentDateTime.h>
 
 namespace pan {
 
@@ -15,7 +15,7 @@ namespace pan {
 		virtual ~AbstractTimeableApplicationState() {}
 
 		virtual Bool update() final override {
-			DateTime::getInstance()->update();
+			CurrentDateTime::getInstance()->update();
 			return updateActions();
 		}
 

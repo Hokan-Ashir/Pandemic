@@ -1,7 +1,7 @@
 #include <Engine/Headers/EsenthelEngine.h>
 #include <Headers/Environment/AstroObjectsUtils.h>
 #include <Headers/Environment/SunriseSunsetUtils.h>
-#include <Headers/Core/DateTime.h>
+#include <Headers/Core/CurrentDateTime.h>
 
 namespace pan {
 	namespace util {

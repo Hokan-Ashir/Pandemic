@@ -6,7 +6,7 @@
 #include <Headers/Environment/SkySystem/SkyColourSystem.h>
 #include "CloudsSystem.h"
 #include "WeatherEffects/AbstractWeatherEffect.h"
-#include <Headers/Core/DateTime.h>
+#include <Headers/Core/CurrentDateTime.h>
 #include <Headers/Core/EventSystem/Events/UpdateEvent.h>
 
 namespace pan {
@@ -39,7 +39,7 @@ namespace pan {
 		/**
 		 * Time till currentWeather will exists
 		 */
-		sDateTime time;
+		DateTime time;
 		WeatherType currentWeather;
 
 		/**

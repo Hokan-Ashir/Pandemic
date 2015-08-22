@@ -54,7 +54,7 @@ namespace pan {
 		WorldChangingEvent event(testWorldUID, WORLD_LATITUDE,  7);
 		EventManager::getInstance()->fireEvent(&event);	
 
-		NewDayEvent newDayEvent(DateTime::getInstance()->getDayInYear());
+		NewDayEvent newDayEvent(CurrentDateTime::getInstance()->getDayInYear());
 		EventManager::getInstance()->fireEvent(&newDayEvent);
 
 		return true;
@@ -63,9 +63,9 @@ namespace pan {
 	void MainApplicationState::draw() {		
 		Renderer(ProxyCall::render);
 
-		auto timeString = std::string("Hour " + std::to_string(DateTime::getInstance()->getHours())
-			+ " Minutes: " + std::to_string(DateTime::getInstance()->getMinutes())
-			+ " Seconds: " + std::to_string(DateTime::getInstance()->getSeconds()));
+		auto timeString = std::string("Hour " + std::to_string(CurrentDateTime::getInstance()->getHours())
+			+ " Minutes: " + std::to_string(CurrentDateTime::getInstance()->getMinutes())
+			+ " Seconds: " + std::to_string(CurrentDateTime::getInstance()->getSeconds()));
 		D.text(0, 0.9, timeString.data());
 	}
 

@@ -2,76 +2,48 @@
 #define __DATETIME_H_
 
 #include <Engine/Headers/EsenthelEngine.h>
-
-#include <Headers/ToolClasses/Singleton.h>
 #include <Headers/Core/Months.h>
-#include <Headers/WorldsManagment/WorldChangingEvent.h>
-
-/**
- * The very first year, when game starts when player choose "New game"
- */
-const UShort START_YEAR = 426;
-
-/**
- * Number of days in in-game year
- */
-const UShort DAYS_IN_YEAR = 365;
-
-/**
- * Number of hours in in-game day
- */
-const UShort HOURS_IN_DAY = 24;
-
-/**
- * Number of minutes in in-game hour
- */
-const UShort MINUTES_IN_HOUR = 60;
-
-/**
- * Number of seconds in in-game minute
- */
-const UShort SECONDS_IN_MINUTE = 60;
-
-/**
- * Number of days in moon month, time during which moon became "new" again
- */
-const UShort DAYS_IN_MOON_MONTH = 30;
-
-/**
- * Whole number of game astro objects (Moon + second sun)
- */
-const UShort NUMBER_OF_ASTRO_OBJECTS = 2;
 
 namespace pan {
+
 	/**
-	 * Structure, that represent in-game time in short comparative format 
+	 * The very first year, when game starts when player choose "New game"
 	 */
-	struct sDateTime {
+	const UShort START_YEAR = 426;
 
-		/**
-		 * In-game hour
-		 */
-		UShort hour;
+	/**
+	 * Number of days in in-game year
+	 */
+	const UShort DAYS_IN_YEAR = 365;
 
-		/**
-		 * In-game minute
-		 */
-		UShort minute;
+	/**
+	 * Number of hours in in-game day
+	 */
+	const UShort HOURS_IN_DAY = 24;
 
-		/**
-		 * In-game day in year
-		 */
-		UShort dayInYear;
+	/**
+	 * Number of minutes in in-game hour
+	 */
+	const UShort MINUTES_IN_HOUR = 60;
 
-		/**
-		 * In-game day in moon month
-		 */
-		UShort dayInMoonMonth;
+	/**
+	 * Number of seconds in in-game minute
+	 */
+	const UShort SECONDS_IN_MINUTE = 60;
 
-		/**
-		 * In-game year
-		 */
-		UShort year;
+	/**
+	 * Number of days in moon month, time during which moon became "new" again
+	 */
+	const UShort DAYS_IN_MOON_MONTH = 30;
+
+	/**
+	 * Class, that represent in-game time in comparative format
+	 */
+	class DateTime {
+
+	public:
+		DateTime();
+		DateTime(Flt time, UShort dayInMonth, UShort dayInMoonMonth, UShort dayInYear, MonthsEnum month, UShort year);
 
 		/**
 		 * Compassion operator <p>
@@ -82,93 +54,31 @@ namespace pan {
 		 * \param const sDateTime & date comparative object
 		 * \return bool true, if objects are equal, false otherwise
 		 */
-		bool operator==(const sDateTime& date) const {
-			return minute == date.minute
-				&& hour == date.hour
-				&& dayInYear == date.dayInYear
-				&& year == date.year;
-		}
+		bool operator==(const DateTime& date) const;
 
+		DateTime& operator+=(const DateTime& date);
+
+		Flt getFloatTime() const;
+		Flt getTime() const;
+		UShort getHours() const;
+		UShort getMinutes() const;
+		UShort getSeconds() const;		
+		UShort getDayInYear() const;
+		UShort getDayInMoonMonth() const;
+		UShort getYear() const;
+
+		void addTime(Flt time);
+		void addHours(UShort hour);
+		void addMinutes(UShort minute);
+
+		const static DateTime INFINITE_DATE;
+
+	private:
 		/**
 		 * This method for incrementing time: <p>
 		 * Increment hour if minutes >= MINUTES_IN_HOUR and set minutes to 0 and so on
 		 */
-		void updateTime() {	
-			if (minute >= MINUTES_IN_HOUR) {
-				dayInYear++;
-			}
-
-			if (hour >= HOURS_IN_DAY) {				
-				dayInYear++;
-				dayInMoonMonth++;
-			}
-
-			if (dayInMoonMonth >= DAYS_IN_MOON_MONTH) {
-				dayInMoonMonth = 0;
-			}
-
-			if (dayInYear >= DAYS_IN_YEAR) {
-				dayInYear = 0;
-				year++;
-			}
-		}
-	};
-
-	/**
-	 * Class that represents in-game time <p>
-	 * Has getters and setters, and also is Singleton, so each class can have access
-	 * to it and know current in-game time
-	 */
-	class DateTime final : public Singleton<DateTime>, public BaseEventHandler {
-		SET_SINGLETON(DateTime)
-	public:		
-		/**
-		 * \return Flt time in format "HOUR.MUNUTES_SECONDS"
-		 */
-		Flt getFloatTime() const;
-
-		/**
-		 * \return UShort current hours in current day
-		 */
-		UShort getHours() const;
-
-		/**
-		 * \return UShort current minutes in current hour
-		 */
-		UShort getMinutes() const;
-
-		/**
-		 * \return UShort current seconds in current minute
-		 */
-		UShort getSeconds() const;
-
-		/**
-		 * \return sDateTime time in sDateTime format
-		 */
-		sDateTime getDateTime() const;
-
-		/**
-		 * \return UShort number of day in current year
-		 */
-		UShort getDayInYear() const;
-		
-		void update();
-
-		void updateLongitudeHourOffset(const WorldChangingEvent* event);
-		
-		void setTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year);
-		
-	protected:
-		DateTime(Flt time, UShort dayInMonth, UShort dayInYear, MonthsEnum month, UShort year);
-		DateTime();
-		~DateTime();
-
-	private:
-		/**
-		* Time that passes each frame in game
-		* 0.015 approximately equal 1 seconds in real life
-		*/
-		const Flt SECOND_TICK = 0.015 * 2500;
+		void updateValues();
 
 		/**
 		 * Updates time, checking new in-game day is coming <p>
@@ -178,9 +88,15 @@ namespace pan {
 
 		/**
 		 * Updates time, checking new in-game month is coming <p>
-		 * Nullify dayInMonths value if its value overflow limit
+		 * Nullify dayInMonth's value if its value overflow limit
 		 */
 		void updateMonth();
+
+		/**
+		* Updates time, checking new in-game moon month is coming <p>
+		* Nullify dayInMoonMonth's value if its value overflow limit
+		*/
+		void updateMoonMonth();
 
 		/**
 		 * Updates time, checking new in-game year is coming <p>
@@ -195,23 +111,28 @@ namespace pan {
 		Flt time;
 
 		/**
-		* In-game current day in current year
-		*/
+		 * In-game day in year
+		 */
 		UShort dayInYear;
 
 		/**
-		* In-game day in current month
-		*/
-		UShort dayInMonth;
-
-		/**
-		* In-game current month
-		*/
+		 * In-game current month
+		 */
 		MonthsEnum month;
 
 		/**
-		* In-game day current year
-		*/
+		 * In-game day in current month
+		 */
+		UShort dayInMonth;
+
+		/**
+		 * In-game day in moon month
+		 */
+		UShort dayInMoonMonth;
+
+		/**
+		 * In-game year
+		 */
 		UShort year;
 	};
 }
