@@ -51,10 +51,11 @@ namespace pan {
 			Game::World.settings().environment->set();
 		}
 
-		WorldChangingEvent event(testWorldUID, WORLD_LATITUDE,  7);
+		WorldChangingEvent event(testWorldUID, WORLD_LATITUDE,  0);
 		EventManager::getInstance()->fireEvent(&event);	
 
-		NewDayEvent newDayEvent(CurrentDateTime::getInstance()->getDayInYear());
+		NewDayEvent newDayEvent(CurrentDateTime::getInstance()->getDayInYear(),
+								CurrentDateTime::getInstance()->getDayInMoonMonth());
 		EventManager::getInstance()->fireEvent(&newDayEvent);
 
 		return true;

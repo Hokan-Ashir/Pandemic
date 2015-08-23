@@ -51,6 +51,8 @@ namespace pan {
 		 * \return UShort number of day in current year
 		 */
 		UShort getDayInYear() const;
+
+		UShort getDayInMoonMonth() const;
 		
 		void update();
 

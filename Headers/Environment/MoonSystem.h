@@ -23,14 +23,26 @@ namespace pan {
 
 		~MoonSystem();
 	private:
+		/**
+		 * Angle on which moon rotates each moon month - from one "New Moon" phase to another "New Moon" phase
+		 */
+		const Flt FULL_MOON_MONTH_PHASE_ANGLE = 360.0;
+
 		void updateBarycenterOffset(const WorldChangingEvent* event);
 		void updateSunsetTime(const WorldChangingEvent* event);
+		void rotateMaskedMoonImage(const Flt worldLatitude);
 
 		void subscribeToEvents();
 		void createMoon();
 		void updateMoonPosition();
 		void setMoonPosition(Flt time);
-		void createMaskedMoonImage(const NewDayEvent* event);
+		void createMaskedMoonImage(UShort dayInMoonMonth);
+
+		// get moon's image rotation angle (IN DEGREES) based on current moon phase and world latitude		
+		Flt getMoonImageAngle(Flt worldLatitude) const;
+
+		// Image rotation tecniuqe, with aliasing (in three stages - see here http://datagenetics.com/blog/august32013/)
+		Vec2 rotateVectorAroundOrigin(Int x, Int y, Int originX, Int originY, Flt radianAngle) const;
 
 		/**
 		 * See documentation to calculateBaryCenterOffset() method
@@ -50,7 +62,7 @@ namespace pan {
 
 		Vec moonPosition;
 
-		ImagePtr maskedMoonImage;
+		Image maskedMoonImage;
 		Astro* moon;
 	};	
 }

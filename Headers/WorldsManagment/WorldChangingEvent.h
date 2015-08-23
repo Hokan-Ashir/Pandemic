@@ -28,6 +28,8 @@ namespace pan {
 
 	private:
 		UID worldUID;
+		// Northern latitude \in [0; 90]
+		// Southern latitude \in [-90; 0]
 		Flt worldLatitude;
 
 		// UTC-like time offset; UTC+0 is for longitude = 0

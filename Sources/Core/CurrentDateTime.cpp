@@ -27,6 +27,10 @@ namespace pan {
 		return dateTime.getDayInYear();
 	}
 
+	UShort CurrentDateTime::getDayInMoonMonth() const {
+		return dateTime.getDayInMoonMonth();
+	}
+
 	void CurrentDateTime::update() {
 		// if you want to speed up in-game time, slow it down, or even stop
 		// just change increment value of "time", or change SECOND_TICK constant
@@ -40,7 +44,7 @@ namespace pan {
 	}
 
 	CurrentDateTime::CurrentDateTime(DateTime dateTime) {
-		this->dateTime += dateTime;
+		this->dateTime = dateTime;
 		EventManager::getInstance()->registerEventHandlerMethod(this, &CurrentDateTime::updateLongitudeHourOffset);
 	}
 
