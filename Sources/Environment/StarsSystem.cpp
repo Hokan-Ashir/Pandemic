@@ -83,7 +83,8 @@ namespace pan {
 	}
 	
 	void StarsSystem::updateSunriseTime(const WorldChangingEvent* event) {
-		sunriseTime = util::getSunriseTime(event->getWorldLatitude());
+		auto sunriseTime = util::getSunriseTime(event->getWorldLatitude());
+		sunriseTimeHourAngle = util::calculateHourAngle(sunriseTime);
 	}
 
 	void StarsSystem::update(const UpdateEvent* eventToProceed) {
@@ -118,7 +119,7 @@ namespace pan {
 
 	void StarsSystem::updateBarycenterPosition() {
 		/*
-		Another possibility to set barycenter position based on angle speed, NOT on DateTime::time
+		Another possibility to get phi angle, based on CurrentTime::time incrementation
 		TODO check this method speed
 		It may be faster, if so, we can use Strategy-pattern to use more effective method,
 		if we're not manipulating DateTime::time
@@ -127,13 +128,8 @@ namespace pan {
 
 		phi += angle;
 		if (phi >= PI2)	{
-		phi -= PI2;
-		}
-
-		barycenterPosition.x = Sin(theta) * Cos(phi);
-		barycenterPosition.y = Sin(theta) * Sin(phi);
-		barycenterPosition.z = Cos(theta);
-		barycenterPosition.y -= calculateBaryCenterOffset();
+			phi -= PI2;
+		}		
 		*/
 
 		auto time = CurrentDateTime::getInstance()->getFloatTime();
@@ -143,7 +139,7 @@ namespace pan {
 	}
 
 	void StarsSystem::setBarycenterPosition(Flt time) {
-		phi = DegToRad(util::calculateHourAngle(time) - util::calculateHourAngle(sunriseTime)) + Asin(barycenterOffset);		
+		phi = DegToRad(util::calculateHourAngle(time) - sunriseTimeHourAngle) + Asin(barycenterOffset);		
 		barycenterPosition.x = Cos(phi);
 		barycenterPosition.y = Sin(sunInclination) * Sin(phi);
 		barycenterPosition.z = Sin(phi) * Cos(sunInclination) + sunHorizonOffset;

@@ -109,6 +109,8 @@ namespace pan {
 		/**
 		 * Sun's inclination for current latitude (in radians)
 		 */
+		// TODO this variable usage can be improved, by storing additional computations 
+		// (like Sin(...) and Cos(...)) as class members
 		Flt sunInclination;
 
 		/**
@@ -121,6 +123,7 @@ namespace pan {
 		/**
 		 * See documentation to calculateBaryCenterOffset() method
 		 */
+		// TODO this variable usage can be improved, by storing additional computations (like Asin(...)) as class members
 		Flt barycenterOffset;
 
 		/**
@@ -161,9 +164,9 @@ namespace pan {
 		Vec middayRaysColour;
 
 		/**
-		 * Sunrise time for current world latitude
+		 * Sunrise time "hour angle" for current world latitude
 		 */
-		Flt sunriseTime;
+		Flt sunriseTimeHourAngle;
 
 		/**
 		 * Second star (allSeeingEye), see comment to this class for more info

@@ -59,7 +59,12 @@ namespace pan {
 	}
 
 	void MoonSystem::setMoonPosition(Flt time) {
-		phi = DegToRad(util::calculateHourAngle(time) - util::calculateHourAngle(sunsetTime)) + Asin(barycenterOffset);
+		time += moonHourRisingOffset;
+		if (time >= HOURS_IN_DAY) {
+			time -= HOURS_IN_DAY;
+		}
+
+		phi = DegToRad(util::calculateHourAngle(time) - sunriseTimeHourAngle) + Asin(barycenterOffset);
 		auto theta = DegToRad(90.0f);
 		moonPosition.x = Sin(theta) * Cos(phi);
 		moonPosition.y = Sin(theta) * Sin(phi);
@@ -78,14 +83,16 @@ namespace pan {
 	}
 
 	void MoonSystem::updateSunsetTime(const WorldChangingEvent* event) {
-		sunsetTime = util::getSunsetTime(event->getWorldLatitude());
+		auto sunriseTime = util::getSunriseTime(event->getWorldLatitude());
+		sunriseTimeHourAngle = util::calculateHourAngle(sunriseTime);
 	}
 
 	void MoonSystem::updateBarycenterOffset(const WorldChangingEvent* event) {
-		barycenterOffset = -util::calculateBaryCenterOffset(event->getWorldLatitude());
+		barycenterOffset = util::calculateBaryCenterOffset(event->getWorldLatitude());
 	}
 
 	void MoonSystem::rotateMaskedMoonImage(const Flt worldLatitude) {
+		// TODO improve performance, using non-copy creation rotation and SIMD operators
 		Image tmpImage;
 		maskedMoonImage.copy(tmpImage);				
 		auto width = maskedMoonImage.w();
@@ -105,6 +112,13 @@ namespace pan {
 
 		maskedMoonImage.unlock();
 		tmpImage.unlock();
+	}
+
+	Flt MoonSystem::getMoonImageAngle(Flt worldLatitude) const {
+		auto phaseAngle = FULL_MOON_MONTH_PHASE_ANGLE / DAYS_IN_MOON_MONTH * CurrentDateTime::getInstance()->getDayInMoonMonth();
+		auto latitudeAngle = util::POLAR_LATITUDE - worldLatitude;
+
+		return FULL_MOON_MONTH_PHASE_ANGLE - (phaseAngle + latitudeAngle);
 	}
 
 	Vec2 MoonSystem::rotateVectorAroundOrigin(Int x, Int y, Int originX, Int originY, Flt radianAngle) const {		
@@ -136,6 +150,7 @@ namespace pan {
 		createMaskedMoonImage(event->getNewDayInMoonMonth());
 		// TODO replace world latitude to something like WorldManager::getInstance()->getCurrentWorld().getLatitude();
 		rotateMaskedMoonImage(WORLD_LATITUDE);
+		updateMoonHourRisingOffset(event->getNewDayInMoonMonth());
 	}
 
 	void MoonSystem::createMaskedMoonImage(UShort dayInMoonMonth) {
@@ -153,7 +168,7 @@ namespace pan {
 		auto dayOfMoonMonth = static_cast<Flt>(dayInMoonMonth);
 		auto moonIntensity = dayOfMoonMonth / (DAYS_IN_MOON_MONTH / 2);
 		if (dayOfMoonMonth > DAYS_IN_MOON_MONTH / 2) {
-			moonIntensity = moonIntensity - 1;
+			moonIntensity = 1 - (moonIntensity - 1);
 		}
 		for (auto x = 0; x < width; ++x) {
 			for (auto y = 0; y < height; ++y) {
@@ -161,18 +176,10 @@ namespace pan {
 				// also assuming that maskedImage is in RGB format - so each vector's component (x, y, z) are the same
 				Flt alphaChanelValue;
 				Vec4 maskedPixel = maskedImage()->color(x, y).asVec4();
-				if (dayOfMoonMonth < DAYS_IN_MOON_MONTH / 2) {
-					if (maskedPixel.x <= moonIntensity) {
-						alphaChanelValue = 1.0;
-					} else {
-						alphaChanelValue = 0.0;
-					}
+				if (maskedPixel.x > moonIntensity) {
+					alphaChanelValue = 1.0;
 				} else {
-					if (maskedPixel.x > moonIntensity) {
-						alphaChanelValue = 1.0;
-					} else {
-						alphaChanelValue = 0.0;
-					}
+					alphaChanelValue = 0.0;
 				}
 				auto resultPixel = originalImage()->color(x, y).asVec4();
 				if (resultPixel.w != 0) {
@@ -193,10 +200,7 @@ namespace pan {
 		maskedImage = NULL;		
 	}
 
-	Flt MoonSystem::getMoonImageAngle(Flt worldLatitude) const {
-		auto phaseAngle = FULL_MOON_MONTH_PHASE_ANGLE / DAYS_IN_MOON_MONTH * CurrentDateTime::getInstance()->getDayInMoonMonth();		
-		auto latitudeAngle = util::POLAR_LATITUDE - worldLatitude;
-
-		return FULL_MOON_MONTH_PHASE_ANGLE - (phaseAngle + latitudeAngle);
+	void MoonSystem::updateMoonHourRisingOffset(UShort dayInMoonMonth) {
+		moonHourRisingOffset = (dayInMoonMonth * HOURS_IN_DAY) / DAYS_IN_MOON_MONTH;
 	}
 }

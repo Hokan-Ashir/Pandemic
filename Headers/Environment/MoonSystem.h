@@ -37,8 +37,22 @@ namespace pan {
 		void updateMoonPosition();
 		void setMoonPosition(Flt time);
 		void createMaskedMoonImage(UShort dayInMoonMonth);
+		void updateMoonHourRisingOffset(UShort dayInMoonMonth);
 
-		// get moon's image rotation angle (IN DEGREES) based on current moon phase and world latitude		
+		/**
+		 * Get moon's image rotation angle (IN DEGREES) based on current moon phase and world latitude
+		 * This calculations based on real Earth moon phases, with little assumptions:
+		 * - only latitdue matters, no longitude assists in calculations
+		 * - no setting/rising moon angle differences - all moon's phase angles calculated for rising moon 
+		 * (Earth moon's rising first quater as In-game moon's first quater, 
+		 * Earth moon's rising full moon as In-game moon's full moon); as side effect - moon DOES NOT rotated during night
+		 *
+		 * Angle assumptions made using this link (http://notesfromnoosphere.blogspot.ca/2012/05/simple-geometry-of-sun-paths.html)
+		 * via presented images and also using lunar calendar and Stellarium (http://www.stellarium.org/ru/)
+		 *
+		 * TODO it can be improved, using shader computations and andanced formulas, that take in longitude and rising/setting moon
+		 * dependency. But this still can dramatically affect performance
+		 */ 
 		Flt getMoonImageAngle(Flt worldLatitude) const;
 
 		// Image rotation tecniuqe, with aliasing (in three stages - see here http://datagenetics.com/blog/august32013/)
@@ -47,6 +61,7 @@ namespace pan {
 		/**
 		 * See documentation to calculateBaryCenterOffset() method
 		 */
+		// TODO this variable usage can be improved, by storing additional computations (like Asin(...)) as class members
 		Flt barycenterOffset;
 
 		/**
@@ -56,9 +71,24 @@ namespace pan {
 		Flt phi;
 
 		/**
-		 * Sunset time for current world latitude
+		 * Sunrise time "hour angle" for current world latitude
 		 */
-		Flt sunsetTime;
+		Flt sunriseTimeHourAngle;
+
+		/**
+		 * Number of hours, that must pass after sunrise, till moon rise
+		 *
+		 * Difference between sunrise/sunset time and moonrise/moonset time for different phases:
+		 * New Moon:				0h
+		 * First Quarter:			+6h
+		 * Full Moon:				+12h
+		 * Last (third) Quarter:	+18h
+		 *
+		 * This calculations are based on average differences for New Dehli using those links:
+		 * http://www.timeanddate.com/moon/india/new-delhi
+		 * http://www.timeanddate.com/sun/india/new-delhi
+		 */
+		UShort moonHourRisingOffset;
 
 		Vec moonPosition;
 
