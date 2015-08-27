@@ -11,7 +11,7 @@ namespace pan {
 	DateTime::DateTime() {
 		this->time = 0;
 		this->dayInMonth = 0;
-		this->dayInMoonMonth = 3 * DAYS_IN_MOON_MONTH / 4;
+		this->dayInMoonMonth = 22;// 3 * DAYS_IN_MOON_MONTH / 4;
 		this->dayInYear = 0;
 		this->month = WINTER_1;
 		this->year = START_YEAR;

@@ -88,12 +88,6 @@ namespace pan {
 	}
 
 	void StarsSystem::update(const UpdateEvent* eventToProceed) {
-		// because Esenthel Engine set position of Astro object only once
-		// during adding it to Astro container, to implement movement of two suns
-		// we pop them from container and add them each frame
-		// it cost additional CPU, but not dramatically affect memory
-
-		
 		updateBarycenterPosition();
 		auto twilightSunBorder = -barycenterOffset;
 		if (barycenterPosition.y < twilightSunBorder) {
@@ -122,7 +116,7 @@ namespace pan {
 		Another possibility to get phi angle, based on CurrentTime::time incrementation
 		TODO check this method speed
 		It may be faster, if so, we can use Strategy-pattern to use more effective method,
-		if we're not manipulating DateTime::time
+		if we're not manipulating CurrentTime::time
 
 		auto angle = SECOND_TICK * PI2 / (SECONDS_IN_MINUTE * MINUTES_IN_HOUR * HOURS_IN_DAY);
 

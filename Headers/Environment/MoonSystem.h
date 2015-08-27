@@ -30,13 +30,12 @@ namespace pan {
 
 		void updateBarycenterOffset(const WorldChangingEvent* event);
 		void updateSunsetTime(const WorldChangingEvent* event);
-		void rotateMaskedMoonImage(const Flt worldLatitude);
 
 		void subscribeToEvents();
 		void createMoon();
 		void updateMoonPosition();
 		void setMoonPosition(Flt time);
-		void createMaskedMoonImage(UShort dayInMoonMonth);
+		void createMaskedMoonImage(UShort dayInMoonMonth, const Flt worldLatitude);
 		void updateMoonHourRisingOffset(UShort dayInMoonMonth);
 
 		/**
